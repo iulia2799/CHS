@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="Android API 30 Platform" project-jdk-type="Android SDK" />
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/android_projects/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/android_projects/app/src/main/res/layout/activity_maps.xml" value="0.2" />
+        <entry key="..\:/android_projects/app/src/main/res/layout/activity_maps2.xml" value="0.22644927536231885" />
+        <entry key="..\:/android_projects/app/src/main/res/layout/dashboard.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
 </project>
