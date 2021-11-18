@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:onClick="ClickButton"
-        android:text="Click here"
+        android:text="Log in\Sign up"
         app:backgroundTint="#198479"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
