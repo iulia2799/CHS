@@ -6,35 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!--make clickable and onClick attr for Button-->
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button"
-        android:text="Hello!"
-        android:textColor="#0F9D58"
+        android:fontFamily="@font/gfs_didot"
+        android:text="Detect IT"
+        android:textAllCaps="false"
+        android:textColor="#1B6545"
         android:textSize="42dp"
         android:textStyle="bold"
+        android:typeface="normal"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <!--make clickable and onClick attr for Button-->
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.379" />
+
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:onClick="ClickButton"
-        android:text="Log in\Sign up"
+        android:text="Log in OR Sign up"
         app:backgroundTint="#198479"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.651" />
+        app:layout_constraintVertical_bias="0.666" />
 
     <Button
         android:id="@+id/mapbutton"
@@ -50,7 +57,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.771" />
+        app:layout_constraintVertical_bias="0.774" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/setbutton"
