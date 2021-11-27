@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         gyroscope.unregister();
     }
     public void ClickButton(View view){
-        Intent intent = new Intent(this, LoginActivity.class); //switch to Tabel
+        Intent intent = new Intent(this, Login.class); //switch to Tabel
         startActivity(intent);
 
     }

@@ -2,15 +2,18 @@ package com.example.chs.data.login;
 
 public class User implements Login {
     private String username;
+    private String email;
     private String password;
     public User(){
 
     }
-    public User(String username,String password){
+    public User(String email,String password){
         //if user does not exist in json then do this
-        this.username = username;
+        this.email = email;
         this.password = password;
     }
+
+    public String getEmail(){return this.email;}
     @Override
     public void SetPassword(String new_password) {
         this.password=new_password;
