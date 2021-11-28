@@ -65,25 +65,17 @@ public class Login extends AppCompatActivity {
     public void checkUser(String email,String pass){
 
         DatabaseReference reference =  FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/").getReference("User");
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userList.clear();
-                DAOUser daoUser = new DAOUser();
                 for(DataSnapshot usersnapshot : snapshot.getChildren()){
                     User mUser = usersnapshot.getValue(User.class);
                     if(mUser.getEmail().equals(email) && mUser.getPassword().equals(pass)){
                         Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
                         startActivity(intent);
                     }else{
-                        daoUser.add(mUser).addOnSuccessListener(suc -> {
-                            Toast.makeText(getApplicationContext(), "Succesfully added user", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                            startActivity(intent);
 
-                        }).addOnFailureListener(fail -> {
-                            Toast.makeText(getApplicationContext(), "Failed to add user " + fail.getMessage(), Toast.LENGTH_SHORT).show();
-                        });
                     }
                     userList.add(mUser);
                 }

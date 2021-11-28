@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.chs.ui.login.LoginActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         textView = (TextView) findViewById(R.id.textView);
         button=  (Button)findViewById(R.id.button);
-        mapButton = (Button)findViewById(R.id.mapbutton);
+        mapButton = (Button)findViewById(R.id.signbutton);
         accelerometer = new Accelerometer(this);
         gyroscope = new Gyroscope(this);
         //setbtn = (FloatingActionButton)findViewById(R.id.setbutton);
@@ -69,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
-    public void ClickMap(View view){
-        Intent intent = new Intent(this,MapsActivity.class);
+    public void ClickSignUp(View view){
+        Intent intent = new Intent(this,SignUp.class);
         startActivity(intent);
     }
     public void ClickSettings(View view){

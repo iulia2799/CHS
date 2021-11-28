@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:onClick="ClickButton"
-        android:text="Log in OR Sign up"
+        android:text="Log in"
         app:backgroundTint="#198479"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -44,12 +44,12 @@
         app:layout_constraintVertical_bias="0.666" />
 
     <Button
-        android:id="@+id/mapbutton"
+        android:id="@+id/signbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:onClick="ClickMap"
-        android:text="Map"
+        android:onClick="ClickSignUp"
+        android:text="Sign up"
         app:backgroundTint="#198479"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
