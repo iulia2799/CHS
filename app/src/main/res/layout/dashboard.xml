@@ -62,4 +62,14 @@
         app:layout_constraintVertical_bias="0.962"
         app:srcCompat="@android:drawable/ic_menu_mapmode" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/posts"
+        android:layout_width="375dp"
+        android:layout_height="459dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.471" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

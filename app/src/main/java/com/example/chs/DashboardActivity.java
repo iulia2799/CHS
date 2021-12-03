@@ -2,12 +2,16 @@ package com.example.chs;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.chs.data.Post;
+import com.example.chs.data.PostAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -24,6 +28,17 @@ public class DashboardActivity extends AppCompatActivity {
         //getActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
+        Post[] posts = new Post[]{
+                new Post("name1","location1","desc"),
+                new Post("name1","location1","desc"),
+                new Post("name1","location1","desc")
+        };
+        RecyclerView recyclerView  = (RecyclerView) findViewById(R.id.posts);
+        PostAdapter postAdapter = new PostAdapter(posts);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(postAdapter);
+
     }
     public void clickMap(View view){
         Intent intent = new Intent(this,MapsActivity.class);
