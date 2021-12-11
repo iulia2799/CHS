@@ -2,12 +2,15 @@ package com.example.chs;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
@@ -39,6 +42,8 @@ public class AddPost extends AppCompatActivity {
     private TextView searchlocation;
     private Switch anonymous;
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private Button cameraButton;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,8 @@ public class AddPost extends AppCompatActivity {
         searchlocation = (TextView) findViewById(R.id.location_gps);
         anonymous = (Switch) findViewById(R.id.anon);
         button = (Button) findViewById(R.id.loadimage);
+        cameraButton = (Button) findViewById(R.id.camerabtn);
+        imageView = (ImageView) findViewById(R.id.imageView2);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -81,6 +88,17 @@ public class AddPost extends AppCompatActivity {
                 startActivityForResult(i, 1);
             }
         });
+
+        if(ContextCompat.checkSelfPermission(AddPost.this,Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(AddPost.this,
+                    new String[]{
+                            Manifest.permission.CAMERA
+                    },100
+            );
+
+        }
+
     }
     public void clickAddPost(View view){
         Context context = getApplicationContext();
@@ -122,8 +140,19 @@ public class AddPost extends AppCompatActivity {
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
-            ImageView imageView = (ImageView) findViewById(R.id.imageView2);
+
             imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+
         }
+        if(requestCode == 100){
+            Bitmap capture = (Bitmap) data.getExtras().get("data");
+            imageView.setImageBitmap(capture);
+        }
+
     }
+    public void ClickCamera(View view){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent,100);
+    }
+
 }

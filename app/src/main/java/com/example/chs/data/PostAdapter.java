@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chs.R;
@@ -29,6 +30,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         final Post posts = localDataSet[position];
         holder.name.setText(posts.getName());
         holder.postloc.setText(posts.getLocation());
+        holder.description.setText(posts.getDescription());
+
 
 
     }
@@ -39,11 +42,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
    public class ViewHolder extends RecyclerView.ViewHolder{
        public TextView name;
        public TextView postloc;
+       public TextView description;
        public ViewHolder(@NonNull View itemView) {
            super(itemView);
            this.name = (TextView) itemView.findViewById(R.id.post_name);
            this.postloc = (TextView) itemView.findViewById(R.id.postloc);
-           LinearLayout layout = (LinearLayout) itemView.findViewById(R.id.postlay);
+           this.description = (TextView) itemView.findViewById(R.id.postdescription);
+           ConstraintLayout layout = (ConstraintLayout) itemView.findViewById(R.id.postlay);
 
        }
    }

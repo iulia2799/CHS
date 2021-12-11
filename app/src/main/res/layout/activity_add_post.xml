@@ -116,5 +116,19 @@
         app:layout_constraintVertical_bias="0.862"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <Button
+        android:id="@+id/camerabtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Camera"
+        android:clickable="true"
+        android:onClick="ClickCamera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.101"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.878" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
