@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.chs.data.login.DAOUser;
@@ -21,6 +22,7 @@ public class SignUp extends AppCompatActivity {
     private EditText email;
     private EditText pass;
     private Button btn;
+    private Switch swps;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +31,7 @@ public class SignUp extends AppCompatActivity {
         email = findViewById(R.id.emailaddsignup);
         pass = findViewById(R.id.passads);
         btn = findViewById(R.id.signbtn);
+        swps = (Switch) findViewById(R.id.swps);
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
         DatabaseReference myRef = database.getReference("message");
     }
@@ -55,6 +58,13 @@ public class SignUp extends AppCompatActivity {
         User user = new User(email.getText().toString(), pass.getText().toString());
         if(!checkCred(user.getEmail(), user.getPassword())){
             Toast.makeText(this,"Email must be name@email.com and password must be at least 8 characters",Toast.LENGTH_SHORT).show();
+            return;
+            //go to reloaded dashboard layout
+        }
+        if(swps.isChecked()){
+            Toast.makeText(this,"primariile vor veni in curand",Toast.LENGTH_SHORT).show();
+            return;
+            //go to reloaded dashboard layout
         }
         daoUser.add(user).addOnSuccessListener(suc -> {
             Toast.makeText(getApplicationContext(), "Succesfully added user", Toast.LENGTH_SHORT).show();

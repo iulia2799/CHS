@@ -7,11 +7,13 @@ public class Post {
     private String location;
     private String description;
     private Bitmap[] images;
+    private String status;
 
     public Post(String name, String location, String description) {
         this.name = name;
         this.location = location;
         this.description = description;
+        this.status = "posted";
     }
     public String getName(){
         return this.name;
@@ -38,5 +40,12 @@ public class Post {
 
     public void setImages(Bitmap[] list){
         this.images=list;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    public String getStatus(){
+        return this.status;
     }
 }

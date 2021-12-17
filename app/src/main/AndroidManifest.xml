@@ -11,14 +11,16 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature
         android:name="android.hardware.sensor.accelerometer"
         android:required="true" />
     <uses-feature
         android:name="android.hardware.sensor.gyroscope"
         android:required="true" />
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
     <application
@@ -28,6 +30,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CHS.NoActionBar">
+        <activity
+            android:name=".ViewPrimarie"
+            android:exported="false" />
+        <activity
+            android:name=".AccountInfo"
+            android:exported="false" />
+        <activity
+            android:name=".Notification"
+            android:exported="false" />
+        <activity
+            android:name=".ReviewPost"
+            android:exported="false" />
+        <activity
+            android:name=".PrimarieDashboard"
+            android:exported="false" />
         <activity
             android:name=".SignUp"
             android:exported="false" />

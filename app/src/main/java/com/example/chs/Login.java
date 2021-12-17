@@ -9,6 +9,7 @@ import android.service.autofill.RegexValidator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.chs.data.login.DAOUser;
@@ -30,6 +31,7 @@ public class Login extends AppCompatActivity {
     private EditText email;
     private EditText pass;
     private Button btn;
+    private Switch swp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class Login extends AppCompatActivity {
         email = findViewById(R.id.emailadd);
         pass = findViewById(R.id.passad);
         btn = findViewById(R.id.logbtn);
+        swp = findViewById(R.id.swp);
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
         DatabaseReference myRef = database.getReference("message");
 
@@ -91,8 +94,12 @@ public class Login extends AppCompatActivity {
     public void clickLogin(View view) {
 
         User user = new User(email.getText().toString(), pass.getText().toString());
-        if(checkCred(user.getEmail(),user.getPassword())) {
+        if(checkCred(user.getEmail(),user.getPassword()) && !swp.isChecked()) {
             checkUser(user.getEmail(),user.getPassword());
+        }
+        else if(swp.isChecked()){
+            Toast.makeText(this,"primariile vor veni in curand",Toast.LENGTH_SHORT).show();
+
         }else{
             Toast.makeText(this,"Email must be name@email.com and password must be at least 8 characters",Toast.LENGTH_SHORT).show();
         }
