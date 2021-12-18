@@ -13,6 +13,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.chs.data.login.DAOUser;
+import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,6 +66,7 @@ public class Login extends AppCompatActivity {
         return true;
     }
     private List<User> userList = new ArrayList<>();
+    private List<Primarie> primarieList = new ArrayList<>();
     public void checkUser(String email,String pass){
 
         DatabaseReference reference =  FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/").getReference("User");
@@ -91,17 +93,49 @@ public class Login extends AppCompatActivity {
             }
         });
     }
-    public void clickLogin(View view) {
+    public void checkPrimarie(String email,String pass){
 
-        User user = new User(email.getText().toString(), pass.getText().toString());
-        if(checkCred(user.getEmail(),user.getPassword()) && !swp.isChecked()) {
+        DatabaseReference reference =  FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Primarie");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                primarieList.clear();
+                for(DataSnapshot usersnapshot : snapshot.getChildren()){
+                    Primarie mUser = usersnapshot.getValue(Primarie.class);
+                    if(mUser.getEmail().equals(email) && mUser.getPassword().equals(pass)){
+                        Intent intent = new Intent(getApplicationContext(),PrimarieDashboard.class);
+                        startActivity(intent);
+                    }else{
+
+                    }
+                    primarieList.add(mUser);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("The read failed: "+error.getCode());
+            }
+        });
+    }
+    public void clickLogin(View view) {
+        String storedEmail = email.getText().toString();
+        String storedpass = pass.getText().toString();
+        if(!checkCred(storedEmail,storedpass)){
+            Toast.makeText(this,"Email must be name@email.com and password must be at least 8 characters",Toast.LENGTH_SHORT).show();
+
+        }
+        else if(!swp.isChecked()) {
+            User user = new User(storedEmail, storedpass);
             checkUser(user.getEmail(),user.getPassword());
         }
         else if(swp.isChecked()){
-            Toast.makeText(this,"primariile vor veni in curand",Toast.LENGTH_SHORT).show();
+            Primarie primarie = new Primarie(storedEmail,storedpass);
+            checkPrimarie(primarie.getEmail(), primarie.getPassword());
 
         }else{
-            Toast.makeText(this,"Email must be name@email.com and password must be at least 8 characters",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"unknowm error occured",Toast.LENGTH_SHORT).show();
         }
     }
 }

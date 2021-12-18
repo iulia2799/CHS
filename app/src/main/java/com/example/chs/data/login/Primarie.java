@@ -4,6 +4,15 @@ public class Primarie implements Login{
     private String primarie;
     private String password;
     private String location;
+    private String email;
+
+    public Primarie(){
+
+    }
+    public Primarie(String email, String password){
+        this.email =email;
+        this.password =password;
+    }
     public Primarie(String nume, String password, String location){
         // if user does not exits in json
         this.primarie=nume;
@@ -31,6 +40,10 @@ public class Primarie implements Login{
 
     public String getLocation() {
         return location;
+    }
+
+    public String getEmail(){
+        return email;
     }
 
     public String getPassword() {

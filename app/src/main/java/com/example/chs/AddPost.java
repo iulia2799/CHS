@@ -58,6 +58,34 @@ public class AddPost extends AppCompatActivity {
         cameraButton = (Button) findViewById(R.id.camerabtn);
         imageView = (ImageView) findViewById(R.id.imageView2);
 
+
+        button.setOnClickListener(view -> {
+            Intent i = new Intent(
+                    Intent.ACTION_PICK,
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, 1);
+        });
+
+        if(ContextCompat.checkSelfPermission(AddPost.this,Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(AddPost.this,
+                    new String[]{
+                            Manifest.permission.CAMERA
+                    },100
+            );
+
+        }
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                getLocation();
+            }
+        };
+        new Thread(runnable).start();
+
+    }
+
+    public void getLocation(){
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -70,36 +98,13 @@ public class AddPost extends AppCompatActivity {
             return;
         }
         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this,
-                new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                           // searchlocation.setText(location.getLatitude()+","+location.getLongitude());
-                           getAddress(location.getLatitude(), location.getLongitude());
-                        }
-                    }
+                location -> {
+                    if (location != null)
+                        getAddress(location.getLatitude(),
+                                location.getLongitude());
                 });
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, 1);
-            }
-        });
-
-        if(ContextCompat.checkSelfPermission(AddPost.this,Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(AddPost.this,
-                    new String[]{
-                            Manifest.permission.CAMERA
-                    },100
-            );
-
-        }
-
     }
+
     public void clickAddPost(View view){
         Context context = getApplicationContext();
         String text = "the post was added";
@@ -147,6 +152,7 @@ public class AddPost extends AppCompatActivity {
         if(requestCode == 100){
             Bitmap capture = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(capture);
+
         }
 
     }
