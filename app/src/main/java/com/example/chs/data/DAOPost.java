@@ -17,6 +17,11 @@ public class DAOPost {
 
 
     }
+    public DAOPost(String cat_name){
+        FirebaseDatabase db = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
+        databaseReference = db.getReference(cat_name);
+
+    }
     public Task<Void> add(Post post){
         return databaseReference.push().setValue(post);
     }

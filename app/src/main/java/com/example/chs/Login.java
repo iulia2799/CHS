@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.chs.data.login.DAOUser;
 import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.User;
+import com.example.chs.data.login.UserLocalStorage;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +34,7 @@ public class Login extends AppCompatActivity {
     private EditText pass;
     private Button btn;
     private Switch swp;
+    private UserLocalStorage userLocalStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +124,7 @@ public class Login extends AppCompatActivity {
     public void clickLogin(View view) {
         String storedEmail = email.getText().toString();
         String storedpass = pass.getText().toString();
+        userLocalStorage = new UserLocalStorage(this);
         if(!checkCred(storedEmail,storedpass)){
             Toast.makeText(this,"Email must be name@email.com and password must be at least 8 characters",Toast.LENGTH_SHORT).show();
 
@@ -129,6 +132,10 @@ public class Login extends AppCompatActivity {
         else if(!swp.isChecked()) {
             User user = new User(storedEmail, storedpass);
             checkUser(user.getEmail(),user.getPassword());
+            userLocalStorage.storeUserData(user);
+            userLocalStorage.setUserLoggedIn(true);
+
+
         }
         else if(swp.isChecked()){
             Primarie primarie = new Primarie(storedEmail,storedpass);

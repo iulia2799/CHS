@@ -2,18 +2,37 @@ package com.example.chs.data;
 
 import android.graphics.Bitmap;
 
+import com.example.chs.data.login.User;
+
 public class Post {
     private String name;
     private String location;
     private String description;
     private Bitmap[] images;
     private String status;
+    private User op;
+    private Categorie cat;
+    private static Integer trackingid=0;
+    public Post(){}
 
     public Post(String name, String location, String description) {
         this.name = name;
         this.location = location;
         this.description = description;
         this.status = "posted";
+        this.cat = new Categorie("test");
+        trackingid++;
+
+    }
+    public Post(String name,String location,String description,User user){
+        this.name = name;
+        this.location = location;
+        this.description = description;
+        this.op = user;
+        this.status = "posted";
+        this.cat = new Categorie("test");
+        trackingid++;
+
     }
     public String getName(){
         return this.name;
@@ -47,5 +66,12 @@ public class Post {
     }
     public String getStatus(){
         return this.status;
+    }
+
+    public static Integer getTrackingid() {
+        return trackingid;
+    }
+    public String getCategorie(){
+        return cat.getNume();
     }
 }

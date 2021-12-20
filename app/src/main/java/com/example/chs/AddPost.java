@@ -26,6 +26,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.chs.data.DAOPost;
+import com.example.chs.data.Post;
+import com.example.chs.data.login.User;
+import com.example.chs.data.login.UserLocalStorage;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,6 +48,8 @@ public class AddPost extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Button cameraButton;
     private ImageView imageView;
+    private UserLocalStorage userLocalStorage;
+    private String strAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,13 +113,19 @@ public class AddPost extends AppCompatActivity {
 
     public void clickAddPost(View view){
         Context context = getApplicationContext();
-        String text = "the post was added";
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context,text,duration);
-        toast.show();
+        Post post = new Post(name.getText().toString(),strAdd,desc.getText().toString());
+        DAOPost daopost = new DAOPost(post.getCategorie());
+        daopost.add(post).addOnSuccessListener(suc -> {
+            Toast.makeText(getApplicationContext(), "Succesfully added post", Toast.LENGTH_SHORT).show();
+            //Intent intent = new Intent(getApplicationContext(), PrimarieDashboard.class);
+            //startActivity(intent);
+
+        }).addOnFailureListener(fail -> {
+            Toast.makeText(getApplicationContext(), "Failed to add post " + fail.getMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
     public void getAddress(double latitude, double longitude){
-        String strAdd = "";
+        strAdd = "";
         Geocoder geocoder = new Geocoder(this,Locale.getDefault());
         try{
             List<Address> addressList = geocoder.getFromLocation(latitude,longitude,1);
@@ -156,6 +168,23 @@ public class AddPost extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        userLocalStorage = new UserLocalStorage(this);
+        if(authenticate()){
+            displayUserDetails();
+        }
+    }
+    private boolean authenticate(){
+        return userLocalStorage.getUserLoggedIn();
+    }
+    private void displayUserDetails(){
+        User user = userLocalStorage.getLoggedInUser();
+        Toast.makeText(this,user.getEmail(),Toast.LENGTH_SHORT).show();
+    }
+
     public void ClickCamera(View view){
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent,100);

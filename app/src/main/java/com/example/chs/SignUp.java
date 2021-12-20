@@ -10,7 +10,9 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.example.chs.data.login.DAOPrimarie;
 import com.example.chs.data.login.DAOUser;
+import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -59,12 +61,22 @@ public class SignUp extends AppCompatActivity {
         if(!checkCred(user.getEmail(), user.getPassword())){
             Toast.makeText(this,"Email must be name@email.com and password must be at least 8 characters",Toast.LENGTH_SHORT).show();
             return;
-            //go to reloaded dashboard layout
+
         }
         if(swps.isChecked()){
-            Toast.makeText(this,"primariile vor veni in curand",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"primariile vor veni in curand",Toast.LENGTH_SHORT).show();
+            DAOPrimarie daoPrimarie = new DAOPrimarie();
+            Primarie primarie = new Primarie(email.getText().toString(),pass.getText().toString());
+            daoPrimarie.add(primarie).addOnSuccessListener(suc -> {
+                Toast.makeText(getApplicationContext(), "Succesfully added primarie", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), PrimarieDashboard.class);
+                startActivity(intent);
+
+            }).addOnFailureListener(fail -> {
+                Toast.makeText(getApplicationContext(), "Failed to add user " + fail.getMessage(), Toast.LENGTH_SHORT).show();
+            });
             return;
-            //go to reloaded dashboard layout
+
         }
         daoUser.add(user).addOnSuccessListener(suc -> {
             Toast.makeText(getApplicationContext(), "Succesfully added user", Toast.LENGTH_SHORT).show();

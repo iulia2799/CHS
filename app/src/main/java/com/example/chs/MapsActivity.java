@@ -10,6 +10,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.chs.data.login.User;
+import com.example.chs.data.login.UserLocalStorage;
 import com.example.chs.ui.login.LoginActivity;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -76,6 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Location mLastLocation;
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
+    private UserLocalStorage userLocalStorage;
 
     //LocationCallback mLocationCallback =null;
 
@@ -242,6 +245,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        userLocalStorage = new UserLocalStorage(this);
+        if(authenticate()){
+            displayUserDetails();
+        }
+    }
+    private boolean authenticate(){
+        return userLocalStorage.getUserLoggedIn();
+    }
+    private void displayUserDetails(){
+        User user = userLocalStorage.getLoggedInUser();
+        Toast.makeText(this,user.getEmail(),Toast.LENGTH_SHORT).show();
     }
 
     public void ClickButton(View view){
