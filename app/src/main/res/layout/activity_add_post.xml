@@ -81,16 +81,16 @@
 
     <Switch
         android:id="@+id/anon"
-        android:layout_width="180dp"
-        android:layout_height="58dp"
+        android:layout_width="175dp"
+        android:layout_height="45dp"
         android:text="Anonymous user"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintHorizontal_bias="0.855"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.101" />
+        app:layout_constraintVertical_bias="0.023" />
 
     <Button
         android:id="@+id/loadimage"
@@ -129,6 +129,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.878" />
+
+    <Spinner
+        android:id="@+id/categoriespinner"
+        android:layout_width="324dp"
+        android:layout_height="42dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.149"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.11" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

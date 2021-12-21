@@ -20,12 +20,15 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.chs.data.Categorie;
 import com.example.chs.data.DAOPost;
 import com.example.chs.data.Post;
 import com.example.chs.data.login.User;
@@ -50,6 +53,8 @@ public class AddPost extends AppCompatActivity {
     private ImageView imageView;
     private UserLocalStorage userLocalStorage;
     private String strAdd;
+    private Spinner dropdowncat;
+    private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","test"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,9 @@ public class AddPost extends AppCompatActivity {
         button = (Button) findViewById(R.id.loadimage);
         cameraButton = (Button) findViewById(R.id.camerabtn);
         imageView = (ImageView) findViewById(R.id.imageView2);
+        dropdowncat = (Spinner) findViewById(R.id.categoriespinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        dropdowncat.setAdapter(adapter);
 
 
         button.setOnClickListener(view -> {
@@ -113,7 +121,7 @@ public class AddPost extends AppCompatActivity {
 
     public void clickAddPost(View view){
         Context context = getApplicationContext();
-        Post post = new Post(name.getText().toString(),strAdd,desc.getText().toString());
+        Post post = new Post(name.getText().toString(),strAdd,desc.getText().toString(),new Categorie(dropdowncat.getSelectedItem().toString()));
         DAOPost daopost = new DAOPost(post.getCategorie());
         daopost.add(post).addOnSuccessListener(suc -> {
             Toast.makeText(getApplicationContext(), "Succesfully added post", Toast.LENGTH_SHORT).show();

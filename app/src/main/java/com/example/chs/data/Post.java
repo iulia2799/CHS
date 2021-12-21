@@ -14,13 +14,21 @@ public class Post {
     private Categorie cat;
     private static Integer trackingid=0;
     public Post(){}
-
     public Post(String name, String location, String description) {
         this.name = name;
         this.location = location;
         this.description = description;
         this.status = "posted";
         this.cat = new Categorie("test");
+        trackingid++;
+
+    }
+    public Post(String name, String location, String description,Categorie categorie) {
+        this.name = name;
+        this.location = location;
+        this.description = description;
+        this.status = "posted";
+        this.cat = categorie;
         trackingid++;
 
     }
