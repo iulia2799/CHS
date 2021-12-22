@@ -12,7 +12,7 @@ public class Post {
     private String status;
     private User op;
     private Categorie cat;
-    private static Integer trackingid=0;
+    private static Integer trackingId =100;
     public Post(){}
     public Post(String name, String location, String description) {
         this.name = name;
@@ -20,7 +20,7 @@ public class Post {
         this.description = description;
         this.status = "posted";
         this.cat = new Categorie("test");
-        trackingid++;
+        trackingId++;
 
     }
     public Post(String name, String location, String description,Categorie categorie) {
@@ -29,17 +29,18 @@ public class Post {
         this.description = description;
         this.status = "posted";
         this.cat = categorie;
-        trackingid++;
+        trackingId++;
 
     }
-    public Post(String name,String location,String description,User user){
+    public Post(String name,String location,String description,User user,Categorie cat,Bitmap[] received){
         this.name = name;
         this.location = location;
         this.description = description;
         this.op = user;
         this.status = "posted";
-        this.cat = new Categorie("test");
-        trackingid++;
+        this.cat = cat;
+        this.images  = received;
+        trackingId++;
 
     }
     public String getName(){
@@ -69,6 +70,14 @@ public class Post {
         this.images=list;
     }
 
+    public Bitmap[] getImages() {
+        return images;
+    }
+
+    public User getOp() {
+        return op;
+    }
+
     public void setStatus(String status) {
         this.status = status;
     }
@@ -76,10 +85,21 @@ public class Post {
         return this.status;
     }
 
-    public static Integer getTrackingid() {
-        return trackingid;
+    public static Integer getTrackingId() {
+        return trackingId;
     }
+    public static void setTrackingId(Integer trackingid1){
+        trackingId = trackingid1;}
     public String getCategorie(){
         return cat.getNume();
     }
+
+    public void setCat(Categorie cat) {
+        this.cat = cat;
+    }
+
+    public void setOp(User op) {
+        this.op = op;
+    }
+
 }

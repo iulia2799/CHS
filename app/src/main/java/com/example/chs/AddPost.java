@@ -55,6 +55,7 @@ public class AddPost extends AppCompatActivity {
     private String strAdd;
     private Spinner dropdowncat;
     private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","test"};
+    private Bitmap capture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +122,8 @@ public class AddPost extends AppCompatActivity {
 
     public void clickAddPost(View view){
         Context context = getApplicationContext();
+        if(capture != null){}
+        if(imageView.getDrawable()!=null){}
         Post post = new Post(name.getText().toString(),strAdd,desc.getText().toString(),new Categorie(dropdowncat.getSelectedItem().toString()));
         DAOPost daopost = new DAOPost(post.getCategorie());
         daopost.add(post).addOnSuccessListener(suc -> {
@@ -158,19 +161,11 @@ public class AddPost extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-
+            imageView.setImageURI(selectedImage);
+            //imageView.getLayoutParams().width-=20;
         }
         if(requestCode == 100){
-            Bitmap capture = (Bitmap) data.getExtras().get("data");
+            capture = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(capture);
 
         }
