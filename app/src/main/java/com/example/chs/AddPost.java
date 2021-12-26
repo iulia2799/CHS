@@ -56,6 +56,8 @@ public class AddPost extends AppCompatActivity {
     private Spinner dropdowncat;
     private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","test"};
     private Bitmap capture;
+    private User user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +126,7 @@ public class AddPost extends AppCompatActivity {
         Context context = getApplicationContext();
         if(capture != null){}
         if(imageView.getDrawable()!=null){}
-        Post post = new Post(name.getText().toString(),strAdd,desc.getText().toString(),new Categorie(dropdowncat.getSelectedItem().toString()));
+        Post post = new Post(name.getText().toString(),strAdd,desc.getText().toString(),user,new Categorie(dropdowncat.getSelectedItem().toString()));
         DAOPost daopost = new DAOPost(post.getCategorie());
         daopost.add(post).addOnSuccessListener(suc -> {
             Toast.makeText(getApplicationContext(), "Succesfully added post", Toast.LENGTH_SHORT).show();
@@ -166,7 +168,9 @@ public class AddPost extends AppCompatActivity {
         }
         if(requestCode == 100){
             capture = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(capture);
+            Uri uri = data.getData();
+            //imageView.setImageBitmap(capture);
+            imageView.setImageURI(uri);
 
         }
 
@@ -184,12 +188,14 @@ public class AddPost extends AppCompatActivity {
         return userLocalStorage.getUserLoggedIn();
     }
     private void displayUserDetails(){
-        User user = userLocalStorage.getLoggedInUser();
+        user = userLocalStorage.getLoggedInUser();
         Toast.makeText(this,user.getEmail(),Toast.LENGTH_SHORT).show();
     }
 
     public void ClickCamera(View view){
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+       // Uri uri = null;
+       // intent.putExtra(MediaStore.EXTRA_OUTPUT,uri);
         startActivityForResult(intent,100);
     }
 

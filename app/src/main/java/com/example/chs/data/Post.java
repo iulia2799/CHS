@@ -32,6 +32,16 @@ public class Post {
         trackingId++;
 
     }
+    public Post(String name,String location,String description,User user,Categorie cat){
+        this.name = name;
+        this.location = location;
+        this.description = description;
+        this.op = user;
+        this.status = "posted";
+        this.cat = cat;
+        trackingId++;
+
+    }
     public Post(String name,String location,String description,User user,Categorie cat,Bitmap[] received){
         this.name = name;
         this.location = location;
