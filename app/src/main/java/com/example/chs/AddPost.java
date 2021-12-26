@@ -1,5 +1,6 @@
 package com.example.chs;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -12,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -35,8 +37,13 @@ import com.example.chs.data.login.User;
 import com.example.chs.data.login.UserLocalStorage;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -57,6 +64,10 @@ public class AddPost extends AppCompatActivity {
     private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","test"};
     private Bitmap capture;
     private User user;
+    private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+    private StorageReference storageReference = firebaseStorage.getReferenceFromUrl("gs://proiect-chs.appspot.com");
+    private StorageReference imagesref= storageReference.child("images/");
+
 
 
     @Override
@@ -124,8 +135,41 @@ public class AddPost extends AppCompatActivity {
 
     public void clickAddPost(View view){
         Context context = getApplicationContext();
-        if(capture != null){}
-        if(imageView.getDrawable()!=null){}
+        if(capture != null){
+            imageView.setDrawingCacheEnabled(true);
+            imageView.buildDrawingCache();
+            Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+
+            UploadTask uploadTask = imagesref.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                    // ...
+                }
+            });
+           /*imagesref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+               @Override
+               public void onSuccess(Uri uri) {
+                   String selecteddownload = uri.toString();
+
+
+               }
+           }).addOnFailureListener(fail ->{
+               Toast.makeText(this,"failed : \n" + fail.getMessage(),Toast.LENGTH_SHORT).show();
+           });*/
+        }
+        if(imageView.getDrawable()!=null){
+
+        }
         Post post = new Post(name.getText().toString(),strAdd,desc.getText().toString(),user,new Categorie(dropdowncat.getSelectedItem().toString()));
         DAOPost daopost = new DAOPost(post.getCategorie());
         daopost.add(post).addOnSuccessListener(suc -> {
@@ -168,9 +212,9 @@ public class AddPost extends AppCompatActivity {
         }
         if(requestCode == 100){
             capture = (Bitmap) data.getExtras().get("data");
-            Uri uri = data.getData();
-            //imageView.setImageBitmap(capture);
-            imageView.setImageURI(uri);
+            //Uri uri = data.getData();
+            imageView.setImageBitmap(capture);
+            //imageView.setImageURI(uri);
 
         }
 
