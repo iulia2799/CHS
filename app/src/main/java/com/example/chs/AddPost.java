@@ -45,6 +45,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -66,8 +68,7 @@ public class AddPost extends AppCompatActivity {
     private User user;
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     private StorageReference storageReference = firebaseStorage.getReferenceFromUrl("gs://proiect-chs.appspot.com");
-    private StorageReference imagesref= storageReference.child("images/");
-
+    private Date date = Calendar.getInstance().getTime();
 
 
     @Override
@@ -135,6 +136,7 @@ public class AddPost extends AppCompatActivity {
 
     public void clickAddPost(View view){
         Context context = getApplicationContext();
+        StorageReference imagesref= storageReference.child("images/"+date.toString());
         if(capture != null){
             imageView.setDrawingCacheEnabled(true);
             imageView.buildDrawingCache();

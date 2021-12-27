@@ -37,6 +37,7 @@ public class Post {
         this.location = location;
         this.description = description;
         this.op = user;
+        this.op.SetPassword("********");
         this.status = "posted";
         this.cat = cat;
         trackingId++;
@@ -47,6 +48,7 @@ public class Post {
         this.location = location;
         this.description = description;
         this.op = user;
+        this.op.SetPassword("********");
         this.status = "posted";
         this.cat = cat;
         this.images  = received;
