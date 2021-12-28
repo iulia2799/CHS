@@ -1,6 +1,6 @@
 package com.example.chs.data;
 
-import android.graphics.Bitmap;
+
 
 import com.example.chs.data.login.User;
 
@@ -8,7 +8,7 @@ public class Post {
     private String name;
     private String location;
     private String description;
-    private Bitmap[] images;
+    private String image;
     private String status;
     private User op;
     private Categorie cat;
@@ -43,7 +43,7 @@ public class Post {
         trackingId++;
 
     }
-    public Post(String name,String location,String description,User user,Categorie cat,Bitmap[] received){
+    public Post(String name,String location,String description,User user,Categorie cat,String received){
         this.name = name;
         this.location = location;
         this.description = description;
@@ -51,7 +51,7 @@ public class Post {
         this.op.SetPassword("********");
         this.status = "posted";
         this.cat = cat;
-        this.images  = received;
+        this.image = received;
         trackingId++;
 
     }
@@ -78,12 +78,12 @@ public class Post {
         this.description = description;
     }
 
-    public void setImages(Bitmap[] list){
-        this.images=list;
+    public void setImages(String list){
+        this.image=list;
     }
 
-    public Bitmap[] getImages() {
-        return images;
+    public String getImages() {
+        return image;
     }
 
     public User getOp() {

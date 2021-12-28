@@ -1,5 +1,7 @@
 package com.example.chs;
 
+import static android.widget.Toast.*;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -104,12 +106,7 @@ public class AddPost extends AppCompatActivity {
             );
 
         }
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                getLocation();
-            }
-        };
+        Runnable runnable = this::getLocation;
         new Thread(runnable).start();
 
     }
@@ -135,8 +132,9 @@ public class AddPost extends AppCompatActivity {
     }
 
     public void clickAddPost(View view){
-        Context context = getApplicationContext();
+
         StorageReference imagesref= storageReference.child("images/"+date.toString());
+        final String[] imageurl = {""};
         if(capture != null){
             imageView.setDrawingCacheEnabled(true);
             imageView.buildDrawingCache();
@@ -146,17 +144,16 @@ public class AddPost extends AppCompatActivity {
             byte[] data = baos.toByteArray();
 
             UploadTask uploadTask = imagesref.putBytes(data);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    // ...
-                }
+            uploadTask.addOnFailureListener(exception -> {
+                // Handle unsuccessful uploads
+            }).addOnSuccessListener(taskSnapshot -> {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                imagesref.getDownloadUrl().addOnSuccessListener(uri -> {
+                    imageurl[0] = uri.toString();
+                    makeText(getApplicationContext(), imageurl[0], LENGTH_SHORT).show();
+                    addToFirebase(imageurl[0]);
+                }).addOnFailureListener(fail -> System.out.println("FAILED TO GET DOWNLOAD URL \n\n\n\n\n"));
             });
            /*imagesref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                @Override
@@ -168,20 +165,35 @@ public class AddPost extends AppCompatActivity {
            }).addOnFailureListener(fail ->{
                Toast.makeText(this,"failed : \n" + fail.getMessage(),Toast.LENGTH_SHORT).show();
            });*/
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        if(imageView.getDrawable()!=null){
 
-        }
+
         Post post = new Post(name.getText().toString(),strAdd,desc.getText().toString(),user,new Categorie(dropdowncat.getSelectedItem().toString()));
         DAOPost daopost = new DAOPost(post.getCategorie());
         daopost.add(post).addOnSuccessListener(suc -> {
-            Toast.makeText(getApplicationContext(), "Succesfully added post", Toast.LENGTH_SHORT).show();
+            makeText(getApplicationContext(), "Succesfully added post", LENGTH_SHORT).show();
             //Intent intent = new Intent(getApplicationContext(), PrimarieDashboard.class);
             //startActivity(intent);
 
-        }).addOnFailureListener(fail -> {
-            Toast.makeText(getApplicationContext(), "Failed to add post " + fail.getMessage(), Toast.LENGTH_SHORT).show();
-        });
+        }).addOnFailureListener(fail -> makeText(getApplicationContext(), "Failed to add post " + fail.getMessage(), LENGTH_SHORT).show());
+
+
+    }
+    public void addToFirebase(String imageurl){
+        Post post = new Post(name.getText().toString(),strAdd,desc.getText().toString(),user,new Categorie(dropdowncat.getSelectedItem().toString()),imageurl);
+        DAOPost daopost = new DAOPost(post.getCategorie());
+        daopost.add(post).addOnSuccessListener(suc -> {
+            makeText(getApplicationContext(), "Succesfully added post", LENGTH_SHORT).show();
+            //Intent intent = new Intent(getApplicationContext(), PrimarieDashboard.class);
+            //startActivity(intent);
+
+        }).addOnFailureListener(fail -> makeText(getApplicationContext(), "Failed to add post " + fail.getMessage(), LENGTH_SHORT).show());
+
     }
     public void getAddress(double latitude, double longitude){
         strAdd = "";
@@ -197,7 +209,7 @@ public class AddPost extends AppCompatActivity {
                 strAdd = strreturnedaddress.toString();
                 searchlocation.setText(strAdd);
             }else{
-                Toast.makeText(getApplicationContext(),"no address found",Toast.LENGTH_SHORT).show();
+                makeText(getApplicationContext(),"no address found", LENGTH_SHORT).show();
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -235,13 +247,11 @@ public class AddPost extends AppCompatActivity {
     }
     private void displayUserDetails(){
         user = userLocalStorage.getLoggedInUser();
-        Toast.makeText(this,user.getEmail(),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,user.getEmail(),Toast.LENGTH_SHORT).show();
     }
 
     public void ClickCamera(View view){
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-       // Uri uri = null;
-       // intent.putExtra(MediaStore.EXTRA_OUTPUT,uri);
         startActivityForResult(intent,100);
     }
 
