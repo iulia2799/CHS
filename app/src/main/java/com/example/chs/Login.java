@@ -140,6 +140,7 @@ public class Login extends AppCompatActivity {
         else if(swp.isChecked()){
             Primarie primarie = new Primarie(storedEmail,storedpass);
             checkPrimarie(primarie.getEmail(), primarie.getPassword());
+            userLocalStorage.clearUserData();
 
         }else{
             Toast.makeText(this,"unknowm error occured",Toast.LENGTH_SHORT).show();

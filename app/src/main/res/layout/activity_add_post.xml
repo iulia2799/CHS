@@ -7,7 +7,7 @@
     tools:context=".AddPost">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/reviewp"
         android:layout_width="102dp"
         android:layout_height="43dp"
         android:text="Add Post"
@@ -52,7 +52,7 @@
         app:layout_constraintVertical_bias="0.59" />
 
     <Button
-        android:id="@+id/post"
+        android:id="@+id/postr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="POST"
@@ -105,7 +105,7 @@
         app:layout_constraintVertical_bias="0.778" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imagep"
         android:layout_width="144dp"
         android:layout_height="133dp"
         android:adjustViewBounds="false"

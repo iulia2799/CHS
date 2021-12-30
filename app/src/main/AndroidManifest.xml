@@ -31,6 +31,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CHS.NoActionBar">
         <activity
+            android:name=".Solve"
+            android:exported="false" />
+        <activity
             android:name=".ViewPrimarie"
             android:exported="false" />
         <activity

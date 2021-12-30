@@ -15,14 +15,16 @@ import com.example.chs.R;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private Post[] localDataSet;
-    public PostAdapter(Post[] data){
+    private OnItemListener itemListener;
+    public PostAdapter(Post[] data,OnItemListener listener){
+        this.itemListener = listener;
         this.localDataSet=data;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View listItem = layoutInflater.inflate(R.layout.post,parent,false);
-        ViewHolder viewHolder = new ViewHolder(listItem);
+        ViewHolder viewHolder = new ViewHolder(listItem,itemListener);
         return viewHolder;
     }
     @Override
@@ -34,22 +36,34 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
 
 
+
     }
     @Override
     public int getItemCount(){
         return localDataSet.length;
     }
-   public class ViewHolder extends RecyclerView.ViewHolder{
+   public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
        public TextView name;
        public TextView postloc;
        public TextView description;
-       public ViewHolder(@NonNull View itemView) {
+       public OnItemListener onClickListener;
+       public ViewHolder(@NonNull View itemView, OnItemListener onClickListener) {
            super(itemView);
            this.name = (TextView) itemView.findViewById(R.id.post_name);
            this.postloc = (TextView) itemView.findViewById(R.id.postloc);
            this.description = (TextView) itemView.findViewById(R.id.postdescription);
            ConstraintLayout layout = (ConstraintLayout) itemView.findViewById(R.id.postlay);
+           this.onClickListener = onClickListener;
+           itemView.setOnClickListener((View.OnClickListener) this);
 
        }
+
+       @Override
+       public void onClick(View view) {
+           onClickListener.onItemClick(getAdapterPosition());
+       }
+   }
+   public interface OnItemListener{
+        void onItemClick(int position);
    }
 }

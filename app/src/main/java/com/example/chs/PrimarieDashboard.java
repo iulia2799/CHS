@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -11,10 +12,11 @@ import com.example.chs.data.Post;
 import com.example.chs.data.PostAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class PrimarieDashboard extends AppCompatActivity {
+public class PrimarieDashboard extends AppCompatActivity implements PostAdapter.OnItemListener {
    private TextView title;
    private FloatingActionButton settings;
    private RecyclerView posts;
+   private Post[] list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,15 +24,25 @@ public class PrimarieDashboard extends AppCompatActivity {
 
         title = (TextView) findViewById(R.id.dashboardp);
         settings = (FloatingActionButton) findViewById(R.id.managep);
-        Post[] posts = new Post[]{
-                new Post("name1","location1","desc"),
+        list = new Post[]{
+                new Post("name1","location1","desc \n\n fdsfds"),
                 new Post("name1","location1","desc"),
                 new Post("name1","location1","desc")
         };
         RecyclerView recyclerView  = (RecyclerView) findViewById(R.id.postsp);
-        PostAdapter postAdapter = new PostAdapter(posts);
+        PostAdapter postAdapter = new PostAdapter(list,this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(postAdapter);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Intent intent = new Intent(this,ReviewPost.class);
+        Post newpost = list[position];
+        intent.putExtra("namep",newpost.getName());
+        intent.putExtra("locationp",newpost.getLocation());
+        intent.putExtra("descp",newpost.getDescription());
+        startActivity(intent);
     }
 }

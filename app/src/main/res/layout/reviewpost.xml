@@ -7,50 +7,93 @@
     tools:context=".ReviewPost">
 
     <TextView
-        android:id="@+id/titlerev"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="REVIEW POST"
-        tools:layout_editor_absoluteX="151dp"
-        tools:layout_editor_absoluteY="50dp" />
+        android:id="@+id/locationp"
+        android:layout_width="325dp"
+        android:layout_height="30dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.496" />
 
     <TextView
-        android:id="@+id/postn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/descp"
+        android:layout_width="331dp"
+        android:layout_height="219dp"
         android:text="TextView"
-        tools:layout_editor_absoluteX="169dp"
-        tools:layout_editor_absoluteY="152dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.738" />
 
     <TextView
-        android:id="@+id/postlocr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/userp"
+        android:layout_width="328dp"
+        android:layout_height="38dp"
         android:text="TextView"
-        tools:layout_editor_absoluteX="175dp"
-        tools:layout_editor_absoluteY="255dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.433"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.447" />
 
     <TextView
-        android:id="@+id/revdesc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="178dp"
-        tools:layout_editor_absoluteY="371dp" />
-
-    <ImageView
-        android:id="@+id/reviewimage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="138dp"
-        tools:layout_editor_absoluteY="471dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:id="@+id/solvepost"
+        android:layout_width="227dp"
+        android:layout_height="42dp"
+        android:text="Review Post"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.119"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
 
     <Button
-        android:id="@+id/submitrev"
+        android:id="@+id/postr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="submit"
-        tools:layout_editor_absoluteX="157dp"
-        tools:layout_editor_absoluteY="652dp" />
+        android:text="SOLVE"
+        android:clickable="true"
+        android:onClick="clickSolve"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
+
+    <ImageView
+        android:id="@+id/imagep"
+        android:layout_width="391dp"
+        android:layout_height="200dp"
+        android:adjustViewBounds="false"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.129"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/namep"
+        android:layout_width="335dp"
+        android:layout_height="42dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.387" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

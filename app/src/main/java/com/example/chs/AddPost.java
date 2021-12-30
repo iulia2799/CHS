@@ -2,27 +2,20 @@ package com.example.chs;
 
 import static android.widget.Toast.*;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.chs.data.Categorie;
 import com.example.chs.data.DAOPost;
@@ -39,14 +31,11 @@ import com.example.chs.data.login.User;
 import com.example.chs.data.login.UserLocalStorage;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -77,14 +66,14 @@ public class AddPost extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
-        addpost = (TextView) findViewById(R.id.textView2);
+        addpost = (TextView) findViewById(R.id.reviewp);
         name = (TextView) findViewById(R.id.postname);
         desc = (TextView) findViewById(R.id.desc);
         searchlocation = (TextView) findViewById(R.id.location_gps);
         anonymous = (Switch) findViewById(R.id.anon);
         button = (Button) findViewById(R.id.loadimage);
         cameraButton = (Button) findViewById(R.id.camerabtn);
-        imageView = (ImageView) findViewById(R.id.imageView2);
+        imageView = (ImageView) findViewById(R.id.imagep);
         dropdowncat = (Spinner) findViewById(R.id.categoriespinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdowncat.setAdapter(adapter);
@@ -135,7 +124,7 @@ public class AddPost extends AppCompatActivity {
 
         StorageReference imagesref= storageReference.child("images/"+date.toString());
         final String[] imageurl = {""};
-        if(capture != null){
+        if(capture != null || imageView.getDrawable() !=null){
             imageView.setDrawingCacheEnabled(true);
             imageView.buildDrawingCache();
             Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
