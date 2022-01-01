@@ -8,20 +8,21 @@
 
     <TextView
         android:id="@+id/solve"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="solve"
+        android:layout_width="173dp"
+        android:layout_height="37dp"
+        android:text="SOLVE"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintHorizontal_bias="0.067"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
+        app:layout_constraintVertical_bias="0.023" />
 
     <EditText
         android:id="@+id/response"
-        android:layout_width="370dp"
-        android:layout_height="503dp"
+        android:layout_width="383dp"
+        android:layout_height="178dp"
         android:ems="10"
         android:inputType="textCapSentences|textNoSuggestions|textMultiLine"
         android:maxLines="6"
@@ -29,20 +30,28 @@
         android:text="Description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.39"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.421" />
+        app:layout_constraintVertical_bias="0.106" />
 
     <Button
         android:id="@+id/resp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="Confirm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.923" />
+
+    <Switch
+        android:id="@+id/couldnotsolve"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Not solvable"
+        tools:layout_editor_absoluteX="19dp"
+        tools:layout_editor_absoluteY="260dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

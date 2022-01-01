@@ -3,6 +3,7 @@ package com.example.chs;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,9 @@ import android.widget.Toast;
 
 import com.example.chs.data.login.User;
 import com.example.chs.data.login.UserLocalStorage;
+
+import java.io.InputStream;
+import java.net.URL;
 
 public class ReviewPost extends AppCompatActivity {
     private TextView title;
@@ -45,6 +49,10 @@ public class ReviewPost extends AppCompatActivity {
         post.setText(getIntent().getStringExtra("namep"));
         location.setText(getIntent().getStringExtra("locationp"));
         description.setText(getIntent().getStringExtra("descp"));
+        user.setText(getIntent().getStringExtra("post_op"));
+        String image = getIntent().getStringExtra("post_image");
+        Drawable d = LoadImageFromWebOperations(image);
+        imageView.setImageDrawable(d);
 
     }
     @Override
@@ -62,5 +70,13 @@ public class ReviewPost extends AppCompatActivity {
     private boolean authenticate(){
         return userLocalStorage.getUserLoggedIn();
     }
-
+    public static Drawable LoadImageFromWebOperations(String url) {
+        try {
+            InputStream is = (InputStream) new URL(url).getContent();
+            Drawable d = Drawable.createFromStream(is, url);
+            return d;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

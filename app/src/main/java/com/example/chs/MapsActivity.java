@@ -3,6 +3,8 @@ package com.example.chs;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
@@ -10,6 +12,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.chs.data.Categorie;
+import com.example.chs.data.Post;
 import com.example.chs.data.login.User;
 import com.example.chs.data.login.UserLocalStorage;
 import com.example.chs.ui.login.LoginActivity;
@@ -66,7 +70,13 @@ import com.google.android.libraries.places.api.model.PlaceLikelihood;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -79,7 +89,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
     private UserLocalStorage userLocalStorage;
-
+    private FirebaseDatabase database = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
+    private Categorie[] categories = {
+      new Categorie("drumuri publice"),
+            new Categorie("animale"),
+            new Categorie("parcuri"),
+            new Categorie("cladiri"),
+            new Categorie("test")
+    };
     //LocationCallback mLocationCallback =null;
 
     private Button button;
@@ -95,10 +112,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         button=  (Button)findViewById(R.id.currentLoc);
         searchView = (SearchView)findViewById(R.id.search);
+
+
         // Build the map.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.maps_activity);
         mapFragment.getMapAsync(this);
+
     }
     @Override
     public void onPause() {
@@ -120,6 +140,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
+    private List<Post> postList = new ArrayList<>();
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -150,6 +173,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
        // LatLng sydney = new LatLng(-34, 151);
        // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
        // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+
     }
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
@@ -175,6 +200,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //move map camera
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
             }
+
         }
     };
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
@@ -267,6 +293,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
 
+    }
+
+    public LatLng getLocationFromAddress(Context context, String strAddress){
+        Geocoder coder = new Geocoder(context);
+        List<Address> addressList;
+        LatLng p1 = null;
+        try{
+            addressList = coder.getFromLocationName(strAddress,5);
+            if(addressList ==null) return null;
+            Address location = addressList.get(0);
+            location.getLatitude();
+            location.getLongitude();
+
+            p1 = new LatLng(location.getLatitude(),location.getLongitude());
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return p1;
     }
 
 }

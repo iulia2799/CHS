@@ -140,7 +140,7 @@ public class AddPost extends AppCompatActivity {
                 // ...
                 imagesref.getDownloadUrl().addOnSuccessListener(uri -> {
                     imageurl[0] = uri.toString();
-                    makeText(getApplicationContext(), imageurl[0], LENGTH_SHORT).show();
+                    //makeText(getApplicationContext(), imageurl[0], LENGTH_SHORT).show();
                     addToFirebase(imageurl[0]);
                 }).addOnFailureListener(fail -> System.out.println("FAILED TO GET DOWNLOAD URL \n\n\n\n\n"));
             });
@@ -160,9 +160,12 @@ public class AddPost extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
-
-        Post post = new Post(name.getText().toString(),strAdd,desc.getText().toString(),user,new Categorie(dropdowncat.getSelectedItem().toString()));
+        Post post;
+        if(anonymous.isChecked()){
+            post = new Post(name.getText().toString(),strAdd,desc.getText().toString(),new Categorie(dropdowncat.getSelectedItem().toString()));
+        }
+        else
+          post = new Post(name.getText().toString(),strAdd,desc.getText().toString(),user,new Categorie(dropdowncat.getSelectedItem().toString()));
         DAOPost daopost = new DAOPost(post.getCategorie());
         daopost.add(post).addOnSuccessListener(suc -> {
             makeText(getApplicationContext(), "Succesfully added post", LENGTH_SHORT).show();
