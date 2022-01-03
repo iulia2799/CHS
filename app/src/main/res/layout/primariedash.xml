@@ -69,7 +69,7 @@
         app:srcCompat="@android:drawable/ic_menu_mapmode" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/postsp"
+        android:id="@+id/postprimarie"
         android:layout_width="375dp"
         android:layout_height="459dp"
         android:layout_marginTop="128dp"

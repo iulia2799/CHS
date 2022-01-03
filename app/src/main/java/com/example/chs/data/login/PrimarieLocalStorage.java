@@ -9,17 +9,17 @@ public class PrimarieLocalStorage {
     public PrimarieLocalStorage(Context context){
         primarieLocalDatabase = context.getSharedPreferences(SP_NAME,Context.MODE_PRIVATE);
     }
-    public void storeUserData(User user){
+    public void storeUserData(Primarie user){
         SharedPreferences.Editor speditor = primarieLocalDatabase.edit();
         speditor.putString("email",user.getEmail());
         speditor.putString("password",user.getPassword());
         speditor.commit();
     }
 
-    public User getLoggedInUser(){
+    public Primarie getLoggedInUser(){
         String email = primarieLocalDatabase.getString("email","");
         String pass = primarieLocalDatabase.getString("password","");
-        User storedUser = new User(email,pass);
+        Primarie storedUser = new Primarie(email,pass);
         return storedUser;
     }
     public void setUserLoggedIn(boolean loggedIn){

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.chs.data.login.User;
 import com.example.chs.data.login.UserLocalStorage;
 
@@ -51,8 +52,7 @@ public class ReviewPost extends AppCompatActivity {
         description.setText(getIntent().getStringExtra("descp"));
         user.setText(getIntent().getStringExtra("post_op"));
         String image = getIntent().getStringExtra("post_image");
-        Drawable d = LoadImageFromWebOperations(image);
-        imageView.setImageDrawable(d);
+        LoadImageFromWebOperations(image);
 
     }
     @Override
@@ -70,13 +70,14 @@ public class ReviewPost extends AppCompatActivity {
     private boolean authenticate(){
         return userLocalStorage.getUserLoggedIn();
     }
-    public static Drawable LoadImageFromWebOperations(String url) {
-        try {
+    public void LoadImageFromWebOperations(String url) {
+        /*try {
             InputStream is = (InputStream) new URL(url).getContent();
             Drawable d = Drawable.createFromStream(is, url);
             return d;
         } catch (Exception e) {
             return null;
-        }
+        }*/
+        Glide.with(this).load(url).into(imageView);
     }
 }

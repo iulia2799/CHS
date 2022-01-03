@@ -14,6 +14,8 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.example.chs.data.Categorie;
 import com.example.chs.data.Post;
+import com.example.chs.data.login.Primarie;
+import com.example.chs.data.login.PrimarieLocalStorage;
 import com.example.chs.data.login.User;
 import com.example.chs.data.login.UserLocalStorage;
 import com.example.chs.ui.login.LoginActivity;

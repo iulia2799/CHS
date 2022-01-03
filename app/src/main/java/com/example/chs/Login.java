@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.chs.data.login.DAOUser;
 import com.example.chs.data.login.Primarie;
+import com.example.chs.data.login.PrimarieLocalStorage;
 import com.example.chs.data.login.User;
 import com.example.chs.data.login.UserLocalStorage;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +36,7 @@ public class Login extends AppCompatActivity {
     private Button btn;
     private Switch swp;
     private UserLocalStorage userLocalStorage;
+    private PrimarieLocalStorage primarieLocalStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +107,7 @@ public class Login extends AppCompatActivity {
                 for(DataSnapshot usersnapshot : snapshot.getChildren()){
                     Primarie mUser = usersnapshot.getValue(Primarie.class);
                     if(mUser.getEmail().equals(email) && mUser.getPassword().equals(pass)){
-                        Intent intent = new Intent(getApplicationContext(),PrimarieDashboard.class);
+                        Intent intent = new Intent(getApplicationContext(),ViewPrimarie.class);
                         startActivity(intent);
                     }else{
 
@@ -124,12 +126,14 @@ public class Login extends AppCompatActivity {
     public void clickLogin(View view) {
         String storedEmail = email.getText().toString();
         String storedpass = pass.getText().toString();
-        userLocalStorage = new UserLocalStorage(this);
+        //userLocalStorage = new UserLocalStorage(this);
+
         if(!checkCred(storedEmail,storedpass)){
             Toast.makeText(this,"Email must be name@email.com and password must be at least 8 characters",Toast.LENGTH_SHORT).show();
 
         }
         else if(!swp.isChecked()) {
+            userLocalStorage = new UserLocalStorage(this);
             User user = new User(storedEmail, storedpass);
             checkUser(user.getEmail(),user.getPassword());
             userLocalStorage.storeUserData(user);
@@ -138,9 +142,12 @@ public class Login extends AppCompatActivity {
 
         }
         else if(swp.isChecked()){
+            primarieLocalStorage = new PrimarieLocalStorage(this);
             Primarie primarie = new Primarie(storedEmail,storedpass);
             checkPrimarie(primarie.getEmail(), primarie.getPassword());
-            userLocalStorage.clearUserData();
+            primarieLocalStorage.storeUserData(primarie);
+            primarieLocalStorage.setUserLoggedIn(true);
+
 
         }else{
             Toast.makeText(this,"unknowm error occured",Toast.LENGTH_SHORT).show();
