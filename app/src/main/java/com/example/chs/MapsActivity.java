@@ -91,6 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
     private UserLocalStorage userLocalStorage;
+    private PrimarieLocalStorage primarieLocalStorage;
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
     private Categorie[] categories = {
       new Categorie("drumuri publice"),
@@ -120,6 +121,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.maps_activity);
         mapFragment.getMapAsync(this);
+
+
 
     }
     @Override
@@ -175,8 +178,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
        // LatLng sydney = new LatLng(-34, 151);
        // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
        // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //add markers
+        /*
+       for(Categorie cat : categories){
+           DatabaseReference ref = database.getReference(cat.getNume());
+           ref.addListenerForSingleValueEvent(new ValueEventListener() {
+               @Override
+               public void onDataChange(@NonNull DataSnapshot snapshot) {
+                   for(DataSnapshot postsnap : snapshot.getChildren()){
+                       Post mPost = postsnap.getValue(Post.class);
+                       //System.out.println(mPost.getLocation());
+                       String location = mPost.getLocation();
+                       LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
+                       mMap.addMarker(new MarkerOptions().position(latLng).title("marker"));
+                   }
+               }
 
+               @Override
+               public void onCancelled(@NonNull DatabaseError error) {
 
+               }
+           });
+       }
+*/
     }
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
@@ -279,6 +303,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onStart() {
         super.onStart();
         userLocalStorage = new UserLocalStorage(this);
+        primarieLocalStorage = new PrimarieLocalStorage(this);
         if(authenticate()){
             displayUserDetails();
         }
@@ -287,8 +312,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return userLocalStorage.getUserLoggedIn();
     }
     private void displayUserDetails(){
-        User user = userLocalStorage.getLoggedInUser();
-        Toast.makeText(this,user.getEmail(),Toast.LENGTH_SHORT).show();
+        Primarie pm = primarieLocalStorage.getLoggedInUser();
+        Toast.makeText(this,pm.getEmail(),Toast.LENGTH_SHORT).show();
     }
 
     public void ClickButton(View view){
@@ -298,10 +323,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public LatLng getLocationFromAddress(Context context, String strAddress){
-        Geocoder coder = new Geocoder(context);
-        List<Address> addressList;
         LatLng p1 = null;
         try{
+            Geocoder coder = new Geocoder(context);
+            List<Address> addressList;
             addressList = coder.getFromLocationName(strAddress,5);
             if(addressList ==null) return null;
             Address location = addressList.get(0);
@@ -312,8 +337,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }catch (Exception e){
             e.printStackTrace();
+            p1 = new LatLng(0,0);
         }
         return p1;
     }
-
+    @Override
+    public void onBackPressed(){
+        userLocalStorage.clearUserData();
+        primarieLocalStorage.clearUserData();
+        finish();
+    }
 }

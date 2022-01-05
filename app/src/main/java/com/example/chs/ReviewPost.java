@@ -65,6 +65,11 @@ public class ReviewPost extends AppCompatActivity {
     }
     public void clickSolve(View view){
          Intent i = new Intent(this,Solve.class);
+         i.putExtra("names",post.getText().toString());
+         i.putExtra("locations",location.getText().toString());
+         i.putExtra("descs",description.getText().toString());
+         i.putExtra("post_ops",user.getText().toString());
+         //image is not necessary in this case
          startActivity(i);
     }
     private boolean authenticate(){

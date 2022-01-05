@@ -107,7 +107,9 @@ public class Login extends AppCompatActivity {
                 for(DataSnapshot usersnapshot : snapshot.getChildren()){
                     Primarie mUser = usersnapshot.getValue(Primarie.class);
                     if(mUser.getEmail().equals(email) && mUser.getPassword().equals(pass)){
-                        Intent intent = new Intent(getApplicationContext(),ViewPrimarie.class);
+                        Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
+                        intent.putExtra("emailp",email);
+                        intent.putExtra("numep","nume primarie aici");
                         startActivity(intent);
                     }else{
 

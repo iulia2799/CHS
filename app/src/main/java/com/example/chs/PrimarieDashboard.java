@@ -39,11 +39,11 @@ public class PrimarieDashboard extends AppCompatActivity implements PostAdapter.
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        title = (TextView) findViewById(R.id.dashboardp);
+        settings = (FloatingActionButton) findViewById(R.id.managep);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_primarie_dashboard);
 
-        title = (TextView) findViewById(R.id.dashboardp);
-        settings = (FloatingActionButton) findViewById(R.id.managep);
        /* list = new Post[]{
                 new Post("name1","location1","desc \n\n fdsfds"),
                 new Post("name1","location1","desc"),
@@ -97,4 +97,5 @@ public class PrimarieDashboard extends AppCompatActivity implements PostAdapter.
         Intent intent = new Intent(this,SettingsActivity.class);
         startActivity(intent);
     }
+
 }
