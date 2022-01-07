@@ -179,28 +179,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
        // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
        // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         //add markers
-        /*
+
        for(Categorie cat : categories){
            DatabaseReference ref = database.getReference(cat.getNume());
-           ref.addListenerForSingleValueEvent(new ValueEventListener() {
+           ref.addValueEventListener(new ValueEventListener() {
+               private static final String TAG = "error";
+
                @Override
                public void onDataChange(@NonNull DataSnapshot snapshot) {
                    for(DataSnapshot postsnap : snapshot.getChildren()){
+                       if(!postsnap.exists()) Log.e(TAG, "onDataChange: No data");
                        Post mPost = postsnap.getValue(Post.class);
                        //System.out.println(mPost.getLocation());
                        String location = mPost.getLocation();
+                       if(location !=null){
                        LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
-                       mMap.addMarker(new MarkerOptions().position(latLng).title("marker"));
+                       mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getName()));}
                    }
                }
 
                @Override
                public void onCancelled(@NonNull DatabaseError error) {
-
+                   throw error.toException();
                }
            });
        }
-*/
+
     }
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
@@ -323,21 +327,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public LatLng getLocationFromAddress(Context context, String strAddress){
-        LatLng p1 = null;
+        LatLng p1;
         try{
             Geocoder coder = new Geocoder(context);
             List<Address> addressList;
             addressList = coder.getFromLocationName(strAddress,5);
             if(addressList ==null) return null;
             Address location = addressList.get(0);
-            location.getLatitude();
-            location.getLongitude();
-
+            System.out.println(location.toString());
             p1 = new LatLng(location.getLatitude(),location.getLongitude());
 
         }catch (Exception e){
             e.printStackTrace();
-            p1 = new LatLng(0,0);
+            p1 = new LatLng(34,42);
         }
         return p1;
     }

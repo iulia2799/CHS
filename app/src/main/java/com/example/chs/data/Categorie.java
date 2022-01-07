@@ -13,4 +13,8 @@ public class Categorie {
     public String getNume(){
         return nume;
     }
+
+    public void setNume(String nume) {
+        this.nume = nume;
+    }
 }
