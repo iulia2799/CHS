@@ -117,6 +117,8 @@ public class DashboardActivity extends AppCompatActivity implements PostAdapter.
         intent.putExtra("descp",newpost.getDescription());
         intent.putExtra("post_image",newpost.getImages());
         intent.putExtra("post_op",newpost.getOp().getEmail());
+        //String categ = newpost.getCategorie();
+        //System.out.println(categ);
         startActivity(intent);
     }
     @Override

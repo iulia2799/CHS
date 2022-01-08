@@ -13,11 +13,11 @@ public class Primarie implements Login{
         this.email =email;
         this.password =password;
     }
-    public Primarie(String nume, String password, String location){
+    public Primarie(String email, String password, String primarie){
         // if user does not exits in json
-        this.primarie=nume;
+        this.primarie=primarie;
         this.password = password;
-        this.location = location;
+        this.email = email;
     }
     @Override
     public void SetPassword(String new_password) {

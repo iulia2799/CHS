@@ -25,12 +25,14 @@ public class SignUp extends AppCompatActivity {
     private EditText pass;
     private Button btn;
     private Switch swps;
+    private EditText username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
 
         email = findViewById(R.id.emailaddsignup);
+        username = findViewById(R.id.useradd);
         pass = findViewById(R.id.passads);
         btn = findViewById(R.id.signbtn);
         swps = (Switch) findViewById(R.id.swps);
@@ -57,7 +59,7 @@ public class SignUp extends AppCompatActivity {
     }
     public void clickSignUp(View view){
         DAOUser daoUser = new DAOUser();
-        User user = new User(email.getText().toString(), pass.getText().toString());
+        User user = new User(email.getText().toString(),username.getText().toString(), pass.getText().toString());
         if(!checkCred(user.getEmail(), user.getPassword())){
             Toast.makeText(this,"Email must be name@email.com and password must be at least 8 characters",Toast.LENGTH_SHORT).show();
             return;
@@ -66,7 +68,7 @@ public class SignUp extends AppCompatActivity {
         if(swps.isChecked()){
             //Toast.makeText(this,"primariile vor veni in curand",Toast.LENGTH_SHORT).show();
             DAOPrimarie daoPrimarie = new DAOPrimarie();
-            Primarie primarie = new Primarie(email.getText().toString(),pass.getText().toString());
+            Primarie primarie = new Primarie(email.getText().toString(),pass.getText().toString(),username.getText().toString());
             daoPrimarie.add(primarie).addOnSuccessListener(suc -> {
                 Toast.makeText(getApplicationContext(), "Succesfully added primarie", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), PrimarieDashboard.class);

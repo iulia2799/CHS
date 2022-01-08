@@ -1,15 +1,24 @@
 package com.example.chs.data.login;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User implements Login {
     private String username;
     private String email;
     private String password;
+    private List<String> notifications = new ArrayList<>();
     public User(){
 
     }
     public User(String email,String password){
         //if user does not exist in json then do this
         this.email = email;
+        this.password = password;
+    }
+    public User(String email,String username,String password){
+        this.email = email;
+        this.username = username;
         this.password = password;
     }
 
@@ -34,5 +43,12 @@ public class User implements Login {
     }
     public String getPassword(){
         return this.password;
+    }
+
+    public List<String> getNotifications() {
+        return notifications;
+    }
+    public void setNotifications(String notification){
+        notifications.add(notification);
     }
 }

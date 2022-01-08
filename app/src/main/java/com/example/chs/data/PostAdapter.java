@@ -44,6 +44,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.description.setText(posts.getDescription());
         if(posts.getOp() !=null)
          holder.username.setText(posts.getOp().getEmail());
+        holder.status.setText(posts.getStatus());
 
 
 
@@ -58,6 +59,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
        public TextView postloc;
        public TextView description;
        public TextView username;
+       public TextView status;
        public OnItemListener onClickListener;
        public ViewHolder(@NonNull View itemView, OnItemListener onClickListener) {
            super(itemView);
@@ -65,6 +67,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
            this.postloc = (TextView) itemView.findViewById(R.id.postloc);
            this.description = (TextView) itemView.findViewById(R.id.postdescription);
            this.username = (TextView) itemView.findViewById(R.id.opname);
+           this.status = (TextView) itemView.findViewById(R.id.statusp);
            ConstraintLayout layout = (ConstraintLayout) itemView.findViewById(R.id.postlay);
            this.onClickListener = onClickListener;
            itemView.setOnClickListener((View.OnClickListener) this);

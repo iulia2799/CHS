@@ -64,13 +64,14 @@ public class ReviewPost extends AppCompatActivity {
         }
     }
     public void clickSolve(View view){
-         Intent i = new Intent(this,Solve.class);
-         i.putExtra("names",post.getText().toString());
-         i.putExtra("locations",location.getText().toString());
-         i.putExtra("descs",description.getText().toString());
-         i.putExtra("post_ops",user.getText().toString());
+         Intent ii = new Intent(this,Solve.class);
+         ii.putExtra("names",post.getText().toString());
+         ii.putExtra("locations",location.getText().toString());
+         ii.putExtra("descs",description.getText().toString());
+         ii.putExtra("post_ops",user.getText().toString());
+         ii.putExtra("cat",i.getStringExtra("cat"));
          //image is not necessary in this case
-         startActivity(i);
+         startActivity(ii);
     }
     private boolean authenticate(){
         return userLocalStorage.getUserLoggedIn();

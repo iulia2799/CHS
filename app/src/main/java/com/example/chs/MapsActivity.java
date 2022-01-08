@@ -193,12 +193,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                        Post mPost = postsnap.getValue(Post.class);
                        assert mPost != null;
                        String location = mPost.getLocation();
-                       System.out.println(location);
+                       //System.out.println(location);
                        if(location !=null){
                        LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
                        System.out.println(latLng.toString());
-                       //mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getName()));
-
+                       mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getName()));
+                       posts.add(mPost);
 
                        }
                    }
@@ -210,6 +210,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                }
            });
        }
+       //addMarkers();
 
     }
     LocationCallback mLocationCallback = new LocationCallback() {
@@ -331,7 +332,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startActivity(intent);
 
     }
-
+    public void addMarkers(){
+        for(Post post : posts){
+            String location = post.getLocation();
+            if(location ==null) continue;
+            LatLng latLng = getLocationFromAddress(this,location);
+            mMap.addMarker(new MarkerOptions().position(latLng).title("marker"));
+        }
+    }
     public LatLng getLocationFromAddress(Context context, String strAddress){
         LatLng p1;
         try{
