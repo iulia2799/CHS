@@ -116,6 +116,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         button=  (Button)findViewById(R.id.currentLoc);
         searchView = (SearchView)findViewById(R.id.search);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                LatLng location = getLocationFromAddress(getApplicationContext(),s);
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(location);
+                markerOptions.title("Current Position");
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+                mCurrLocationMarker = mMap.addMarker(markerOptions);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 11));
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
 
 
         // Build the map.
