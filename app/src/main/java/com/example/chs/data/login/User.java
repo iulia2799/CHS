@@ -1,13 +1,14 @@
 package com.example.chs.data.login;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class User implements Login {
     private String username;
     private String email;
     private String password;
-    private List<String> notifications = new ArrayList<>();
+    private HashMap<String,String> notifications = new HashMap<>();
     public User(){
 
     }
@@ -16,10 +17,22 @@ public class User implements Login {
         this.email = email;
         this.password = password;
     }
+    public User(String email,String password,HashMap<String,String> list){
+        //if user does not exist in json then do this
+        this.email = email;
+        this.password = password;
+        this.notifications = list;
+    }
     public User(String email,String username,String password){
         this.email = email;
         this.username = username;
         this.password = password;
+    }
+    public User(String email,String username,String password,HashMap<String,String> list){
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.notifications = list;
     }
 
     public String getEmail(){return this.email;}
@@ -45,10 +58,11 @@ public class User implements Login {
         return this.password;
     }
 
-    public List<String> getNotifications() {
+    public HashMap<String, String> getNotifications() {
         return notifications;
     }
-    public void setNotifications(String notification){
-        notifications.add(notification);
+
+    public void setNotifications(HashMap<String, String> notifications) {
+        this.notifications = notifications;
     }
 }

@@ -15,6 +15,7 @@ import com.example.chs.data.Categorie;
 import com.example.chs.data.DAOPost;
 import com.example.chs.data.Post;
 import com.example.chs.data.login.PrimarieLocalStorage;
+import com.example.chs.data.login.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class Solve extends AppCompatActivity {
@@ -32,6 +34,8 @@ public class Solve extends AppCompatActivity {
     private Post post;
     private PrimarieLocalStorage primarie;
     private String p;
+    private Post mPost;
+    private Intent i;
     private Categorie[] categories = {
             new Categorie("animale"),
             new Categorie("cladiri"),
@@ -61,7 +65,7 @@ public class Solve extends AppCompatActivity {
         //intent.putExtra("names",newpost.getName());
         //intent.putExtra("locations",newpost.getLocation());
        // intent.putExtra("descs",newpost.getDescription());
-        Intent i = getIntent();
+        i = getIntent();
         i.getExtras();
         if(authenticate()){
             p = primarie.getLoggedInUser().getEmail();
@@ -79,15 +83,17 @@ public class Solve extends AppCompatActivity {
                     posts.clear();
                     System.out.println("HERE");
                     for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        Post mPost= dataSnapshot.getValue(Post.class);
+                        mPost= dataSnapshot.getValue(Post.class);
                         assert mPost != null;
                         System.out.println("HERE 1");
                         if(postname.equals(mPost.getName())){
                             if(!aSwitch.isChecked())
                             {dataSnapshot.child("status").getRef().setValue("SOLVED BY : "+p + "-> "+desc.getText().toString());
+                            putNotification(mPost);
                             Toast.makeText(getApplicationContext(),"Succesfully updated!",Toast.LENGTH_SHORT).show();}
                             else{
                                 dataSnapshot.child("status").getRef().setValue("NOT SOLVED : "+p + "-> "+desc.getText().toString());
+                                putNotification(mPost);
                                 Toast.makeText(getApplicationContext(),"Succesfully updated!",Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -101,5 +107,28 @@ public class Solve extends AppCompatActivity {
             });
         }
         //see login to retrieve info
+    }
+    public void putNotification(Post post){
+        FirebaseDatabase database2 = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
+        User user= post.getOp();
+        DatabaseReference ref2 = database2.getReference("User");
+        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    User mUser = dataSnapshot.getValue(User.class);
+                    assert mUser != null;
+                    if(user.getEmail().equals(mUser.getEmail())){
+                        //mUser.setNotifications("the post "+ i.getStringExtra("names") + " was updated");
+                        dataSnapshot.getRef().child("notifications").child("notification" + i.getStringExtra("names") + Calendar.getInstance().getTime().toString()).setValue("the post "+ i.getStringExtra("names") + " was updated");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
