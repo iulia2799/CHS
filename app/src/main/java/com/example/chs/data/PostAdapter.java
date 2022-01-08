@@ -42,7 +42,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.name.setText(posts.getName());
         holder.postloc.setText(posts.getLocation());
         holder.description.setText(posts.getDescription());
-
+        if(posts.getOp() !=null)
+         holder.username.setText(posts.getOp().getEmail());
 
 
 

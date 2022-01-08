@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.chs.data.Categorie;
 import com.example.chs.data.DAOPost;
@@ -161,6 +162,10 @@ public class AddPost extends AppCompatActivity {
             }
         }
         Post post;
+        if(user ==null){
+            Toast.makeText(this,"You can't post!!!", LENGTH_SHORT).show();
+            return;
+        }
         if(anonymous.isChecked()){
             post = new Post(name.getText().toString(),strAdd,desc.getText().toString(),new Categorie(dropdowncat.getSelectedItem().toString()));
         }

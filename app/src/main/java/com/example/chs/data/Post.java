@@ -87,6 +87,7 @@ public class Post {
     }
 
     public User getOp() {
+        if(op==null) return null;
         return op;
     }
 

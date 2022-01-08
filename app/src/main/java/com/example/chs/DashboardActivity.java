@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.example.chs.data.Categorie;
 import com.example.chs.data.Post;
 import com.example.chs.data.PostAdapter;
+import com.example.chs.data.login.Primarie;
+import com.example.chs.data.login.PrimarieLocalStorage;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +33,7 @@ public class DashboardActivity extends AppCompatActivity implements PostAdapter.
     private FloatingActionButton settings;
     private FloatingActionButton map;
     private Post[] postss;
+    private PrimarieLocalStorage primarie;
     private Categorie[] categories = {
             new Categorie("drumuri publice"),
             new Categorie("animale"),
@@ -50,12 +53,13 @@ public class DashboardActivity extends AppCompatActivity implements PostAdapter.
         //getActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
+        //if (authenticate()) add.setVisibility(FloatingActionButton.INVISIBLE);
         /*posts = new Post[]{
                 new Post("name1","location1","desc \n fdsfd\ndfsfgds\n"),
                 new Post("name1","location1","desc"),
                 new Post("name1","location1","desc")
         };*/
-
+        //if(authenticate()) add.setClickable(false);
         for(Categorie cat: categories){
             //System.out.println(cat.getNume());
             DatabaseReference databaseReference = database.getReference(cat.getNume());
@@ -98,8 +102,10 @@ public class DashboardActivity extends AppCompatActivity implements PostAdapter.
         startActivity(intent);
     }
 
-    public void clickOnPost(){
-
+    private boolean authenticate(){
+        primarie = new PrimarieLocalStorage(this);
+        if(primarie.getLoggedInUser() == null) return false;
+        return primarie.getUserLoggedIn();
     }
 
     @Override
@@ -112,5 +118,11 @@ public class DashboardActivity extends AppCompatActivity implements PostAdapter.
         intent.putExtra("post_image",newpost.getImages());
         intent.putExtra("post_op",newpost.getOp().getEmail());
         startActivity(intent);
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        //primarie = new PrimarieLocalStorage(this);
+
     }
 }

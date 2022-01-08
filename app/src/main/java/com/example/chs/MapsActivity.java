@@ -92,12 +92,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     FusedLocationProviderClient mFusedLocationClient;
     private UserLocalStorage userLocalStorage;
     private PrimarieLocalStorage primarieLocalStorage;
+    private List<Post> posts = new ArrayList<>();
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
     private Categorie[] categories = {
-      new Categorie("drumuri publice"),
-            new Categorie("animale"),
-            new Categorie("parcuri"),
+      new Categorie("animale"),
             new Categorie("cladiri"),
+            new Categorie("drumuri publice"),
+            new Categorie("parcuri"),
             new Categorie("test")
     };
     //LocationCallback mLocationCallback =null;
@@ -190,11 +191,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                    for(DataSnapshot postsnap : snapshot.getChildren()){
                        if(!postsnap.exists()) Log.e(TAG, "onDataChange: No data");
                        Post mPost = postsnap.getValue(Post.class);
-                       //System.out.println(mPost.getLocation());
+                       assert mPost != null;
                        String location = mPost.getLocation();
+                       System.out.println(location);
                        if(location !=null){
                        LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
-                       mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getName()));}
+                       System.out.println(latLng.toString());
+                       //mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getName()));
+
+
+                       }
                    }
                }
 
