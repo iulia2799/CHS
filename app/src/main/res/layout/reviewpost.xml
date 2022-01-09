@@ -11,42 +11,45 @@
         android:layout_width="325dp"
         android:layout_height="30dp"
         android:text="TextView"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.496" />
+        app:layout_constraintVertical_bias="0.547" />
 
     <TextView
         android:id="@+id/descp"
         android:layout_width="331dp"
         android:layout_height="219dp"
         android:text="TextView"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.738" />
+        app:layout_constraintVertical_bias="0.849" />
 
     <TextView
         android:id="@+id/userp"
         android:layout_width="328dp"
         android:layout_height="38dp"
         android:text="TextView"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.433"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.447" />
+        app:layout_constraintVertical_bias="0.477" />
 
     <TextView
         android:id="@+id/solvepost"
         android:layout_width="227dp"
         android:layout_height="42dp"
-        android:text="Review Post"
+        android:text="Informatii"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,9 +62,10 @@
         android:id="@+id/postr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SOLVE"
         android:clickable="true"
         android:onClick="clickSolve"
+        android:text="Rezolva"
+        app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -88,12 +92,13 @@
         android:layout_width="335dp"
         android:layout_height="42dp"
         android:text="TextView"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintHorizontal_bias="0.46"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.387" />
+        app:layout_constraintVertical_bias="0.39" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
