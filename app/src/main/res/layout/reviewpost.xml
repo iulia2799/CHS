@@ -8,21 +8,21 @@
 
     <TextView
         android:id="@+id/locationp"
-        android:layout_width="325dp"
-        android:layout_height="30dp"
+        android:layout_width="328dp"
+        android:layout_height="72dp"
         android:text="TextView"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.547" />
+        app:layout_constraintVertical_bias="0.572" />
 
     <TextView
         android:id="@+id/descp"
-        android:layout_width="331dp"
-        android:layout_height="219dp"
+        android:layout_width="333dp"
+        android:layout_height="165dp"
         android:text="TextView"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
