@@ -8,8 +8,8 @@
 
     <TextView
         android:id="@+id/notext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="293dp"
+        android:layout_height="36dp"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginTop="24dp"
@@ -17,17 +17,18 @@
         android:layout_marginRight="321dp"
         android:layout_marginBottom="688dp"
         android:text="Notifications"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.47" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recynot"
-        android:layout_width="310dp"
-        android:layout_height="484dp"
+        android:layout_width="401dp"
+        android:layout_height="588dp"
         android:layout_marginStart="1dp"
         android:layout_marginLeft="1dp"
         android:layout_marginTop="44dp"
@@ -36,24 +37,9 @@
         android:layout_marginBottom="73dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.319"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.23" />
+        app:layout_constraintVertical_bias="1.0" />
 
-    <Button
-        android:id="@+id/backbtnot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="86dp"
-        android:layout_marginLeft="86dp"
-        android:layout_marginTop="624dp"
-        android:layout_marginEnd="231dp"
-        android:layout_marginRight="231dp"
-        android:layout_marginBottom="59dp"
-        android:text="back"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

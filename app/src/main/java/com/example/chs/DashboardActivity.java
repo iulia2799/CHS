@@ -17,6 +17,8 @@ import com.example.chs.data.Post;
 import com.example.chs.data.PostAdapter;
 import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.PrimarieLocalStorage;
+import com.example.chs.data.login.UserLocalStorage;
+import com.example.chs.data.model.NotificationAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,6 +36,7 @@ public class DashboardActivity extends AppCompatActivity implements PostAdapter.
     private FloatingActionButton map;
     private Post[] postss;
     private PrimarieLocalStorage primarie;
+    private UserLocalStorage userLocalStorage;
     private Categorie[] categories = {
             new Categorie("drumuri publice"),
             new Categorie("animale"),
@@ -94,7 +97,7 @@ public class DashboardActivity extends AppCompatActivity implements PostAdapter.
         startActivity(intent);
     }
     public void clickManage(View view){
-        Intent intent = new Intent(this,SettingsActivity.class);
+        Intent intent = new Intent(this, Notification.class);
         startActivity(intent);
     }
     public void clickAdd(View view){
