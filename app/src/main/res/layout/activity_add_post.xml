@@ -26,6 +26,8 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Nume"
+        android:background="@drawable/spinnerd"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.433"
@@ -40,6 +42,7 @@
         android:ems="10"
         android:gravity="top"
         android:hint="Description"
+        android:background="@drawable/spinnerd"
         android:inputType="textCapSentences|textNoSuggestions|textMultiLine"
         android:maxLines="6"
         android:minLines="3"
@@ -73,6 +76,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Locatie"
+        android:background="@drawable/spinnerd"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.387"
@@ -86,6 +90,8 @@
         android:layout_height="45dp"
         android:text="Anonim"
         android:textSize="16sp"
+        android:thumb="@drawable/switchd"
+        android:track="@drawable/trackd"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.855"
@@ -137,6 +143,8 @@
 
     <Spinner
         android:id="@+id/categoriespinner"
+        android:background="@drawable/trackd"
+        android:popupBackground="@drawable/spinnerd"
         android:layout_width="324dp"
         android:layout_height="42dp"
         app:layout_constraintBottom_toBottomOf="parent"

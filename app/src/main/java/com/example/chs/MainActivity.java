@@ -30,6 +30,22 @@ public class MainActivity extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.textView);
         button=  (Button)findViewById(R.id.button);
         mapButton = (Button)findViewById(R.id.signbutton);
+
+        button.setAlpha(0f);
+        button.setTranslationY(500);
+
+        button.animate().alpha(1f).translationYBy(-500).setDuration(1500);
+
+        mapButton.setAlpha(0f);
+        mapButton.setTranslationY(500);
+
+        mapButton.animate().alpha(1f).translationYBy(-500).setDuration(1500);
+
+        textView.setAlpha(0f);
+        textView.setTranslationY(500);
+
+        textView.animate().alpha(1f).translationYBy(-500).setDuration(1500);
+
         accelerometer = new Accelerometer(this);
         gyroscope = new Gyroscope(this);
         userLocalStorage = new UserLocalStorage(this);
