@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.chs.data.login.PrimarieLocalStorage;
@@ -17,7 +19,8 @@ public class MainActivity extends AppCompatActivity {
     private Accelerometer accelerometer;
     private Gyroscope gyroscope;
     private Button button;
-    private TextView textView;
+    private ImageView textView;
+    private ImageView imageView;
     private Button mapButton;
     private FloatingActionButton setbtn;
     private UserLocalStorage userLocalStorage;
@@ -27,24 +30,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textView = (TextView) findViewById(R.id.textView);
+        textView = (ImageView) findViewById(R.id.imageView);
+        imageView = (ImageView) findViewById(R.id.imageView2);
         button=  (Button)findViewById(R.id.button);
         mapButton = (Button)findViewById(R.id.signbutton);
 
         button.setAlpha(0f);
         button.setTranslationY(500);
 
-        button.animate().alpha(1f).translationYBy(-500).setDuration(1500);
+        button.animate().alpha(1f).translationYBy(-500).setDuration(1000);
 
         mapButton.setAlpha(0f);
         mapButton.setTranslationY(500);
 
-        mapButton.animate().alpha(1f).translationYBy(-500).setDuration(1500);
+        mapButton.animate().alpha(1f).translationYBy(-500).setDuration(1000);
 
         textView.setAlpha(0f);
         textView.setTranslationY(500);
 
-        textView.animate().alpha(1f).translationYBy(-500).setDuration(1500);
+        textView.animate().alpha(1f).translationYBy(-500).setDuration(1000);
+
+        imageView.setAlpha(0f);
+        imageView.setTranslationY(500);
+
+        imageView.animate().alpha(1f).translationYBy(-500).setDuration(1000);
 
         accelerometer = new Accelerometer(this);
         gyroscope = new Gyroscope(this);

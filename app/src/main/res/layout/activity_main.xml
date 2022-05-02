@@ -4,64 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main"
     tools:context=".MainActivity">
 
     <!--make clickable and onClick attr for Button-->
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button"
-        android:fontFamily="@font/sansvar"
-        android:text="Detect IT"
-        android:textAllCaps="false"
-        android:textColor="#1B6545"
-        android:textSize="60sp"
-        android:textStyle="bold"
-        android:typeface="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.379" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button"
-        android:layout_width="150dp"
-        android:layout_height="45dp"
-        android:background="@drawable/buttond"
+        android:layout_width="179dp"
+        android:layout_height="52dp"
+        android:background="@drawable/btn"
         android:clickable="true"
         android:fontFamily="@font/sansvar"
         android:onClick="ClickButton"
+        android:paddingBottom="10dp"
         android:text="Conectare"
-        android:textColor="#000000"
+        android:textColor="@color/white"
         android:textSize="24sp"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.667" />
+        app:layout_constraintVertical_bias="0.697" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signbutton"
-        android:layout_width="150dp"
-        android:layout_height="45dp"
-        android:background="@drawable/buttond"
+        android:layout_width="184dp"
+        android:layout_height="50dp"
+        android:background="@drawable/btn"
         android:clickable="true"
         android:fontFamily="@font/sansvar"
         android:onClick="ClickSignUp"
+        android:paddingBottom="10dp"
         android:text="Inregistrare"
-        android:textColor="#000000"
+        android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.774" />
+        app:layout_constraintVertical_bias="0.836" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/setbutton"
@@ -72,10 +56,32 @@
         app:backgroundTint="@color/teal_700"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.901"
+        app:layout_constraintHorizontal_bias="0.112"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.059"
+        app:layout_constraintVertical_bias="0.058"
         app:srcCompat="@drawable/ic_menu_manage" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.21"
+        app:srcCompat="@drawable/logo" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/desc" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

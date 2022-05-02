@@ -38,6 +38,7 @@
         android:id="@+id/addbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/spinnerd"
         android:clickable="true"
         android:onClick="clickAdd"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -63,20 +64,20 @@
         app:srcCompat="@android:drawable/ic_menu_mapmode" />
 
     <ScrollView
-        android:layout_width="392dp"
-        android:layout_height="525dp"
+        android:layout_width="385dp"
+        android:layout_height="529dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.842"
+        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.427">
+        app:layout_constraintVertical_bias="0.402">
         <!-- Here you put the rest of your current view-->
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/posts"
-            android:layout_width="375dp"
+            android:layout_width="389dp"
             android:layout_height="459dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
