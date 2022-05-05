@@ -75,7 +75,7 @@ public class AddPost extends AppCompatActivity {
         button = (Button) findViewById(R.id.loadimage);
         cameraButton = (Button) findViewById(R.id.camerabtn);
         imageView = (ImageView) findViewById(R.id.imagep);
-        dropdowncat = (Spinner) findViewById(R.id.categoriespinner);
+        dropdowncat = (Spinner) findViewById(R.id.mapspinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdowncat.setAdapter(adapter);
 

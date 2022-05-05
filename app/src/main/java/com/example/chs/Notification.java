@@ -24,7 +24,7 @@ public class Notification extends AppCompatActivity implements NotificationAdapt
     private RecyclerView recyclerView;
     private UserLocalStorage userLocalStorage;
     private User user;
-    private HashMap<String,String> notificationlist  = new HashMap<>();
+    private HashMap<String,String> notificationlist  = new HashMap<String,String>();
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
 
     @Override
@@ -35,7 +35,7 @@ public class Notification extends AppCompatActivity implements NotificationAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notification);
         DatabaseReference databaseReference = database.getReference("User");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
@@ -43,6 +43,8 @@ public class Notification extends AppCompatActivity implements NotificationAdapt
                     assert mUser != null;
                     if(mUser.getEmail().equals(user.getEmail()))
                     {notificationlist = mUser.getNotifications();
+                     System.out.println(mUser.getNotifications());
+                     break;
                      }
                 }
             }
@@ -58,6 +60,7 @@ public class Notification extends AppCompatActivity implements NotificationAdapt
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(notificationAdapter);
+        System.out.println(notificationlist);
 
     }
 

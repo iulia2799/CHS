@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -18,7 +16,6 @@ import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.PrimarieLocalStorage;
 import com.example.chs.data.login.User;
 import com.example.chs.data.login.UserLocalStorage;
-import com.example.chs.ui.login.LoginActivity;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -27,51 +24,32 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.Bundle;
 
 import android.os.Looper;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.SearchView;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.PlaceLikelihood;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -79,7 +57,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -101,6 +78,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             new Categorie("parcuri"),
             new Categorie("test")
     };
+    private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","test"};
+
+    private Button ranking;
+    private Button add;
+    private Button profile;
+    private ArrayAdapter<String> adapter;
+
+
+    private Spinner dropdowncat;
     //LocationCallback mLocationCallback =null;
 
     private Button button;
@@ -112,9 +98,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-
+        dropdowncat = (Spinner)findViewById(R.id.mapspinner);
+        dropdowncat.setVisibility(View.GONE);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         button=  (Button)findViewById(R.id.currentLoc);
+        ranking = (Button)findViewById(R.id.button3);
+        add = (Button)findViewById(R.id.button4);
+        add = (Button)findViewById(R.id.button5);
         searchView = (SearchView)findViewById(R.id.search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -336,18 +326,69 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(authenticate()){
             displayUserDetails();
         }
+
+        if(authenticatePrimarie()) displayPrimarieDetails();
     }
     private boolean authenticate(){
         return userLocalStorage.getUserLoggedIn();
     }
+    private boolean authenticatePrimarie(){return primarieLocalStorage.getUserLoggedIn();}
     private void displayUserDetails(){
+        User pm = userLocalStorage.getLoggedInUser();
+        Toast.makeText(this,pm.getEmail(),Toast.LENGTH_SHORT).show();
+    }
+    private void displayPrimarieDetails(){
         Primarie pm = primarieLocalStorage.getLoggedInUser();
         Toast.makeText(this,pm.getEmail(),Toast.LENGTH_SHORT).show();
     }
 
     public void ClickButton(View view){
-        Intent intent = new Intent(this, DashboardActivity.class);
-        startActivity(intent);
+        dropdowncat.setVisibility(View.VISIBLE);
+        dropdowncat.setAdapter(adapter);
+        dropdowncat.performClick();
+        dropdowncat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                SelectItem(new Categorie(dropdowncat.getSelectedItem().toString()));
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+    public void SelectItem(Categorie cat){
+        mMap.clear();
+        posts.clear();
+        DatabaseReference ref = database.getReference(cat.getNume());
+        ref.addValueEventListener(new ValueEventListener() {
+            private static final String TAG = "error";
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot postsnap : snapshot.getChildren()){
+                    if(!postsnap.exists()) Log.e(TAG, "onDataChange: No data");
+                    Post mPost = postsnap.getValue(Post.class);
+                    assert mPost != null;
+                    String location = mPost.getLocation();
+                    //System.out.println(location);
+                    if(location !=null){
+                        LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
+                        System.out.println(latLng.toString());
+                        mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getName()));
+                        posts.add(mPost);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                throw error.toException();
+            }
+        });
 
     }
     public void addMarkers(){
@@ -355,7 +396,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             String location = post.getLocation();
             if(location ==null) continue;
             LatLng latLng = getLocationFromAddress(this,location);
-            mMap.addMarker(new MarkerOptions().position(latLng).title("marker"));
+            mMap.addMarker(new MarkerOptions().position(latLng).title(post.getName()));
         }
     }
     public LatLng getLocationFromAddress(Context context, String strAddress){
@@ -374,6 +415,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             p1 = new LatLng(34,42);
         }
         return p1;
+    }
+
+    public void ClickAdd(){
+        Intent intent = new Intent(this,AddPost.class);
+        startActivity(intent);
+    }
+    public void Ranking(){
+
+    }
+    public void Profile(){
+        Intent intent = new Intent(this,ReviewPost.class);
+        if(authenticate()){
+            intent.putExtra("username",userLocalStorage.getLoggedInUser().getEmail());
+        }
+
+        //String categ = newpost.getCategorie();
+        //System.out.println(categ);
+        startActivity(intent);
     }
     @Override
     public void onBackPressed(){
