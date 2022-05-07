@@ -12,6 +12,8 @@
         <entry key="..\:/android_projects/app/src/main/res/drawable/button_disabled.xml" value="0.2703125" />
         <entry key="..\:/android_projects/app/src/main/res/drawable/button_enabled.xml" value="0.2703125" />
         <entry key="..\:/android_projects/app/src/main/res/drawable/buttond.xml" value="0.14635416666666667" />
+        <entry key="..\:/android_projects/app/src/main/res/drawable/ic_button.xml" value="0.14739583333333334" />
+        <entry key="..\:/android_projects/app/src/main/res/drawable/ic_component_7___1.xml" value="0.2703125" />
         <entry key="..\:/android_projects/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/android_projects/app/src/main/res/drawable/ic_search.xml" value="0.1" />
         <entry key="..\:/android_projects/app/src/main/res/drawable/ic_search_enabled.xml" value="0.1" />
@@ -23,9 +25,10 @@
         <entry key="..\:/android_projects/app/src/main/res/layout/activity_add_post.xml" value="0.264" />
         <entry key="..\:/android_projects/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
         <entry key="..\:/android_projects/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/android_projects/app/src/main/res/layout/activity_maps.xml" value="0.264" />
+        <entry key="..\:/android_projects/app/src/main/res/layout/activity_maps.xml" value="0.3095823095823096" />
         <entry key="..\:/android_projects/app/src/main/res/layout/activity_maps2.xml" value="0.22644927536231885" />
         <entry key="..\:/android_projects/app/src/main/res/layout/activity_primarie_dashboard.xml" value="0.25416666666666665" />
+        <entry key="..\:/android_projects/app/src/main/res/layout/activity_profile.xml" value="0.264" />
         <entry key="..\:/android_projects/app/src/main/res/layout/activity_solve.xml" value="0.264" />
         <entry key="..\:/android_projects/app/src/main/res/layout/activity_view_primarie.xml" value="0.25416666666666665" />
         <entry key="..\:/android_projects/app/src/main/res/layout/dashboard.xml" value="0.2" />

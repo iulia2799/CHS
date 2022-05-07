@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chs.data.login.DAOUser;
@@ -37,6 +38,7 @@ public class Login extends AppCompatActivity {
     private Switch swp;
     private UserLocalStorage userLocalStorage;
     private PrimarieLocalStorage primarieLocalStorage;
+    private TextView question;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class Login extends AppCompatActivity {
         pass = findViewById(R.id.passad);
         btn = findViewById(R.id.logbtn);
         swp = findViewById(R.id.swp);
+        question = findViewById(R.id.intrebare);
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
         DatabaseReference myRef = database.getReference("message");
 

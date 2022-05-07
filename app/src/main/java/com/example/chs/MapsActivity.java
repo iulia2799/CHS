@@ -417,15 +417,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return p1;
     }
 
-    public void ClickAdd(){
+    public void ClickAdd(View view){
         Intent intent = new Intent(this,AddPost.class);
         startActivity(intent);
     }
-    public void Ranking(){
+    public void Ranking(View view){
 
     }
-    public void Profile(){
-        Intent intent = new Intent(this,ReviewPost.class);
+    public void Profile(View view){
+        Intent intent = new Intent(this,Profile.class);
         if(authenticate()){
             intent.putExtra("username",userLocalStorage.getLoggedInUser().getEmail());
         }

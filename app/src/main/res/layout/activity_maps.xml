@@ -17,85 +17,117 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.0"
         tools:context=".MapsActivity" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/currentLoc"
-        android:layout_width="139dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="100dp"
+        android:layout_height="104dp"
+        android:background="@drawable/button"
         android:clickable="true"
         android:onClick="ClickButton"
-        android:text="Filter"
-        app:backgroundTint="#198479"
+        app:backgroundTint="#50A88B"
         app:cornerRadius="100dp"
+        app:icon="@drawable/ic_baseline_filter_alt_24"
+        app:iconGravity="textEnd"
+        app:iconPadding="0dp"
+        app:iconSize="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/search" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.948"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.974" />
 
     <SearchView
         android:id="@+id/search"
-        android:layout_width="209dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="26dp"
-        android:layout_marginLeft="26dp"
+        android:layout_width="262dp"
+        android:layout_height="59dp"
         android:layout_marginEnd="41dp"
         android:layout_marginRight="41dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="16dp"
         android:background="#BFFFFFFF"
         android:queryHint="search something"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/currentLoc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button3"
-        android:layout_width="110dp"
-        android:layout_height="50dp"
-        android:text="Ranking"
+        android:layout_width="103dp"
+        android:layout_height="100dp"
+        android:autoText="false"
+        android:clickable="true"
+        android:onClick="Ranking"
+        android:background="@drawable/button"
+        android:freezesText="false"
+        android:text="1"
+        android:textAllCaps="false"
+        android:textScaleX="1"
+        android:textSize="34sp"
+        app:backgroundTint="@null"
+        app:cornerRadius="100dp"
+        app:iconPadding="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.083"
+        app:layout_constraintHorizontal_bias="0.032"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintVertical_bias="0.025" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button4"
-        android:layout_width="110dp"
-        android:layout_height="50dp"
-        android:text="AddPost"
+        android:layout_width="106dp"
+        android:layout_height="101dp"
+        android:clickable="true"
+        android:onClick="ClickAdd"
+        android:background="@drawable/button"
+        app:backgroundTint="@null"
+        app:icon="@drawable/plus"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconTint="@null"
+        app:iconTintMode="multiply"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/maps_activity"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintVertical_bias="0.025" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button5"
-        android:layout_width="110dp"
-        android:layout_height="50dp"
-        android:text="Profile"
+        android:layout_width="94dp"
+        android:layout_height="100dp"
+        android:background="@drawable/button"
+        app:backgroundTint="@null"
+        app:cornerRadius="100dp"
+        app:icon="@drawable/p"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        android:clickable="true"
+        android:onClick="Profile"
+        app:iconTintMode="multiply"
         app:layout_constraintBottom_toBottomOf="@+id/maps_activity"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.895"
+        app:layout_constraintHorizontal_bias="0.744"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintVertical_bias="0.026" />
 
     <Spinner
         android:id="@+id/mapspinner"
-        android:layout_width="324dp"
-        android:layout_height="42dp"
+        android:layout_width="267dp"
+        android:layout_height="40dp"
         android:background="@drawable/trackd"
         android:popupBackground="@drawable/spinnerd"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.111"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.888" />
+        app:layout_constraintVertical_bias="0.884" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
