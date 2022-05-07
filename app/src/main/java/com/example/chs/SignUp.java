@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chs.data.login.DAOPrimarie;
@@ -26,6 +28,11 @@ public class SignUp extends AppCompatActivity {
     private Button btn;
     private Switch swps;
     private EditText username;
+    private ImageView bubble;
+    private ImageView track;
+    private TextView q;
+    private EditText confirmaParola;
+    private TextView confirmatext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +43,12 @@ public class SignUp extends AppCompatActivity {
         pass = findViewById(R.id.passads);
         btn = findViewById(R.id.signbtn);
         swps = (Switch) findViewById(R.id.swps);
+        bubble = findViewById(R.id.bubble1);
+        track = findViewById(R.id.bordertrack);
+        q=findViewById(R.id.q2);
+        confirmaParola = findViewById(R.id.passads2);
+        confirmatext = findViewById(R.id.confirma);
+
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
         DatabaseReference myRef = database.getReference("message");
     }
@@ -57,6 +70,12 @@ public class SignUp extends AppCompatActivity {
             return false;
         return true;
     }
+    public boolean ConfirmedPass(String pass, String confirmedPass){
+        if(!pass.equals(confirmedPass)){
+            return false;
+        }
+        return true;
+    }
     public void clickSignUp(View view){
         DAOUser daoUser = new DAOUser();
         User user = new User(email.getText().toString(),username.getText().toString(), pass.getText().toString());
@@ -64,6 +83,10 @@ public class SignUp extends AppCompatActivity {
             Toast.makeText(this,"Email must be name@email.com and password must be at least 8 characters",Toast.LENGTH_SHORT).show();
             return;
 
+        }
+        if(!ConfirmedPass(user.getPassword(),confirmaParola.getText().toString())){
+            Toast.makeText(this,"Please write the same password !",Toast.LENGTH_SHORT).show();
+            return;
         }
         if(swps.isChecked()){
             //Toast.makeText(this,"primariile vor veni in curand",Toast.LENGTH_SHORT).show();

@@ -9,6 +9,7 @@ import android.service.autofill.RegexValidator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,10 @@ public class Login extends AppCompatActivity {
     private UserLocalStorage userLocalStorage;
     private PrimarieLocalStorage primarieLocalStorage;
     private TextView question;
+    private ImageView bubble;
+    private ImageView bubble2;
+    private ImageView track;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,9 @@ public class Login extends AppCompatActivity {
         btn = findViewById(R.id.logbtn);
         swp = findViewById(R.id.swp);
         question = findViewById(R.id.intrebare);
+        bubble = findViewById(R.id.bubble2);
+        bubble2 = findViewById(R.id.bubble3);
+        track = findViewById(R.id.bordertrackl);
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
         DatabaseReference myRef = database.getReference("message");
 

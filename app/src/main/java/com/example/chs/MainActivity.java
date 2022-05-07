@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton setbtn;
     private UserLocalStorage userLocalStorage;
     private PrimarieLocalStorage primarieLocalStorage;
+    private ImageView bubble;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +35,18 @@ public class MainActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.imageView2);
         button=  (Button)findViewById(R.id.button);
         mapButton = (Button)findViewById(R.id.signbutton);
+        bubble = findViewById(R.id.bubble1);
 
         button.setAlpha(0f);
         button.setTranslationY(500);
 
         button.animate().alpha(1f).translationYBy(-500).setDuration(1000);
+
+        bubble.setAlpha(0f);
+        bubble.setTranslationY(500);
+
+        bubble.animate().alpha(1f).translationYBy(-500).setDuration(1000);
+
 
         mapButton.setAlpha(0f);
         mapButton.setTranslationY(500);
