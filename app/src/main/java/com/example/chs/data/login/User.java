@@ -9,6 +9,7 @@ public class User implements Login {
     private String email;
     private String password;
     private HashMap<String,String> notifications = new HashMap<>();
+    private String informatii;
     public User(){
 
     }
@@ -16,23 +17,27 @@ public class User implements Login {
         //if user does not exist in json then do this
         this.email = email;
         this.password = password;
+        this.informatii = "";
     }
     public User(String email,String password,HashMap<String,String> list){
         //if user does not exist in json then do this
         this.email = email;
         this.password = password;
         this.notifications = list;
+        this.informatii = "";
     }
     public User(String email,String username,String password){
         this.email = email;
         this.username = username;
         this.password = password;
+        this.informatii = "";
     }
     public User(String email,String username,String password,HashMap<String,String> list){
         this.email = email;
         this.username = username;
         this.password = password;
         this.notifications = list;
+        this.informatii = "";
     }
 
     public String getEmail(){return this.email;}
@@ -64,5 +69,13 @@ public class User implements Login {
 
     public void setNotifications(HashMap<String, String> notifications) {
         this.notifications = notifications;
+    }
+
+    public String getInformatii(){
+        return this.informatii;
+    }
+
+    public void setInformatii(String newinfo){
+        this.informatii = newinfo;
     }
 }

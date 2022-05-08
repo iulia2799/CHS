@@ -425,14 +425,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
     public void Profile(View view){
-        Intent intent = new Intent(this,Profile.class);
-        if(authenticate()){
-            intent.putExtra("username",userLocalStorage.getLoggedInUser().getEmail());
+
+        if(authenticatePrimarie()){
+            Intent intent = new Intent(this,Profile.class);
+            startActivity(intent);
         }
+        if(authenticate()){
+            Intent intent = new Intent(this,Profile.class);
+            startActivity(intent);
+        }
+
 
         //String categ = newpost.getCategorie();
         //System.out.println(categ);
-        startActivity(intent);
+        //startActivity(intent);
     }
     @Override
     public void onBackPressed(){
