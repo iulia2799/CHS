@@ -50,6 +50,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.Marker;
 
+import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -204,12 +205,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                        //System.out.println(location);
                        if(location !=null){
                        LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
-                       System.out.println(latLng.toString());
-                       mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getName()));
-                       posts.add(mPost);
+                           Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getName()));
+                           posts.add(mPost);
+                           marker.setTag(mPost);
+                           mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                               @Override
+                               public boolean onMarkerClick(@NonNull Marker marker) {
+                                   Post post = (Post) marker.getTag();
 
+                                   Toast.makeText(getApplicationContext(),post.getName(),Toast.LENGTH_SHORT).show();
+                                   return true;
+                               }
+                           });
                        }
                    }
+
                }
 
                @Override
@@ -218,7 +228,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                }
            });
        }
-       //addMarkers();
+       //Toast.makeText(this,posts.size(),Toast.LENGTH_SHORT).show();
+       //addMarkers();System.out.println(this.posts.size());
 
     }
     LocationCallback mLocationCallback = new LocationCallback() {
@@ -335,11 +346,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean authenticatePrimarie(){return primarieLocalStorage.getUserLoggedIn();}
     private void displayUserDetails(){
         User pm = userLocalStorage.getLoggedInUser();
-        Toast.makeText(this,pm.getEmail(),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,pm.getEmail(),Toast.LENGTH_SHORT).show();
     }
     private void displayPrimarieDetails(){
         Primarie pm = primarieLocalStorage.getLoggedInUser();
-        Toast.makeText(this,pm.getEmail(),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,pm.getEmail(),Toast.LENGTH_SHORT).show();
     }
 
     public void ClickButton(View view){
@@ -368,6 +379,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 for(DataSnapshot postsnap : snapshot.getChildren()){
                     if(!postsnap.exists()) Log.e(TAG, "onDataChange: No data");
                     Post mPost = postsnap.getValue(Post.class);
@@ -377,9 +389,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if(location !=null){
                         LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
                         System.out.println(latLng.toString());
-                        mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getName()));
+                        Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getName()));
                         posts.add(mPost);
+                        marker.setTag(mPost);
+                        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                            @Override
+                            public boolean onMarkerClick(@NonNull Marker marker) {
+                                Post post = (Post) marker.getTag();
 
+                                Toast.makeText(getApplicationContext(),post.getName(),Toast.LENGTH_SHORT).show();
+                                return true;
+                            }
+                        });
                     }
                 }
             }
@@ -391,13 +412,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
     }
-    public void addMarkers(){
-        for(Post post : posts){
-            String location = post.getLocation();
-            if(location ==null) continue;
-            LatLng latLng = getLocationFromAddress(this,location);
-            mMap.addMarker(new MarkerOptions().position(latLng).title(post.getName()));
-        }
+    public void addMarkers(Post post){
+        posts.add(post);
     }
     public LatLng getLocationFromAddress(Context context, String strAddress){
         LatLng p1;

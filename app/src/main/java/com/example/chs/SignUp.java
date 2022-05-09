@@ -16,9 +16,12 @@ import com.example.chs.data.login.DAOPrimarie;
 import com.example.chs.data.login.DAOUser;
 import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.User;
+import com.example.chs.data.model.Alert;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -78,7 +81,9 @@ public class SignUp extends AppCompatActivity {
     }
     public void clickSignUp(View view){
         DAOUser daoUser = new DAOUser();
-        User user = new User(email.getText().toString(),username.getText().toString(), pass.getText().toString());
+        List<Alert> alertList = new ArrayList<>();
+        alertList.add(new Alert("0","Welcome to app"));
+        User user = new User(email.getText().toString(),username.getText().toString(), pass.getText().toString(),alertList);
         if(!checkCred(user.getEmail(), user.getPassword())){
             Toast.makeText(this,"Email must be name@email.com and password must be at least 8 characters",Toast.LENGTH_SHORT).show();
             return;

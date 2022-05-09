@@ -12,6 +12,8 @@
         android:layout_height="87dp"
         android:background="@drawable/btn2"
         app:backgroundTint="@null"
+        android:clickable="true"
+        android:onClick="Clickoptions"
         app:backgroundTintMode="multiply"
         app:icon="@drawable/op2"
         app:iconGravity="textTop"

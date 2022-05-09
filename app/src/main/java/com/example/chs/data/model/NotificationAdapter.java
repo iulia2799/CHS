@@ -14,6 +14,7 @@ import com.example.chs.R;
 import com.example.chs.data.Post;
 import com.example.chs.data.PostAdapter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,14 +22,15 @@ import java.util.List;
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> {
     private HashMap<String,String> postList;
     private OnItemListener itemListener;
-    public NotificationAdapter(HashMap<String,String> data, OnItemListener listener){
+    private List<Alert> alertList = new ArrayList<>();
+    public NotificationAdapter(List<Alert> alerts, OnItemListener listener){
         this.itemListener = listener;
-        this.postList=data;
+        alertList.addAll(alerts);
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        System.out.println("////////////");
+        System.out.println("1////////////");
         View listItem = layoutInflater.inflate(R.layout.notification_item,parent,false);
         ViewHolder viewHolder = new ViewHolder(listItem, itemListener);
         return viewHolder;
@@ -36,15 +38,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-       holder.name.setText("h");
-       holder.description.setText("hello");
-       System.out.println("////////////");
+       holder.name.setText(alertList.get(position).getDate());
+       holder.description.setText(alertList.get(position).getDescription());
+       System.out.println("2////////////");
     }
 
     @Override
     public int getItemCount(){
         //return localDataSet.length;
-        return postList.size();
+        System.out.println("3////////////");
+        return alertList.size();
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView name;
@@ -55,13 +58,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         public ViewHolder(@NonNull View itemView, OnItemListener onClickListener) {
             super(itemView);
             this.name = (TextView) itemView.findViewById(R.id.numenot);
-            System.out.println("////////////");
+            System.out.println("4////////////");
             this.description = (TextView) itemView.findViewById(R.id.descnot);
 
             ConstraintLayout layout = (ConstraintLayout) itemView.findViewById(R.id.notlay);
             this.onClickListener = onClickListener;
             itemView.setOnClickListener((View.OnClickListener) this);
-            System.out.println("////////////");
+            System.out.println("5////////////");
         }
 
         @Override

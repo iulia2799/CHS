@@ -16,6 +16,7 @@ import com.example.chs.data.DAOPost;
 import com.example.chs.data.Post;
 import com.example.chs.data.login.PrimarieLocalStorage;
 import com.example.chs.data.login.User;
+import com.example.chs.data.model.Alert;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -111,6 +112,7 @@ public class Solve extends AppCompatActivity {
     public void putNotification(Post post){
         FirebaseDatabase database2 = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
         User user= post.getOp();
+        Alert alert = new Alert("dsfds","fdsfdsf");
         DatabaseReference ref2 = database2.getReference("User");
         ref2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -120,7 +122,8 @@ public class Solve extends AppCompatActivity {
                     assert mUser != null;
                     if(user.getEmail().equals(mUser.getEmail())){
                         //mUser.setNotifications("the post "+ i.getStringExtra("names") + " was updated");
-                        dataSnapshot.getRef().child("notifications").child("notification" + i.getStringExtra("names") + Calendar.getInstance().getTime().toString()).setValue("the post "+ i.getStringExtra("names") + " was updated");
+                        //dataSnapshot.getRef().child("notifications").child("notification" + i.getStringExtra("names") + Calendar.getInstance().getTime().toString()).setValue("the post "+ i.getStringExtra("names") + " was updated");
+                        dataSnapshot.getRef().child("alerts").setValue(alert);
                     }
                 }
             }

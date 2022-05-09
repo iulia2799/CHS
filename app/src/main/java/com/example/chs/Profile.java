@@ -3,6 +3,7 @@ package com.example.chs;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -155,6 +156,11 @@ public class Profile extends AppCompatActivity {
             editinfo.setVisibility(View.GONE);
         }
 
+    }
+
+    public void Clickoptions(View view){
+        Intent intent = new Intent(this, Notification.class);
+        startActivity(intent);
     }
 
     @Override

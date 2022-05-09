@@ -2,7 +2,12 @@ package com.example.chs.data;
 
 
 
+import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.User;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class Post {
     private String name;
@@ -13,6 +18,10 @@ public class Post {
     private User op;
     private Categorie cat;
     private static Integer trackingId =100;
+    private Date timerDate;
+    private Primarie assignee;
+    private int spam=0;
+    private List<String> report= new ArrayList<>();
     public Post(){}
     public Post(String name, String location, String description) {
         this.name = name;
@@ -115,4 +124,33 @@ public class Post {
         this.op = op;
     }
 
+    public Date getTimerDate() {
+        return timerDate;
+    }
+
+    public Primarie getAssignee() {
+        return assignee;
+    }
+
+    public void setTimerDate(Date timerDate) {
+        this.timerDate = timerDate;
+    }
+
+    public void setAssignee(Primarie assignee) {
+        this.assignee = assignee;
+    }
+    public int getSpam() {
+        return spam;
+    }
+    public void setSpam(int spam) {
+        this.spam = spam;
+    }
+
+    public List<String> getReport() {
+        return report;
+    }
+
+    public void setReport(List<String> report) {
+        this.report = report;
+    }
 }
