@@ -32,6 +32,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 
 import android.os.Looper;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -115,7 +116,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 markerOptions.position(location);
                 markerOptions.title("Current Position");
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-                mCurrLocationMarker = mMap.addMarker(markerOptions);
+                //mCurrLocationMarker = mMap.addMarker(markerOptions);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 11));
                 return false;
             }
@@ -200,20 +201,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                    for(DataSnapshot postsnap : snapshot.getChildren()){
                        if(!postsnap.exists()) Log.e(TAG, "onDataChange: No data");
                        Post mPost = postsnap.getValue(Post.class);
-                       assert mPost != null;
+
+                       //
+                       assert mPost != null;mPost.setImages(postsnap.child("images").getValue(String.class));
+
                        String location = mPost.getLocation();
                        //System.out.println(location);
                        if(location !=null){
                        LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
                            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getName()));
                            posts.add(mPost);
+                           //System.out.println(mPost.getImages());
+                           int days = (int) ((System.currentTimeMillis()- mPost.getDatet())/ (1000*60*60*24));
+                           if(days>=30){
+                              ScorePoints();
+                           }
+                           assert marker != null;
                            marker.setTag(mPost);
+                           System.out.println(mPost.getImages());
                            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                @Override
                                public boolean onMarkerClick(@NonNull Marker marker) {
                                    Post post = (Post) marker.getTag();
-
-                                   Toast.makeText(getApplicationContext(),post.getName(),Toast.LENGTH_SHORT).show();
+                                   //System.out.println(post.getImages());
+                                   //Toast.makeText(getApplicationContext(),post.getImages().toString(),Toast.LENGTH_SHORT).show();
+                                   Intent intent = new Intent(getApplicationContext(),ReviewPost.class);
+                                   intent.putExtra("namep",post.getName());
+                                   intent.putExtra("locationp",post.getLocation());
+                                   intent.putExtra("descp",post.getDescription());
+                                   intent.putExtra("post_image",mPost.getImages());
+                                   System.out.println(post.getImages());
+                                   intent.putExtra("post_op",post.getOp().getUsername());
+                                   //String categ = newpost.getCategorie();
+                                   intent.putExtra("status",post.getStatus());
+                                   intent.putExtra("voturi",post.getVoturi());
+                                   intent.putExtra("categorie",cat.getNume());
+                                   //System.out.println(categ);
+                                   startActivity(intent);
                                    return true;
                                }
                            });
@@ -232,6 +256,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
        //addMarkers();System.out.println(this.posts.size());
 
     }
+
+    public void ScorePoints() {
+        if(authenticatePrimarie()){
+            checkPrimarie(primarieLocalStorage.getLoggedInUser().getEmail());
+        }
+    }
+
+    public void checkPrimarie(String email){
+
+        DatabaseReference reference =  FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Primarie");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for(DataSnapshot usersnapshot : snapshot.getChildren()){
+                    Primarie mUser = usersnapshot.getValue(Primarie.class);
+                    if(mUser.getEmail().equals(email)){
+                        int points = mUser.getPoints()-10;
+                        usersnapshot.child("points").getRef().setValue(points);
+                    }else{
+
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("The read failed: "+error.getCode());
+            }
+        });
+    }
+
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -251,7 +309,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 markerOptions.position(latLng);
                 markerOptions.title("Current Position");
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-                mCurrLocationMarker = mMap.addMarker(markerOptions);
+                //mCurrLocationMarker = mMap.addMarker(markerOptions);
 
                 //move map camera
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
@@ -383,21 +441,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for(DataSnapshot postsnap : snapshot.getChildren()){
                     if(!postsnap.exists()) Log.e(TAG, "onDataChange: No data");
                     Post mPost = postsnap.getValue(Post.class);
+
                     assert mPost != null;
                     String location = mPost.getLocation();
                     //System.out.println(location);
                     if(location !=null){
                         LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
-                        System.out.println(latLng.toString());
-                        Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getName()));
+                        //System.out.println(latLng.toString());
+                        System.out.println("Fetched from firebase"+postsnap.child("images").getValue(String.class));
+                        System.out.println("Location: "+mPost.getLocation());
+                        System.out.println("Images:"+mPost.getImages());
+                        Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getImages()));
                         posts.add(mPost);
+                        int days = (int) ((System.currentTimeMillis()- mPost.getDatet())/ (1000*60*60*24));
+                        if(days>=30){
+                            ScorePoints();
+                        }
                         marker.setTag(mPost);
                         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                             @Override
                             public boolean onMarkerClick(@NonNull Marker marker) {
                                 Post post = (Post) marker.getTag();
-
+                                //System.out.println("Images:"+post.getImages());
                                 Toast.makeText(getApplicationContext(),post.getName(),Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(),ReviewPost.class);
+                                intent.putExtra("namep",post.getName());
+                                intent.putExtra("locationp",post.getLocation());
+                                intent.putExtra("descp",post.getDescription());
+                                intent.putExtra("post_image",post.getImages());
+                                intent.putExtra("post_op",post.getOp().getUsername());
+                                //String categ = newpost.getCategorie();
+                                intent.putExtra("status",post.getStatus());
+                                intent.putExtra("voturi",post.getVoturi());
+                                intent.putExtra("categorie",cat.getNume());
+//                                intent.putExtra("obj", (Parcelable) post);
+                                //System.out.println(post.getImages());
+                                //System.out.println(categ);
+                                startActivity(intent);
                                 return true;
                             }
                         });
@@ -423,7 +503,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             addressList = coder.getFromLocationName(strAddress,5);
             if(addressList ==null) return null;
             Address location = addressList.get(0);
-            System.out.println(location.toString());
+           //System.out.println(location.toString());
             p1 = new LatLng(location.getLatitude(),location.getLongitude());
 
         }catch (Exception e){

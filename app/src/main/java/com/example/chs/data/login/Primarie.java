@@ -10,6 +10,7 @@ public class Primarie implements Login{
     private HashMap<String,String> notifications = new HashMap<>();
     private String informatii;
     private String[] links;
+    private int points;
 
     public Primarie(){
 
@@ -17,14 +18,16 @@ public class Primarie implements Login{
     public Primarie(String email, String password){
         this.email =email;
         this.password =password;
-        this.informatii="";
+        this.informatii="info";
+        this.points=0;
     }
     public Primarie(String email, String password, String primarie){
         // if user does not exits in json
         this.primarie=primarie;
         this.password = password;
         this.email = email;
-        this.informatii="";
+        this.informatii="info";
+        this.points=0;
     }
 
     public Primarie(String email, String primarie, String location, String password){
@@ -32,7 +35,8 @@ public class Primarie implements Login{
         this.primarie = primarie;
         this.password = password;
         this.location = location;
-        this.informatii="";
+        this.informatii="info";
+        this.points=0;
     }
 
     public Primarie (String email, String primarie, String password, String location, String informatii){
@@ -41,6 +45,7 @@ public class Primarie implements Login{
         this.password = password;
         this.location = location;
         this.informatii = informatii;
+        this.points=0;
     }
 
     @Override
@@ -106,4 +111,19 @@ public class Primarie implements Login{
         this.informatii = informatii;
     }
 
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public String[] getLinks() {
+        return links;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setLinks(String[] links) {
+        this.links = links;
+    }
 }

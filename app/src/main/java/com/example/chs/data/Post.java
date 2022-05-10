@@ -19,8 +19,10 @@ public class Post {
     private Categorie cat;
     private static Integer trackingId =100;
     private Date timerDate;
+    private long datet;
     private Primarie assignee;
     private int spam=0;
+    private int voturi;
     private List<String> report= new ArrayList<>();
     public Post(){}
     public Post(String name, String location, String description) {
@@ -30,6 +32,7 @@ public class Post {
         this.status = "posted";
         this.cat = new Categorie("test");
         trackingId++;
+        this.assignee = null;
 
     }
     public Post(String name, String location, String description,Categorie categorie) {
@@ -39,6 +42,8 @@ public class Post {
         this.status = "posted";
         this.cat = categorie;
         trackingId++;
+        this.assignee = null;
+
 
     }
     public Post(String name,String location,String description,User user,Categorie cat){
@@ -50,6 +55,8 @@ public class Post {
         this.status = "posted";
         this.cat = cat;
         trackingId++;
+        this.assignee = null;
+
 
     }
     public Post(String name,String location,String description,User user,Categorie cat,String received){
@@ -62,8 +69,56 @@ public class Post {
         this.cat = cat;
         this.image = received;
         trackingId++;
+        this.assignee = null;
+
 
     }
+
+    public Post(String name,String location,String description,User user,Categorie cat,String received,long date){
+        this.name = name;
+        this.location = location;
+        this.description = description;
+        this.op = user;
+        this.datet=date;
+        this.op.SetPassword("********");
+        this.status = "posted";
+        this.cat = cat;
+        this.image = received;
+        trackingId++;
+        this.assignee = null;
+
+
+    }
+
+    public Post(String name, String strAdd, String description, Categorie categorie, long date) {
+        this.name = name;
+        this.location = strAdd;
+        this.description = description;
+        this.cat= categorie;
+        this.datet = date;
+        this.timerDate = timerDate;
+        this.op.SetPassword("********");
+        this.status = "posted";
+        this.cat = cat;
+        this.assignee = null;
+
+        trackingId++;
+    }
+
+    public Post(String name, String strAdd, String description, User user, Categorie cat, long time) {
+        this.name = name;
+        this.location = strAdd;
+        this.description = description;
+        this.op = user;
+        this.datet = time;
+        this.op.SetPassword("********");
+        this.status = "posted";
+        this.cat = cat;
+        this.assignee = null;
+
+        trackingId++;
+    }
+
     public String getName(){
         return this.name;
     }
@@ -152,5 +207,21 @@ public class Post {
 
     public void setReport(List<String> report) {
         this.report = report;
+    }
+
+    public int getVoturi() {
+        return voturi;
+    }
+
+    public void setVoturi(int voturi) {
+        this.voturi = voturi;
+    }
+
+    public long getDatet() {
+        return datet;
+    }
+
+    public void setDatet(long datet) {
+        this.datet = datet;
     }
 }

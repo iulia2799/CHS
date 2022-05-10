@@ -11,6 +11,7 @@ public class User implements Login {
     private String email;
     private String password;
     private List<Alert> alertList = new ArrayList<>();
+    private int points;
     private String informatii;
     public User(){
 
@@ -19,7 +20,8 @@ public class User implements Login {
         //if user does not exist in json then do this
         this.email = email;
         this.password = password;
-        this.informatii = "";
+        this.informatii = "Scrie datele de contact aici";
+        this.points=0;
     }
     public User(String email,String password,List<Alert> alerts){
         //if user does not exist in json then do this
@@ -28,13 +30,15 @@ public class User implements Login {
         for(Alert a : alerts){
             this.alertList.add(a);
         }
-        this.informatii = "";
+        this.informatii = "Scrie datele de contact aici";
+        this.points=0;
     }
     public User(String email,String username,String password){
         this.email = email;
         this.username = username;
         this.password = password;
-        this.informatii = "";
+        this.informatii = "Scrie datele de contact aici";
+        this.points=0;
     }
     public User(String email,String username,String password,List<Alert> alerts){
         this.email = email;
@@ -43,7 +47,8 @@ public class User implements Login {
         for(Alert a : alerts){
             this.alertList.add(a);
         }
-        this.informatii = "";
+        this.informatii = "Scrie datele de contact aici";
+        this.points=0;
     }
 
     public String getEmail(){return this.email;}
@@ -87,5 +92,13 @@ public class User implements Login {
         for(Alert a : alerts){
             this.alertList.add(a);
         }
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 }

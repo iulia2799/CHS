@@ -32,6 +32,7 @@ import com.example.chs.data.login.User;
 import com.example.chs.data.login.UserLocalStorage;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -123,7 +124,7 @@ public class AddPost extends AppCompatActivity {
 
     public void clickAddPost(View view){
 
-        StorageReference imagesref= storageReference.child("images/"+date.toString());
+        StorageReference imagesref= storageReference.child("posts/"+date.toString()+searchlocation.getText().toString());
         final String[] imageurl = {""};
         if(capture != null || imageView.getDrawable() !=null){
             imageView.setDrawingCacheEnabled(true);
@@ -135,7 +136,7 @@ public class AddPost extends AppCompatActivity {
 
             UploadTask uploadTask = imagesref.putBytes(data);
             uploadTask.addOnFailureListener(exception -> {
-                // Handle unsuccessful uploads
+                System.out.println("failure to add images");
             }).addOnSuccessListener(taskSnapshot -> {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                 // ...
@@ -167,10 +168,10 @@ public class AddPost extends AppCompatActivity {
             return;
         }
         if(anonymous.isChecked()){
-            post = new Post(name.getText().toString(),strAdd,desc.getText().toString(),new Categorie(dropdowncat.getSelectedItem().toString()));
+            post = new Post(name.getText().toString(),searchlocation.getText().toString(),desc.getText().toString(),new Categorie(dropdowncat.getSelectedItem().toString()), System.currentTimeMillis());
         }
         else
-          post = new Post(name.getText().toString(),strAdd,desc.getText().toString(),user,new Categorie(dropdowncat.getSelectedItem().toString()));
+          post = new Post(name.getText().toString(),searchlocation.getText().toString(),desc.getText().toString(),user,new Categorie(dropdowncat.getSelectedItem().toString()),System.currentTimeMillis());
         DAOPost daopost = new DAOPost(post.getCategorie());
         daopost.add(post).addOnSuccessListener(suc -> {
             makeText(getApplicationContext(), "Succesfully added post", LENGTH_SHORT).show();
@@ -182,7 +183,7 @@ public class AddPost extends AppCompatActivity {
 
     }
     public void addToFirebase(String imageurl){
-        Post post = new Post(name.getText().toString(),strAdd,desc.getText().toString(),user,new Categorie(dropdowncat.getSelectedItem().toString()),imageurl);
+        Post post = new Post(name.getText().toString(),searchlocation.getText().toString(),desc.getText().toString(),user,new Categorie(dropdowncat.getSelectedItem().toString()),imageurl,System.currentTimeMillis());
         DAOPost daopost = new DAOPost(post.getCategorie());
         daopost.add(post).addOnSuccessListener(suc -> {
             makeText(getApplicationContext(), "Succesfully added post", LENGTH_SHORT).show();

@@ -91,7 +91,10 @@ public class Login extends AppCompatActivity {
                 userList.clear();
                 for(DataSnapshot usersnapshot : snapshot.getChildren()){
                     User mUser = usersnapshot.getValue(User.class);
+                    User xUser = new User(mUser.getEmail(),mUser.getUsername(),mUser.getPassword());
                     if(mUser.getEmail().equals(email) && mUser.getPassword().equals(pass)){
+                        userLocalStorage.storeUserData(xUser);
+                        userLocalStorage.setUserLoggedIn(true);
                         Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
                         startActivity(intent);
                     }else{
@@ -117,7 +120,10 @@ public class Login extends AppCompatActivity {
                 primarieList.clear();
                 for(DataSnapshot usersnapshot : snapshot.getChildren()){
                     Primarie mUser = usersnapshot.getValue(Primarie.class);
+                    Primarie xUser = new Primarie(mUser.getEmail(),mUser.getPrimarie(),mUser.getPassword());
                     if(mUser.getEmail().equals(email) && mUser.getPassword().equals(pass)){
+                        primarieLocalStorage.storeUserData(xUser);
+                        primarieLocalStorage.setUserLoggedIn(true);
                         Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
                         intent.putExtra("emailp",email);
                         intent.putExtra("numep","nume primarie aici");
@@ -149,8 +155,7 @@ public class Login extends AppCompatActivity {
             userLocalStorage = new UserLocalStorage(this);
             User user = new User(storedEmail, storedpass);
             checkUser(user.getEmail(),user.getPassword());
-            userLocalStorage.storeUserData(user);
-            userLocalStorage.setUserLoggedIn(true);
+
 
 
         }
@@ -158,8 +163,7 @@ public class Login extends AppCompatActivity {
             primarieLocalStorage = new PrimarieLocalStorage(this);
             Primarie primarie = new Primarie(storedEmail,storedpass);
             checkPrimarie(primarie.getEmail(), primarie.getPassword());
-            primarieLocalStorage.storeUserData(primarie);
-            primarieLocalStorage.setUserLoggedIn(true);
+
 
 
         }else{

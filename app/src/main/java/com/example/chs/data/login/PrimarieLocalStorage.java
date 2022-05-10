@@ -12,14 +12,16 @@ public class PrimarieLocalStorage {
     public void storeUserData(Primarie user){
         SharedPreferences.Editor speditor = primarieLocalDatabase.edit();
         speditor.putString("email",user.getEmail());
+        speditor.putString("username",user.getPrimarie());
         speditor.putString("password",user.getPassword());
         speditor.commit();
     }
 
     public Primarie getLoggedInUser(){
         String email = primarieLocalDatabase.getString("email","");
+        String username = primarieLocalDatabase.getString("username","");
         String pass = primarieLocalDatabase.getString("password","");
-        Primarie storedUser = new Primarie(email,pass);
+        Primarie storedUser = new Primarie(email,username,pass);
         return storedUser;
     }
     public void setUserLoggedIn(boolean loggedIn){

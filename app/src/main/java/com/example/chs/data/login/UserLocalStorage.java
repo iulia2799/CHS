@@ -13,14 +13,16 @@ public class UserLocalStorage {
     public void storeUserData(User user){
         SharedPreferences.Editor speditor = userLocalDatabase.edit();
         speditor.putString("email",user.getEmail());
+        speditor.putString("username",user.getUsername());
         speditor.putString("password",user.getPassword());
         speditor.commit();
     }
 
     public User getLoggedInUser(){
         String email = userLocalDatabase.getString("email","");
+        String username = userLocalDatabase.getString("username","");
         String pass = userLocalDatabase.getString("password","");
-        User storedUser = new User(email,pass);
+        User storedUser = new User(email,username,pass);
         return storedUser;
     }
     public void setUserLoggedIn(boolean loggedIn){
