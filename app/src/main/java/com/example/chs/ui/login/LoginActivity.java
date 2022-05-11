@@ -25,6 +25,8 @@ import android.widget.Toast;
 
 import com.example.chs.MapsActivity;
 import com.example.chs.R;
+import com.example.chs.data.login.DAOUser;
+import com.example.chs.data.login.User;
 import com.example.chs.ui.login.LoginViewModel;
 import com.example.chs.ui.login.LoginViewModelFactory;
 
@@ -43,6 +45,18 @@ public class LoginActivity extends AppCompatActivity {
         final EditText passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.login);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+
+        DAOUser daoUser = new DAOUser();
+        loginButton.setOnClickListener(v->
+        {
+            User user = new User(usernameEditText.getText().toString(),passwordEditText.getText().toString());
+            daoUser.add(user).addOnSuccessListener(suc->{
+               Toast.makeText(this,"Succesfully added user",Toast.LENGTH_SHORT).show();
+
+            }).addOnFailureListener(fail->{
+                Toast.makeText(this,"Failed to add user "+fail.getMessage(),Toast.LENGTH_SHORT).show();
+            });
+        });
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -124,12 +138,12 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }
 }
