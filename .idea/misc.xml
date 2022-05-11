@@ -29,6 +29,7 @@
         <entry key="..\:/android_projects/app/src/main/res/layout/activity_maps2.xml" value="0.22644927536231885" />
         <entry key="..\:/android_projects/app/src/main/res/layout/activity_primarie_dashboard.xml" value="0.25416666666666665" />
         <entry key="..\:/android_projects/app/src/main/res/layout/activity_profile.xml" value="0.4" />
+        <entry key="..\:/android_projects/app/src/main/res/layout/activity_ranking.xml" value="0.25416666666666665" />
         <entry key="..\:/android_projects/app/src/main/res/layout/activity_solve.xml" value="0.264" />
         <entry key="..\:/android_projects/app/src/main/res/layout/activity_spare.xml" value="0.13125" />
         <entry key="..\:/android_projects/app/src/main/res/layout/activity_view_primarie.xml" value="0.25416666666666665" />
@@ -42,6 +43,8 @@
         <entry key="..\:/android_projects/app/src/main/res/layout/reviewpost.xml" value="0.264" />
         <entry key="..\:/android_projects/app/src/main/res/layout/settings_activity.xml" value="0.25416666666666665" />
         <entry key="..\:/android_projects/app/src/main/res/layout/signup.xml" value="0.4" />
+        <entry key="..\:/android_projects/app/src/main/res/layout/user.xml" value="0.2" />
+        <entry key="..\:/android_projects/app/src/main/res/xml/provider_paths.xml" value="0.13125" />
         <entry key="..\:/android_projects/app/src/main/res/xml/root_preferences.xml" value="0.13125" />
       </map>
     </option>

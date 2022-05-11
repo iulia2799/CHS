@@ -85,7 +85,8 @@ public class ReviewPost extends AppCompatActivity {
         status = getIntent().getStringExtra("status");
         voturi_i = getIntent().getIntExtra("voturi",0);
         categorie = getIntent().getStringExtra("categorie");
-        voturi.setText(String.valueOf(voturi_i));
+        String result = "Voturi: "+String.valueOf(voturi_i);
+        voturi.setText(result);
         //Toast.makeText(this,image.,Toast.LENGTH_SHORT).show();
         primarieLocalStorage = new PrimarieLocalStorage(this);
         getStatus();

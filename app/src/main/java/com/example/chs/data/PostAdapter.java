@@ -3,9 +3,6 @@ package com.example.chs.data;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,12 +36,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position){
         //final Post posts = localDataSet[position];
         final Post posts = postList.get(position);
-        holder.name.setText(posts.getName());
-        holder.postloc.setText(posts.getLocation());
-        holder.description.setText(posts.getDescription());
-        if(posts.getOp() !=null)
-         holder.username.setText(posts.getOp().getEmail());
-        holder.status.setText(posts.getStatus());
+        holder.pos.setText(String.valueOf(position+1));
+        holder.description.setText(posts.getName());
+        holder.votes.setText(String.valueOf(posts.getVoturi()));
 
 
 
@@ -55,20 +49,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         return postList.size();
     }
    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-       public TextView name;
-       public TextView postloc;
+       public TextView pos;
        public TextView description;
-       public TextView username;
-       public TextView status;
+       public TextView votes;
        public OnItemListener onClickListener;
        public ViewHolder(@NonNull View itemView, OnItemListener onClickListener) {
            super(itemView);
-           this.name = (TextView) itemView.findViewById(R.id.post_name);
-           this.postloc = (TextView) itemView.findViewById(R.id.postloc);
-           this.description = (TextView) itemView.findViewById(R.id.postdescription);
-           this.username = (TextView) itemView.findViewById(R.id.opname);
-           this.status = (TextView) itemView.findViewById(R.id.statusp);
-           ConstraintLayout layout = (ConstraintLayout) itemView.findViewById(R.id.postlay);
+           this.pos = (TextView) itemView.findViewById(R.id.user_rank);
+           this.description = (TextView) itemView.findViewById(R.id.user_name);
+           this.votes = itemView.findViewById(R.id.user_points);
+           ConstraintLayout layout = (ConstraintLayout) itemView.findViewById(R.id.userlayout);
            this.onClickListener = onClickListener;
            itemView.setOnClickListener((View.OnClickListener) this);
 

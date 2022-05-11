@@ -106,7 +106,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         button=  (Button)findViewById(R.id.currentLoc);
         ranking = (Button)findViewById(R.id.button3);
         add = (Button)findViewById(R.id.button4);
-        add = (Button)findViewById(R.id.button5);
+        profile = (Button)findViewById(R.id.button5);
         searchView = (SearchView)findViewById(R.id.search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -424,7 +424,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                dropdowncat.setVisibility(View.GONE);
             }
         });
     }
@@ -518,6 +518,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startActivity(intent);
     }
     public void Ranking(View view){
+        Intent intent = new Intent(this,Ranking.class);
+        startActivity(intent);
 
     }
     public void Profile(View view){

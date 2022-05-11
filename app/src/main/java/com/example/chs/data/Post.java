@@ -22,7 +22,7 @@ public class Post {
     private long datet;
     private Primarie assignee;
     private int spam=0;
-    private int voturi;
+    private int voturi=0;
     private List<String> report= new ArrayList<>();
     public Post(){}
     public Post(String name, String location, String description) {

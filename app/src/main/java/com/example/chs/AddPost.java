@@ -5,6 +5,7 @@ import static android.widget.Toast.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -38,6 +40,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -223,10 +228,11 @@ public class AddPost extends AppCompatActivity {
             //imageView.getLayoutParams().width-=20;
         }
         if(requestCode == 100){
-            capture = (Bitmap) data.getExtras().get("data");
-            //Uri uri = data.getData();
-            imageView.setImageBitmap(capture);
-            //imageView.setImageURI(uri);
+            //capture = (Bitmap) data.getExtras().get("data");
+            System.out.println("Get from camera : "+currentPhotoPath);
+            Uri uri = Uri.fromFile(new File(currentPhotoPath));
+            //imageView.setImageBitmap(capture);
+            imageView.setImageURI(uri);
 
         }
 
@@ -250,7 +256,45 @@ public class AddPost extends AppCompatActivity {
 
     public void ClickCamera(View view){
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent,100);
+        // Ensure that there's a camera activity to handle the intent
+        //if (intent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                System.out.println("error");
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(intent,100);
+            }
+        //}else System.out.println("error");
+
+    }
+
+    String currentPhotoPath;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        System.out.println(currentPhotoPath);
+        return image;
     }
 
 }
