@@ -62,10 +62,7 @@ public class User implements Login {
         this.username = newusername;
     }
 
-    @Override
-    public void delete() {
 
-    }
 
     public String getUsername(){
         return this.username;

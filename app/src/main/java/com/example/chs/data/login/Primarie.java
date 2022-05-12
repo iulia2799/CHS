@@ -58,11 +58,6 @@ public class Primarie implements Login{
         this.primarie = newusername;
     }
 
-    @Override
-    public void delete() {
-
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
