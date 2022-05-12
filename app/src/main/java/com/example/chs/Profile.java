@@ -2,14 +2,20 @@ package com.example.chs;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.chs.data.Categorie;
+import com.example.chs.data.Post;
+import com.example.chs.data.PostAdapter;
 import com.example.chs.data.login.DAOUser;
 import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.PrimarieLocalStorage;
@@ -23,6 +29,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Profile extends AppCompatActivity {
@@ -34,12 +42,21 @@ public class Profile extends AppCompatActivity {
     public TextView informatii;
     public EditText editinfo;
     private MaterialButton editareinfo;
+    private RecyclerView recyclerView;
     public User userlog;
     public TextView infotitle;
     private boolean editmode = false;
     private List<User> userList = new ArrayList<>();
     private List<Primarie> primarieList = new ArrayList<>();
-
+    private List<Post> postList = new ArrayList<>();
+    private FirebaseDatabase database = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
+    private Categorie[] categories = {
+            new Categorie("animale"),
+            new Categorie("cladiri"),
+            new Categorie("drumuri publice"),
+            new Categorie("parcuri"),
+            new Categorie("test")
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +70,7 @@ public class Profile extends AppCompatActivity {
         infotitle = findViewById(R.id.username2);
         username = findViewById(R.id.Username);
         username.setText("username");
+        recyclerView = findViewById(R.id.userpost);
     }
     private boolean auth(){
         return this.userLocalStorage.getUserLoggedIn();
@@ -171,9 +189,62 @@ public class Profile extends AppCompatActivity {
         if(auth()){
             displayUser();
             getUserInfo();
+            findPosts();
         }else if(authp()){
             display();
             getIns();
         }
+    }
+
+    public void findPosts(){
+        for(Categorie cat : categories){
+            postList.clear();
+            DatabaseReference ref = database.getReference(cat.getNume());
+            ref.addValueEventListener(new ValueEventListener() {
+                private static final String TAG = "error";
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot postsnap : snapshot.getChildren()){
+                        if(!postsnap.exists()) Log.e(TAG, "onDataChange: No data");
+                        if(postsnap.child("voturi").exists()) {
+                            if(postsnap.child("status").exists() && postsnap.child("op").getValue(User.class).getEmail().equals(userLocalStorage.getLoggedInUser().getEmail())){
+                                if(!postsnap.child("status").getValue(String.class).contains("SOLVED") && !postsnap.child("status").getValue(String.class).contains("Rezolvat")){
+                                    Post mPost = postsnap.getValue(Post.class);
+                                    postList.add(mPost);
+                                }
+                            }
+
+                        }
+                    }
+                    Collections.sort(postList, new Comparator<Post>() {
+                        @Override
+                        public int compare(Post post, Post t1) {
+                            return t1.getVoturi()-post.getVoturi();
+                        }
+                    });
+
+                    PostAdapter postAdapter = new PostAdapter(postList, new PostAdapter.OnItemListener() {
+                        @Override
+                        public void onItemClick(int position) {
+
+                        }
+                    });
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    recyclerView.setAdapter(postAdapter);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    throw error.toException();
+                }
+            });
+
+        }
+    }
+
+    public void findLinks(){
+
     }
 }

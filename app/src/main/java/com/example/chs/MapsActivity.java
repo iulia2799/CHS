@@ -203,8 +203,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                        Post mPost = postsnap.getValue(Post.class);
 
                        //
-                       assert mPost != null;mPost.setImages(postsnap.child("images").getValue(String.class));
-
+                       assert mPost != null;
+                       mPost.setImages(postsnap.child("images").getValue(String.class));
+                       String trackingnumber = postsnap.getKey();
+                       mPost.setTrackingnumber(trackingnumber);
                        String location = mPost.getLocation();
                        //System.out.println(location);
                        if(location !=null){
@@ -213,7 +215,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                            posts.add(mPost);
                            //System.out.println(mPost.getImages());
                            int days = (int) ((System.currentTimeMillis()- mPost.getDatet())/ (1000*60*60*24));
-                           if(days>=30){
+                           if(days>30 && !mPost.getStatus().contains("posted") && !mPost.getStatus().contains("SOLVED")&& !mPost.getStatus().contains("Rezovlat")){
                               ScorePoints();
                            }
                            assert marker != null;
@@ -227,6 +229,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                    //Toast.makeText(getApplicationContext(),post.getImages().toString(),Toast.LENGTH_SHORT).show();
                                    Intent intent = new Intent(getApplicationContext(),ReviewPost.class);
                                    intent.putExtra("namep",post.getName());
+                                   intent.putExtra("trackingnumber",post.getTrackingnumber());
                                    intent.putExtra("locationp",post.getLocation());
                                    intent.putExtra("descp",post.getDescription());
                                    intent.putExtra("post_image",mPost.getImages());

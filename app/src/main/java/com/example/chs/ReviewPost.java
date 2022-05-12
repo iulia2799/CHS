@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.chs.data.Categorie;
 import com.example.chs.data.Post;
 import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.PrimarieLocalStorage;
@@ -48,9 +49,16 @@ public class ReviewPost extends AppCompatActivity {
     private String status;
     private Intent i;
     private int voturi_i;
+    private String trackingnumber;
     private String categorie;
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
-
+    private Categorie[] categories = {
+            new Categorie("animale"),
+            new Categorie("cladiri"),
+            new Categorie("drumuri publice"),
+            new Categorie("parcuri"),
+            new Categorie("test")
+    };
 
 
 
@@ -79,6 +87,7 @@ public class ReviewPost extends AppCompatActivity {
         i.getExtras();
         post.setText(getIntent().getStringExtra("namep"));
         location.setText(getIntent().getStringExtra("locationp"));
+        trackingnumber = getIntent().getStringExtra("trackingnumber");
         description.setText(getIntent().getStringExtra("descp"));
         user.setText(getIntent().getStringExtra("post_op"));
         String image = getIntent().getStringExtra("post_image");
@@ -173,6 +182,8 @@ public class ReviewPost extends AppCompatActivity {
     }
 
     public void clickPreia(View view){
+        Primarie primarie = primarieLocalStorage.getLoggedInUser();
+
 
     }
     public void clickDislike(View view){
@@ -181,6 +192,14 @@ public class ReviewPost extends AppCompatActivity {
     public void clickReport(View view){
         penalizeUser();
         findPost();
+    }
+
+    public void findNumber(){
+        for(Categorie cat : categories){
+            DatabaseReference ref = database.getReference(cat.getNume());
+            DatabaseReference postref = ref.child(trackingnumber).getRef();
+
+        }
     }
 
     public void penalizeUser(){

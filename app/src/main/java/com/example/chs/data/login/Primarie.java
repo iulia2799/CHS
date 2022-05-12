@@ -1,6 +1,10 @@
 package com.example.chs.data.login;
 
+import com.example.chs.data.model.Act;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Primarie implements Login{
     private String primarie;
@@ -9,7 +13,7 @@ public class Primarie implements Login{
     private String email;
     private HashMap<String,String> notifications = new HashMap<>();
     private String informatii;
-    private String[] links;
+    private List<Act> links = new ArrayList<>();
     private int points;
 
     public Primarie(){
@@ -110,15 +114,15 @@ public class Primarie implements Login{
         this.points = points;
     }
 
-    public String[] getLinks() {
-        return links;
-    }
-
     public int getPoints() {
         return points;
     }
 
-    public void setLinks(String[] links) {
+    public void setLinks(List<Act> links) {
         this.links = links;
+    }
+
+    public List<Act> getLinks() {
+        return links;
     }
 }

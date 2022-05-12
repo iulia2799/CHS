@@ -54,7 +54,11 @@ public class Notification extends AppCompatActivity implements NotificationAdapt
                     assert mUser != null;
                     if(mUser.getEmail().equals(user.getEmail()))
                     {
-                        //System.out.println(dataSnapshot.toString());
+                        if(!dataSnapshot.child("alertList").exists()){
+                            Alert mAlert = new Alert(String.valueOf(System.currentTimeMillis()),"Welcome to app");
+                            dataSnapshot.child("alertList").child("0").getRef().setValue(mAlert);
+                            alerts.add(mAlert);
+                        }else
                         for (DataSnapshot ing : dataSnapshot.child("alertList").getChildren()) {
 
                             Alert mAlert = ing.getValue(Alert.class);

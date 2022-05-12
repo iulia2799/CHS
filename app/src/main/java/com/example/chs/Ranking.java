@@ -84,8 +84,13 @@ public class Ranking extends AppCompatActivity {
                     for(DataSnapshot postsnap : snapshot.getChildren()){
                         if(!postsnap.exists()) Log.e(TAG, "onDataChange: No data");
                         if(postsnap.child("voturi").exists()) {
-                            Post mPost = postsnap.getValue(Post.class);
-                            postList.add(mPost);
+                            if(postsnap.child("status").exists()){
+                                if(!postsnap.child("status").getValue(String.class).contains("SOLVED") && !postsnap.child("status").getValue(String.class).contains("Rezolvat")){
+                                    Post mPost = postsnap.getValue(Post.class);
+                                    postList.add(mPost);
+                                }
+                            }
+
                         }
                     }
                     Collections.sort(postList, new Comparator<Post>() {
@@ -182,8 +187,13 @@ public class Ranking extends AppCompatActivity {
                 for(DataSnapshot postsnap : snapshot.getChildren()){
                     if(!postsnap.exists()) Log.e(TAG, "onDataChange: No data");
                     if(postsnap.child("voturi").exists()) {
-                        Post mPost = postsnap.getValue(Post.class);
-                        postList.add(mPost);
+                        if(postsnap.child("status").exists()){
+                            if(!postsnap.child("status").getValue(String.class).contains("SOLVED") && !postsnap.child("status").getValue(String.class).contains("Rezolvat")){
+                                Post mPost = postsnap.getValue(Post.class);
+                                postList.add(mPost);
+                            }
+                        }
+
                     }
 
                 }

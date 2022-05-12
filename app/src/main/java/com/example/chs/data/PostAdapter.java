@@ -38,7 +38,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         final Post posts = postList.get(position);
         holder.pos.setText(String.valueOf(position+1));
         holder.description.setText(posts.getName());
-        holder.votes.setText(String.valueOf(posts.getVoturi()));
+        String s = "Voturi : "+String.valueOf(posts.getVoturi());
+        holder.votes.setText(s);
 
 
 
