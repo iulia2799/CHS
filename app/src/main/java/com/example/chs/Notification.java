@@ -40,54 +40,55 @@ public class Notification extends AppCompatActivity implements NotificationAdapt
     protected void onCreate(Bundle savedInstanceState) {
         //textView = findViewById(R.id.notext);
         userLocalStorage = new UserLocalStorage(this);
-        user= userLocalStorage.getLoggedInUser();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notification);
         textView = findViewById(R.id.notext);
-        DatabaseReference databaseReference = database.getReference("User");
-        //System.out.println("before");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    User mUser = dataSnapshot.getValue(User.class);
-                    assert mUser != null;
-                    if(mUser.getEmail().equals(user.getEmail()))
-                    {
-                        if(!dataSnapshot.child("alertList").exists()){
-                            Alert mAlert = new Alert(String.valueOf(System.currentTimeMillis()),"Welcome to app");
-                            dataSnapshot.child("alertList").child("0").getRef().setValue(mAlert);
-                            alerts.add(mAlert);
-                        }else
-                        for (DataSnapshot ing : dataSnapshot.child("alertList").getChildren()) {
+        if(userLocalStorage.getUserLoggedIn()) {
+            user = userLocalStorage.getLoggedInUser();
+            DatabaseReference databaseReference = database.getReference("User");
+            //System.out.println("before");
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        User mUser = dataSnapshot.getValue(User.class);
+                        assert mUser != null;
+                        if (mUser.getEmail().equals(user.getEmail())) {
+                            if (!dataSnapshot.child("alertList").exists()) {
+                                Alert mAlert = new Alert(String.valueOf(System.currentTimeMillis()), "Welcome to app");
+                                dataSnapshot.child("alertList").child("0").getRef().setValue(mAlert);
+                                alerts.add(mAlert);
+                            } else
+                                for (DataSnapshot ing : dataSnapshot.child("alertList").getChildren()) {
 
-                            Alert mAlert = ing.getValue(Alert.class);
-                            assert mAlert != null;
-                            //System.out.println(mAlert.getDescription());
-                            alerts.add(mAlert);
-                            //System.out.println(alerts.get(0).getDate());
-                            //System.out.println("in");
+                                    Alert mAlert = ing.getValue(Alert.class);
+                                    assert mAlert != null;
+                                    //System.out.println(mAlert.getDescription());
+                                    alerts.add(mAlert);
+                                    //System.out.println(alerts.get(0).getDate());
+                                    //System.out.println("in");
+
+                                }
 
                         }
+                        NotificationAdapter postAdapter = new NotificationAdapter(alerts, new NotificationAdapter.OnItemListener() {
+                            @Override
+                            public void onItemClick(int position) {
 
+                            }
+                        });
+                        recyclerView.setHasFixedSize(true);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        recyclerView.setAdapter(postAdapter);
                     }
-                    NotificationAdapter postAdapter = new NotificationAdapter(alerts, new NotificationAdapter.OnItemListener() {
-                        @Override
-                        public void onItemClick(int position) {
-
-                        }
-                    });
-                    recyclerView.setHasFixedSize(true);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    recyclerView.setAdapter(postAdapter);
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+        }
         System.out.println("after");
         //System.out.println(alerts.size());
         //alerts.add(new Alert("0","0"));

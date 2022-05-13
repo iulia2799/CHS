@@ -32,6 +32,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CHS.NoActionBar">
+        <activity
+            android:name=".ChangePassword"
+            android:exported="false" />
+        <activity
+            android:name=".Setari"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

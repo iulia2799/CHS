@@ -120,7 +120,7 @@ public class Login extends AppCompatActivity {
                 primarieList.clear();
                 for(DataSnapshot usersnapshot : snapshot.getChildren()){
                     Primarie mUser = usersnapshot.getValue(Primarie.class);
-                    Primarie xUser = new Primarie(mUser.getEmail(),mUser.getPrimarie(),mUser.getPassword());
+                    Primarie xUser = new Primarie(mUser.getEmail(),mUser.getPrimarie(),mUser.getLocation(),mUser.getPassword());
                     if(mUser.getEmail().equals(email) && mUser.getPassword().equals(pass)){
                         primarieLocalStorage.storeUserData(xUser);
                         primarieLocalStorage.setUserLoggedIn(true);

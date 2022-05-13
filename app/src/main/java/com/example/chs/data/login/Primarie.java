@@ -25,7 +25,7 @@ public class Primarie implements Login{
         this.informatii="info";
         this.points=0;
     }
-    public Primarie(String email, String password, String primarie){
+    public Primarie(String email, String primarie, String password){
         // if user does not exits in json
         this.primarie=primarie;
         this.password = password;

@@ -1,22 +1,30 @@
 package com.example.chs;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chs.data.Categorie;
 import com.example.chs.data.Post;
 import com.example.chs.data.PostAdapter;
-import com.example.chs.data.login.DAOUser;
 import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.PrimarieLocalStorage;
 import com.example.chs.data.login.User;
@@ -45,6 +53,7 @@ public class Profile extends AppCompatActivity {
     private RecyclerView recyclerView;
     public User userlog;
     public TextView infotitle;
+    public PopupWindow window;
     private boolean editmode = false;
     private List<User> userList = new ArrayList<>();
     private List<Primarie> primarieList = new ArrayList<>();
@@ -70,6 +79,8 @@ public class Profile extends AppCompatActivity {
         infotitle = findViewById(R.id.username2);
         username = findViewById(R.id.Username);
         username.setText("username");
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        window = new PopupWindow(inflater.inflate(R.layout.popup,null,false),100,100,true);
         recyclerView = findViewById(R.id.userpost);
     }
     private boolean auth(){
@@ -114,17 +125,19 @@ public class Profile extends AppCompatActivity {
 
     protected void getIns(){
         primarielog = this.primarieLocalStorage.getLoggedInUser();
-        DatabaseReference reference =  FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/").getReference("User");
+        DatabaseReference reference =  FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Primarie");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 primarieList.clear();
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Primarie mUser = dataSnapshot.getValue(Primarie.class);
-                    if(mUser.getEmail().equals(userlog.getEmail())){
+                    assert mUser != null;
+                    if(mUser.getEmail().equals(primarielog.getEmail())){
                         informatii.setText(mUser.getInformatii());
                         username.setText(mUser.getPrimarie());
                     }else{
+                        System.out.println(primarielog.getEmail()+","+mUser.getEmail());
                         Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
                     }
                     primarieList.add(mUser);
@@ -155,6 +168,7 @@ public class Profile extends AppCompatActivity {
                     userList.clear();
                     for(DataSnapshot usersnapshot : snapshot.getChildren()){
                         User mUser = usersnapshot.getValue(User.class);
+                        assert mUser != null;
                         if(mUser.getEmail().equals(userlog.getEmail())){
                             usersnapshot.child("informatii").getRef().setValue(userlog.getInformatii());
                         }else{
@@ -176,9 +190,34 @@ public class Profile extends AppCompatActivity {
 
     }
 
+    public void onOptions(View view){
+        Clickoptions(view);
+    }
+
     public void Clickoptions(View view){
-        Intent intent = new Intent(this, Notification.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this, Notification.class);
+        //startActivity(intent);
+        View v = View.inflate(this,R.layout.popup, null);
+        ImageView notificon = v.findViewById(R.id.bell);
+        TextView n = v.findViewById(R.id.textnot);
+        ImageView seticon = v.findViewById(R.id.rot);
+        TextView s = v.findViewById(R.id.textrot);
+        window = new PopupWindow(v,600, 300, true);
+        window.showAsDropDown(view,-100,0);
+        s.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),Setari.class);
+                startActivity(intent);
+            }
+        });
+        n.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),Notification.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -190,12 +190,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
        // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
        // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         //add markers
-
+        Toast.makeText(this,"LOADING...",Toast.LENGTH_LONG).show();
        for(Categorie cat : categories){
            DatabaseReference ref = database.getReference(cat.getNume());
            ref.addValueEventListener(new ValueEventListener() {
                private static final String TAG = "error";
-
+               Primarie primarie = primarieLocalStorage.getLoggedInUser();
+               String locationp = primarie.getLocation();
                @Override
                public void onDataChange(@NonNull DataSnapshot snapshot) {
                    for(DataSnapshot postsnap : snapshot.getChildren()){
@@ -209,6 +210,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                        mPost.setTrackingnumber(trackingnumber);
                        String location = mPost.getLocation();
                        //System.out.println(location);
+                       //System.out.println(locationp);
+                       if(locationp !=null && location!=null){
+                           if(!location.contains(locationp)) continue;
+                       }
+                       if(mPost.getStatus().contains("SOLVED") || mPost.getStatus().contains("Rezolvat")) continue;
                        if(location !=null){
                        LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
                            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getName()));
@@ -437,7 +443,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         DatabaseReference ref = database.getReference(cat.getNume());
         ref.addValueEventListener(new ValueEventListener() {
             private static final String TAG = "error";
-
+            Primarie primarie = primarieLocalStorage.getLoggedInUser();
+            String locationp = primarie.getLocation();
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -447,6 +454,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     assert mPost != null;
                     String location = mPost.getLocation();
+                    if(locationp !=null && location!=null){
+                        if(!location.contains(locationp)) continue;
+                    }
+                    if(mPost.getStatus().contains("SOLVED") || mPost.getStatus().contains("Rezolvat")) continue;
                     //System.out.println(location);
                     if(location !=null){
                         LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
