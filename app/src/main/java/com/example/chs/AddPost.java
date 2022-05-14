@@ -67,7 +67,7 @@ public class AddPost extends AppCompatActivity {
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     private StorageReference storageReference = firebaseStorage.getReferenceFromUrl("gs://proiect-chs.appspot.com");
     private Date date = Calendar.getInstance().getTime();
-
+    private String post_location="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +84,16 @@ public class AddPost extends AppCompatActivity {
         dropdowncat = (Spinner) findViewById(R.id.mapspinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdowncat.setAdapter(adapter);
+
+        searchlocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(!b){
+                    post_location = searchlocation.getText().toString();
+                    System.out.println(post_location);
+                }
+            }
+        });
 
 
         button.setOnClickListener(view -> {
@@ -210,7 +220,9 @@ public class AddPost extends AppCompatActivity {
                     strreturnedaddress.append(returnedAddress.getAddressLine(i)).append("\n");
                 }
                 strAdd = strreturnedaddress.toString();
-                searchlocation.setText(strAdd);
+                post_location = strAdd;
+                System.out.println("First : "+post_location);
+                searchlocation.setText(strAdd, TextView.BufferType.EDITABLE);
             }else{
                 makeText(getApplicationContext(),"no address found", LENGTH_SHORT).show();
             }

@@ -97,7 +97,7 @@ public class Post {
         this.cat= categorie;
         this.datet = date;
         this.timerDate = timerDate;
-        this.op.SetPassword("********");
+        //this.op.SetPassword("********");
         this.status = "posted";
         this.cat = cat;
         this.assignee = null;

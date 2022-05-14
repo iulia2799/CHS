@@ -1,26 +1,21 @@
 package com.example.chs;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chs.data.Categorie;
 import com.example.chs.data.Post;
@@ -41,7 +36,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Profile extends AppCompatActivity {
+public class ViewProfile extends AppCompatActivity {
     public UserLocalStorage userLocalStorage;
     public Primarie primarielog;
     public PrimarieLocalStorage primarieLocalStorage;
@@ -55,7 +50,6 @@ public class Profile extends AppCompatActivity {
     public TextView infotitle;
     public PopupWindow window;
     private boolean editmode = false;
-    private Intent i;
     private List<User> userList = new ArrayList<>();
     private List<Primarie> primarieList = new ArrayList<>();
     private List<Post> postList = new ArrayList<>();
@@ -71,7 +65,6 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        i = getIntent();
         button = findViewById(R.id.options);
         editareinfo = findViewById(R.id.clickedit);
         informatii = findViewById(R.id.info);
