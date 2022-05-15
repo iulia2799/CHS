@@ -118,6 +118,18 @@ public class Post {
 
     }
 
+    public Post(String toString, String toString1, String toString2, Categorie categorie, String imageurl, long currentTimeMillis) {
+        this.name = toString;
+        this.location = toString1;
+        this.description = toString2;
+        this.datet = currentTimeMillis;
+        this.image = imageurl;
+        //this.op.SetPassword("********");
+        this.status = "posted";
+        this.cat = categorie;
+        this.assignee = null;
+    }
+
     public String getName(){
         return this.name;
     }

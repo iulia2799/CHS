@@ -247,7 +247,7 @@ public class Profile extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot postsnap : snapshot.getChildren()){
                         if(!postsnap.exists()) Log.e(TAG, "onDataChange: No data");
-                        if(postsnap.child("voturi").exists()) {
+                        if(postsnap.child("voturi").exists() && postsnap.child("op").exists()) {
                             if(postsnap.child("status").exists() && postsnap.child("op").getValue(User.class).getEmail().equals(userLocalStorage.getLoggedInUser().getEmail())){
                                 if(!postsnap.child("status").getValue(String.class).contains("SOLVED") && !postsnap.child("status").getValue(String.class).contains("Rezolvat")){
                                     Post mPost = postsnap.getValue(Post.class);

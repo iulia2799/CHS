@@ -138,8 +138,8 @@ public class AddPost extends AppCompatActivity {
     }
 
     public void clickAddPost(View view){
-
-        StorageReference imagesref= storageReference.child("posts/"+date.toString()+searchlocation.getText().toString());
+        System.out.println(post_location);
+        StorageReference imagesref= storageReference.child("posts/"+date.toString());
         final String[] imageurl = {""};
         if(capture != null || imageView.getDrawable() !=null){
             imageView.setDrawingCacheEnabled(true);
@@ -150,9 +150,7 @@ public class AddPost extends AppCompatActivity {
             byte[] data = baos.toByteArray();
 
             UploadTask uploadTask = imagesref.putBytes(data);
-            uploadTask.addOnFailureListener(exception -> {
-                System.out.println("failure to add images");
-            }).addOnSuccessListener(taskSnapshot -> {
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                 // ...
                 imagesref.getDownloadUrl().addOnSuccessListener(uri -> {
@@ -160,6 +158,8 @@ public class AddPost extends AppCompatActivity {
                     //makeText(getApplicationContext(), imageurl[0], LENGTH_SHORT).show();
                     addToFirebase(imageurl[0]);
                 }).addOnFailureListener(fail -> System.out.println("FAILED TO GET DOWNLOAD URL \n\n\n\n\n"));
+            }).addOnFailureListener(exception -> {
+                System.out.println("failure to add images");
             });
            /*imagesref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                @Override
@@ -176,29 +176,32 @@ public class AddPost extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
-        Post post;
-        if(user ==null){
-            Toast.makeText(this,"You can't post!!!", LENGTH_SHORT).show();
-            return;
-        }
-        if(anonymous.isChecked()){
-            post = new Post(name.getText().toString(),searchlocation.getText().toString(),desc.getText().toString(),new Categorie(dropdowncat.getSelectedItem().toString()), System.currentTimeMillis());
-        }
-        else
-          post = new Post(name.getText().toString(),searchlocation.getText().toString(),desc.getText().toString(),user,new Categorie(dropdowncat.getSelectedItem().toString()),System.currentTimeMillis());
-        DAOPost daopost = new DAOPost(post.getCategorie());
-        daopost.add(post).addOnSuccessListener(suc -> {
-            makeText(getApplicationContext(), "Succesfully added post", LENGTH_SHORT).show();
-            //Intent intent = new Intent(getApplicationContext(), PrimarieDashboard.class);
-            //startActivity(intent);
+        }else {
+            Post post;
+            if (user == null) {
+                Toast.makeText(this, "You can't post!!!", LENGTH_SHORT).show();
+                return;
+            }
+            if (anonymous.isChecked()) {
+                post = new Post(name.getText().toString(), searchlocation.getText().toString(), desc.getText().toString(), new Categorie(dropdowncat.getSelectedItem().toString()), System.currentTimeMillis());
+            } else
+                post = new Post(name.getText().toString(), searchlocation.getText().toString(), desc.getText().toString(), user, new Categorie(dropdowncat.getSelectedItem().toString()), System.currentTimeMillis());
+            DAOPost daopost = new DAOPost(post.getCategorie());
+            daopost.add(post).addOnSuccessListener(suc -> {
+                makeText(getApplicationContext(), "Succesfully added post", LENGTH_SHORT).show();
+                //Intent intent = new Intent(getApplicationContext(), PrimarieDashboard.class);
+                //startActivity(intent);
 
-        }).addOnFailureListener(fail -> makeText(getApplicationContext(), "Failed to add post " + fail.getMessage(), LENGTH_SHORT).show());
-
+            }).addOnFailureListener(fail -> makeText(getApplicationContext(), "Failed to add post " + fail.getMessage(), LENGTH_SHORT).show());
+        }
 
     }
     public void addToFirebase(String imageurl){
-        Post post = new Post(name.getText().toString(),searchlocation.getText().toString(),desc.getText().toString(),user,new Categorie(dropdowncat.getSelectedItem().toString()),imageurl,System.currentTimeMillis());
+        Post post;
+        if(anonymous.isChecked()){
+            post = new Post(name.getText().toString(),searchlocation.getText().toString(),desc.getText().toString(),new Categorie(dropdowncat.getSelectedItem().toString()),imageurl,System.currentTimeMillis());
+        }
+        else post = new Post(name.getText().toString(),searchlocation.getText().toString(),desc.getText().toString(),user,new Categorie(dropdowncat.getSelectedItem().toString()),imageurl,System.currentTimeMillis());
         DAOPost daopost = new DAOPost(post.getCategorie());
         daopost.add(post).addOnSuccessListener(suc -> {
             makeText(getApplicationContext(), "Succesfully added post", LENGTH_SHORT).show();

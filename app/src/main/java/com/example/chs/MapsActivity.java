@@ -80,7 +80,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             new Categorie("parcuri"),
             new Categorie("test")
     };
-    private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","test"};
+    private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","test","rezolvate"};
 
     private Button ranking;
     private Button add;
@@ -208,6 +208,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                        mPost.setImages(postsnap.child("images").getValue(String.class));
                        String trackingnumber = postsnap.getKey();
                        mPost.setTrackingnumber(trackingnumber);
+                       mPost.setCat(cat);
                        String location = mPost.getLocation();
                        //System.out.println(location);
                        //System.out.println(locationp);
@@ -238,13 +239,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                    intent.putExtra("trackingnumber",post.getTrackingnumber());
                                    intent.putExtra("locationp",post.getLocation());
                                    intent.putExtra("descp",post.getDescription());
-                                   intent.putExtra("post_image",mPost.getImages());
+                                   intent.putExtra("post_image",post.getImages());
                                    System.out.println(post.getImages());
-                                   intent.putExtra("post_op",post.getOp().getUsername());
+                                   if(post.getOp()!=null)
+                                      intent.putExtra("post_op",post.getOp().getUsername());
+                                   else intent.putExtra("post_op","anonim");
                                    //String categ = newpost.getCategorie();
                                    intent.putExtra("status",post.getStatus());
                                    intent.putExtra("voturi",post.getVoturi());
-                                   intent.putExtra("categorie",cat.getNume());
+                                   intent.putExtra("categorie",post.getCategorie());
                                    //System.out.println(categ);
                                    startActivity(intent);
                                    return true;
@@ -404,8 +407,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(authenticate()){
             displayUserDetails();
         }
-
-        if(authenticatePrimarie()) displayPrimarieDetails();
+        else if(authenticatePrimarie()) displayPrimarieDetails();
     }
     private boolean authenticate(){
         return userLocalStorage.getUserLoggedIn();
@@ -427,7 +429,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dropdowncat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                SelectItem(new Categorie(dropdowncat.getSelectedItem().toString()));
+                if(dropdowncat.getSelectedItem().toString().equals("rezolvate"))
+                    findRez();
+                else SelectItem(new Categorie(dropdowncat.getSelectedItem().toString()));
 
             }
 
@@ -436,6 +440,81 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 dropdowncat.setVisibility(View.GONE);
             }
         });
+    }
+
+    public void findRez(){
+        mMap.clear();
+        postList.clear();
+        System.out.println("here");
+        for(Categorie cat : categories){
+            DatabaseReference ref = database.getReference(cat.getNume());
+            ref.addValueEventListener(new ValueEventListener() {
+                private static final String TAG = "error";
+                Primarie primarie = primarieLocalStorage.getLoggedInUser();
+                String locationp = primarie.getLocation();
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot postsnap : snapshot.getChildren()){
+                        if(!postsnap.exists()) Log.e(TAG, "onDataChange: No data");
+                        Post mPost = postsnap.getValue(Post.class);
+
+                        //
+                        assert mPost != null;
+                        mPost.setImages(postsnap.child("images").getValue(String.class));
+                        String trackingnumber = postsnap.getKey();
+                        mPost.setTrackingnumber(trackingnumber);
+                        mPost.setCat(cat);
+                        String location = mPost.getLocation();
+                        //System.out.println(location);
+                        //System.out.println(locationp);
+                        if(locationp !=null && location!=null){
+                            if(!location.contains(locationp)) continue;
+                        }
+                        if(mPost.getStatus().contains("Rezolvat") || mPost.getStatus().contains("SOLVED"))
+                        if(location !=null){
+                            LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
+                            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getName()));
+                            posts.add(mPost);
+                            //System.out.println(mPost.getImages());
+                            assert marker != null;
+                            marker.setTag(mPost);
+                            System.out.println(mPost.getImages());
+                            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                @Override
+                                public boolean onMarkerClick(@NonNull Marker marker) {
+                                    Post post = (Post) marker.getTag();
+                                    //System.out.println(post.getImages());
+                                    //Toast.makeText(getApplicationContext(),post.getImages().toString(),Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getApplicationContext(),ReviewPost.class);
+                                    intent.putExtra("namep",post.getName());
+                                    intent.putExtra("trackingnumber",post.getTrackingnumber());
+                                    intent.putExtra("locationp",post.getLocation());
+                                    intent.putExtra("descp",post.getDescription());
+                                    intent.putExtra("post_image",post.getImages());
+                                    System.out.println(post.getImages());
+                                    if(post.getOp()!=null)
+                                        intent.putExtra("post_op",post.getOp().getUsername());
+                                    else intent.putExtra("post_op","anonim");
+                                    //String categ = newpost.getCategorie();
+                                    intent.putExtra("status",post.getStatus());
+                                    intent.putExtra("voturi",post.getVoturi());
+                                    intent.putExtra("categorie",post.getCategorie());
+                                    //System.out.println(categ);
+                                    startActivity(intent);
+                                    return true;
+                                }
+                            });
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    throw error.toException();
+                }
+            });
+        }
     }
     public void SelectItem(Categorie cat){
         mMap.clear();
@@ -451,9 +530,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for(DataSnapshot postsnap : snapshot.getChildren()){
                     if(!postsnap.exists()) Log.e(TAG, "onDataChange: No data");
                     Post mPost = postsnap.getValue(Post.class);
-
                     assert mPost != null;
+                    mPost.setImages(postsnap.child("images").getValue(String.class));
+                    String trackingnumber = postsnap.getKey();
+                    System.out.println(trackingnumber);
+                    mPost.setTrackingnumber(trackingnumber);
+                    mPost.setCat(cat);
                     String location = mPost.getLocation();
+                    //System.out.println(location);
+                    //System.out.println(locationp);
                     if(locationp !=null && location!=null){
                         if(!location.contains(locationp)) continue;
                     }
@@ -467,10 +552,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         System.out.println("Images:"+mPost.getImages());
                         Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getImages()));
                         posts.add(mPost);
-                        int days = (int) ((System.currentTimeMillis()- mPost.getDatet())/ (1000*60*60*24));
-                        if(days>=30){
-                            ScorePoints();
-                        }
                         marker.setTag(mPost);
                         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                             @Override
@@ -481,13 +562,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 Intent intent = new Intent(getApplicationContext(),ReviewPost.class);
                                 intent.putExtra("namep",post.getName());
                                 intent.putExtra("locationp",post.getLocation());
+                                intent.putExtra("trackingnumber",post.getTrackingnumber());
                                 intent.putExtra("descp",post.getDescription());
                                 intent.putExtra("post_image",post.getImages());
+                                if(post.getOp()!=null)
                                 intent.putExtra("post_op",post.getOp().getUsername());
+                                else intent.putExtra("post_op","anonim");
                                 //String categ = newpost.getCategorie();
                                 intent.putExtra("status",post.getStatus());
                                 intent.putExtra("voturi",post.getVoturi());
-                                intent.putExtra("categorie",cat.getNume());
+                                intent.putExtra("categorie",post.getCategorie());
 //                                intent.putExtra("obj", (Parcelable) post);
                                 //System.out.println(post.getImages());
                                 //System.out.println(categ);
