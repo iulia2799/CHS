@@ -7,9 +7,16 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.chs.data.ActAdapter;
 import com.example.chs.data.Categorie;
 import com.example.chs.data.Post;
 import com.example.chs.data.PostAdapter;
@@ -29,6 +37,7 @@ import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.PrimarieLocalStorage;
 import com.example.chs.data.login.User;
 import com.example.chs.data.login.UserLocalStorage;
+import com.example.chs.data.model.Act;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,6 +58,7 @@ public class Profile extends AppCompatActivity {
     public TextView username;
     public TextView informatii;
     public EditText editinfo;
+    public MaterialButton prinfoedit;
     private MaterialButton editareinfo;
     private RecyclerView recyclerView;
     public User userlog;
@@ -56,6 +66,7 @@ public class Profile extends AppCompatActivity {
     public PopupWindow window;
     private boolean editmode = false;
     private Intent i;
+    private List<Act> plinks = new ArrayList<>();
     private List<User> userList = new ArrayList<>();
     private List<Primarie> primarieList = new ArrayList<>();
     private List<Post> postList = new ArrayList<>();
@@ -81,6 +92,7 @@ public class Profile extends AppCompatActivity {
         infotitle = findViewById(R.id.username2);
         username = findViewById(R.id.Username);
         username.setText("username");
+        prinfoedit = findViewById(R.id.acte);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         window = new PopupWindow(inflater.inflate(R.layout.popup,null,false),100,100,true);
         recyclerView = findViewById(R.id.userpost);
@@ -153,6 +165,13 @@ public class Profile extends AppCompatActivity {
             }
         });
     }
+    public void EditInfo(View view){
+        if(authp()){
+            editPinfo(view);
+        }else{
+            editUserInfo(view);
+        }
+    }
 
     public void editUserInfo(View view){
         if(!editmode) {
@@ -177,6 +196,44 @@ public class Profile extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
                         }
                         userList.add(mUser);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    System.out.println("The read failed: "+error.getCode());
+                }
+            });
+            informatii.setVisibility(View.VISIBLE);
+            editinfo.setVisibility(View.GONE);
+        }
+
+    }
+    public void editPinfo(View view){
+        if(!editmode) {
+            informatii.setVisibility(View.GONE);
+            editinfo.setVisibility(View.VISIBLE);
+            editinfo.setText(informatii.getText().toString());
+            editmode=true;
+        }else{
+            primarielog.setInformatii(editinfo.getText().toString());
+            editmode = false;
+            DatabaseReference reference =  FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Primarie");
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    primarieList.clear();
+                    for(DataSnapshot usersnapshot : snapshot.getChildren()){
+                        Primarie mUser = usersnapshot.getValue(Primarie.class);
+                        assert mUser != null;
+                        if(mUser.getEmail().equals(primarielog.getEmail())){
+                            usersnapshot.child("informatii").getRef().setValue(primarielog.getInformatii());
+                        }else{
+                            System.out.println(mUser.getEmail());
+                            Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
+                        }
+                        primarieList.add(mUser);
                     }
 
                 }
@@ -228,12 +285,14 @@ public class Profile extends AppCompatActivity {
         userLocalStorage = new UserLocalStorage(this);
         primarieLocalStorage = new PrimarieLocalStorage(this);
         if(auth()){
+            prinfoedit.setVisibility(View.GONE);
             displayUser();
             getUserInfo();
             findPosts();
         }else if(authp()){
             display();
             getIns();
+            findLinks();
         }
     }
 
@@ -286,6 +345,109 @@ public class Profile extends AppCompatActivity {
     }
 
     public void findLinks(){
+        plinks.clear();
+        primarielog = this.primarieLocalStorage.getLoggedInUser();
+        DatabaseReference reference =  FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Primarie");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                primarieList.clear();
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Primarie mUser = dataSnapshot.getValue(Primarie.class);
+                    assert mUser != null;
+                    if(mUser.getEmail().equals(primarielog.getEmail())){
+                        if(dataSnapshot.child("links").exists()){
+                            for(DataSnapshot link : dataSnapshot.child("links").getChildren()){
+                                System.out.println(link.getKey());
 
+                                Act act  = link.getValue(Act.class);
+                                plinks.add(act);
+                            }
+                        }
+                    }else{
+                        //System.out.println(primarielog.getEmail()+","+mUser.getEmail());
+                        Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
+                    }
+                    primarieList.add(mUser);
+                }
+                ActAdapter adapter = new ActAdapter(plinks, new ActAdapter.OnItemListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        String l=  plinks.get(position).getLink();
+                        String name = plinks.get(position).getNume();
+                        System.out.println(l);
+                        downloadFile(l,name);
+                    }
+                });
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                recyclerView.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("The read failed: "+error.getCode());
+            }
+        });
+    }
+    private String down_name="";
+    private String down_link="";
+    public void downloadFile(String link,String filename){
+        //DownloadManager manager;
+        down_name = filename;
+        down_link = link;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+                String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permissions,1000);
+                System.out.println("yet to grant");
+            }else{
+                System.out.println("granted1");
+               download();
+            }
+        }else{
+            System.out.println("granted2");
+           download();
+        }
+
+        //manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+        //Uri uri = Uri.parse(link);
+       // DownloadManager.Request request = new DownloadManager.Request(uri);
+       // request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+       // request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,filename);
+       // long reference = manager.enqueue(request);
+    }
+
+    public void download(){
+        DownloadManager manager;
+        manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(down_link);
+        System.out.println("downloading...");
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
+        request.setTitle("Download");
+        request.setDescription("Downloading file...");
+        request.allowScanningByMediaScanner();
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,down_name);
+        manager.enqueue(request);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults
+    ){
+        switch (requestCode){
+            case 1000:
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    System.out.println("granted3");
+                   download();
+                }else{
+                    Toast.makeText(this,"Permission denied",Toast.LENGTH_SHORT).show();
+                }
+        }
     }
 }

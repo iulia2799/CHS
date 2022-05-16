@@ -19,6 +19,7 @@ import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.PrimarieLocalStorage;
 import com.example.chs.data.login.User;
 import com.example.chs.data.login.UserLocalStorage;
+import com.example.chs.data.model.Act;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -127,6 +128,8 @@ public class Login extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
                         intent.putExtra("emailp",email);
                         intent.putExtra("numep","nume primarie aici");
+                        if(!usersnapshot.child("links").exists())
+                         usersnapshot.child("links").child("0").getRef().setValue(new Act("fdsfdsfds","https://firebasestorage.googleapis.com/v0/b/proiect-chs.appspot.com/o/acte%2FRezultate-EPSC-2-mai-2022.pdf?alt=media&token=450d511c-edc5-45dc-9ba0-7c0bdfa0ad3c"));
                         startActivity(intent);
                     }else{
 

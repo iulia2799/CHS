@@ -51,6 +51,15 @@ public class Primarie implements Login{
         this.informatii = informatii;
         this.points=0;
     }
+    public Primarie (String email, String primarie, String password, String location, String informatii,List<Act> links){
+        this.email = email;
+        this.primarie = primarie;
+        this.password = password;
+        this.location = location;
+        this.informatii = informatii;
+        this.points=0;
+        this.links.addAll(links);
+    }
 
     @Override
     public void SetPassword(String new_password) {

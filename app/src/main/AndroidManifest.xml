@@ -33,6 +33,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CHS.NoActionBar">
         <activity
+            android:name=".CreateActe"
+            android:exported="false" />
+        <activity
+            android:name=".Preia"
+            android:exported="false" />
+        <activity
             android:name=".ChangePassword"
             android:exported="false" />
         <activity
