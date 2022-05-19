@@ -37,6 +37,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         //final Post posts = localDataSet[position];
         final Post posts = postList.get(position);
         holder.pos.setText(String.valueOf(position+1));
+        if(posts.getStatus() !=null){
+            if(posts.getStatus().contains("In curs")){
+                holder.itemView.setBackgroundResource(R.drawable.post3);
+                if(posts.getDatet() !=0){
+                    int days = (int) ((System.currentTimeMillis()- posts.getDatet())/ (1000*60*60*24));
+                    if(days>30){
+                        holder.itemView.setBackgroundResource(R.drawable.post2);
+                    }else if (days>15){
+                        holder.itemView.setBackgroundResource(R.drawable.post1);
+                    }
+                }
+            } else if(posts.getStatus().contains("Nerezolvat") || posts.getStatus().contains("NOT SOLVED")){
+                holder.itemView.setBackgroundResource(R.drawable.post2);
+            }
+        }
+        //change background for status and date
+        //holder.itemView.setBackground(R.drawable.);
         holder.description.setText(posts.getName());
         String s = "Voturi : "+String.valueOf(posts.getVoturi());
         holder.votes.setText(s);

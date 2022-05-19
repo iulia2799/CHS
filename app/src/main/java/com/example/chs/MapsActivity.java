@@ -33,6 +33,7 @@ import android.location.Location;
 
 import android.os.Looper;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -218,13 +219,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                        if(mPost.getStatus().contains("SOLVED") || mPost.getStatus().contains("Rezolvat")) continue;
                        if(location !=null){
                        LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
-                           Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getName()));
+                           MarkerOptions options = new MarkerOptions().position(latLng).title(mPost.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+                           Marker marker = mMap.addMarker(options);
                            posts.add(mPost);
                            //System.out.println(mPost.getImages());
                            int days = (int) ((System.currentTimeMillis()- mPost.getDatet())/ (1000*60*60*24));
-                           if(days>30 && !mPost.getStatus().contains("posted") && !mPost.getStatus().contains("SOLVED")&& !mPost.getStatus().contains("Rezovlat")){
-                              ScorePoints();
+                           if(days>30 && !mPost.getStatus().contains("posted") && !mPost.getStatus().contains("SOLVED")&& !mPost.getStatus().contains("Rezolvat")){
+                               ScorePoints();
                            }
+
+                           //if(days>30 && !mPost.getStatus().contains("posted") && !mPost.getStatus().contains("SOLVED")&& !mPost.getStatus().contains("Rezolvat")){
+                          //     ScorePoints();
+                          // }
                            assert marker != null;
                            marker.setTag(mPost);
                            System.out.println(mPost.getImages());
@@ -255,7 +261,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                            });
                        }
                    }
-
                }
 
                @Override
@@ -266,6 +271,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
        }
        //Toast.makeText(this,posts.size(),Toast.LENGTH_SHORT).show();
        //addMarkers();System.out.println(this.posts.size());
+
+    }
+
+    public void searchPost(){
 
     }
 
@@ -473,7 +482,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         if(mPost.getStatus().contains("Rezolvat") || mPost.getStatus().contains("SOLVED"))
                         if(location !=null){
                             LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
-                            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getName()));
+                            MarkerOptions options = new MarkerOptions().position(latLng).title(mPost.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+                            Marker marker = mMap.addMarker(options);
                             posts.add(mPost);
                             //System.out.println(mPost.getImages());
                             assert marker != null;
@@ -550,7 +560,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         System.out.println("Fetched from firebase"+postsnap.child("images").getValue(String.class));
                         System.out.println("Location: "+mPost.getLocation());
                         System.out.println("Images:"+mPost.getImages());
-                        Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(mPost.getImages()));
+                        MarkerOptions options = new MarkerOptions().position(latLng).title(mPost.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+                        Marker marker = mMap.addMarker(options);
                         posts.add(mPost);
                         marker.setTag(mPost);
                         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {

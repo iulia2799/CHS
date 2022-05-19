@@ -109,6 +109,7 @@ public class Ranking extends AppCompatActivity {
                             if(postsnap.child("status").exists()){
                                 if(!postsnap.child("status").getValue(String.class).contains("SOLVED") && !postsnap.child("status").getValue(String.class).contains("Rezolvat")){
                                     Post mPost = postsnap.getValue(Post.class);
+                                    mPost.setCat(cat);
                                     postList.add(mPost);
                                 }
                             }

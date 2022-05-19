@@ -224,10 +224,15 @@ public class ReviewPost extends AppCompatActivity {
         Primarie primarie;
         if(authenticatep()){
             primarie = primarieLocalStorage.getLoggedInUser();
-            findPost();
+            //findPost();
         }else{
 
         }
+        Intent intent = new Intent(this,Preia.class);
+        intent.putExtra("trackingnumber",trackingnumber);
+        intent.putExtra("categorie",categorie);
+        intent.putExtra("username",user.getText().toString());
+        startActivity(intent);
 
     }
     public void clickDislike(View view){

@@ -311,5 +311,4 @@ public class AddPost extends AppCompatActivity {
         System.out.println(currentPhotoPath);
         return image;
     }
-
 }
