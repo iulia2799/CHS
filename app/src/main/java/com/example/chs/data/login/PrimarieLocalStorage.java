@@ -14,6 +14,7 @@ public class PrimarieLocalStorage {
         speditor.putString("email",user.getEmail());
         speditor.putString("username",user.getPrimarie());
         speditor.putString("password",user.getPassword());
+        speditor.putString("location",user.getLocation());
         speditor.commit();
     }
 
@@ -21,7 +22,8 @@ public class PrimarieLocalStorage {
         String email = primarieLocalDatabase.getString("email","");
         String username = primarieLocalDatabase.getString("username","");
         String pass = primarieLocalDatabase.getString("password","");
-        Primarie storedUser = new Primarie(email,username,pass);
+        String location = primarieLocalDatabase.getString("location","");
+        Primarie storedUser = new Primarie(email,username,location,pass);
         return storedUser;
     }
     public void setUserLoggedIn(boolean loggedIn){

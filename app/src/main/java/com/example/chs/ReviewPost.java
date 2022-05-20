@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.chs.data.Categorie;
 import com.example.chs.data.Post;
 import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.PrimarieLocalStorage;
@@ -48,9 +49,16 @@ public class ReviewPost extends AppCompatActivity {
     private String status;
     private Intent i;
     private int voturi_i;
+    private String trackingnumber;
     private String categorie;
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
-
+    private Categorie[] categories = {
+            new Categorie("animale"),
+            new Categorie("cladiri"),
+            new Categorie("drumuri publice"),
+            new Categorie("parcuri"),
+            new Categorie("test")
+    };
 
 
 
@@ -79,6 +87,7 @@ public class ReviewPost extends AppCompatActivity {
         i.getExtras();
         post.setText(getIntent().getStringExtra("namep"));
         location.setText(getIntent().getStringExtra("locationp"));
+        trackingnumber = getIntent().getStringExtra("trackingnumber");
         description.setText(getIntent().getStringExtra("descp"));
         user.setText(getIntent().getStringExtra("post_op"));
         String image = getIntent().getStringExtra("post_image");
@@ -89,21 +98,32 @@ public class ReviewPost extends AppCompatActivity {
         voturi.setText(result);
         //Toast.makeText(this,image.,Toast.LENGTH_SHORT).show();
         primarieLocalStorage = new PrimarieLocalStorage(this);
+        userLocalStorage = new UserLocalStorage(this);
+        System.out.println(trackingnumber);
+        LoadImageFromWebOperations(image);
         getStatus();
-        findPost();
-        //LoadImageFromWebOperations(image);
-
+        if(status.startsWith("In curs")){
+            preia.setVisibility(View.GONE);
+        }
 
     }
     @Override
     protected void onStart() {
         super.onStart();
         userLocalStorage = new UserLocalStorage(this);
+        primarieLocalStorage = new PrimarieLocalStorage(this);
         if(authenticate()){
             button.setEnabled(false);
             preia.setEnabled(false);
             button.setVisibility(View.GONE);
             preia.setVisibility(View.GONE);
+        }else{
+            if(authenticatep()){
+                button.setEnabled(true);
+                preia.setEnabled(true);
+                //button.setVisibility(View.VISIBLE);
+               // preia.setVisibility(View.VISIBLE);
+            }
         }
 
     }
@@ -115,6 +135,12 @@ public class ReviewPost extends AppCompatActivity {
             dislike.setVisibility(View.GONE);
             voturi.setVisibility(View.GONE);
             if(authenticate()){
+                findResolution();
+                resolution.setVisibility(View.VISIBLE);
+                incurs.setVisibility(View.GONE);
+                curs.setVisibility(View.GONE);
+            }else if(authenticatep()){
+                findResolution();
                 resolution.setVisibility(View.VISIBLE);
                 incurs.setVisibility(View.GONE);
                 curs.setVisibility(View.GONE);
@@ -129,8 +155,9 @@ public class ReviewPost extends AppCompatActivity {
             resolution.setVisibility(View.GONE);
             incurs.setVisibility(View.VISIBLE);
             curs.setVisibility(View.VISIBLE);
-            if(authenticate()){
-
+            if(authenticatep()){
+                preia.setVisibility(View.GONE);
+                return;
             }
 
         }else{
@@ -141,6 +168,8 @@ public class ReviewPost extends AppCompatActivity {
                 raporteaza.setVisibility(View.GONE);
                 like.setVisibility(View.GONE);
                 dislike.setVisibility(View.GONE);
+                preia.setVisibility(View.VISIBLE);
+                button.setVisibility(View.GONE);
             }
         }
 
@@ -171,8 +200,39 @@ public class ReviewPost extends AppCompatActivity {
             }
         });
     }
+    public void findResolution(){
+        DatabaseReference ref = database.getReference(categorie);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(trackingnumber).exists()){
+                    //Primarie primarie = primarieLocalStorage.getLoggedInUser();
+                    //primarie.setPassword("********");
+                    //snapshot.child(trackingnumber).child("assignee").getRef().setValue(primarie);
+                    resolution.setText(snapshot.child(trackingnumber).child("status").getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
     public void clickPreia(View view){
+        Primarie primarie;
+        if(authenticatep()){
+            primarie = primarieLocalStorage.getLoggedInUser();
+            //findPost();
+        }else{
+
+        }
+        Intent intent = new Intent(this,Preia.class);
+        intent.putExtra("trackingnumber",trackingnumber);
+        intent.putExtra("categorie",categorie);
+        intent.putExtra("username",user.getText().toString());
+        startActivity(intent);
 
     }
     public void clickDislike(View view){
@@ -208,13 +268,11 @@ public class ReviewPost extends AppCompatActivity {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot usersnapshot : snapshot.getChildren()){
-                    Post mPost= usersnapshot.getValue(Post.class);
-                    User mUser = usersnapshot.child("op").getValue(User.class);
-                    if(mPost.getName().equals(post.getText())){
-                        //usersnapshot.child("spam").getRef().setValue(mPost.getSpam()+1);
-                        LoadImageFromWebOperations(usersnapshot.child("images").getValue(String.class));
-                    }
+                if(snapshot.child(trackingnumber).exists()){
+                    Primarie primarie = primarieLocalStorage.getLoggedInUser();
+                    primarie.setPassword("********");
+                    snapshot.child(trackingnumber).child("assignee").getRef().setValue(primarie);
+                    snapshot.child(trackingnumber).child("status").getRef().setValue("In curs");
                 }
             }
 
@@ -226,13 +284,29 @@ public class ReviewPost extends AppCompatActivity {
     }
     public void clickSolve(View view){
          Intent ii = new Intent(this,Solve.class);
-         ii.putExtra("names",post.getText().toString());
-         ii.putExtra("locations",location.getText().toString());
-         ii.putExtra("descs",description.getText().toString());
-         ii.putExtra("post_ops",user.getText().toString());
-         ii.putExtra("cat",i.getStringExtra("cat"));
-         //image is not necessary in this case
-         startActivity(ii);
+         DatabaseReference ref = database.getReference(categorie);
+         ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(trackingnumber).exists()){
+                    Primarie primarie = primarieLocalStorage.getLoggedInUser();
+                    Primarie t1 = snapshot.child(trackingnumber).child("assignee").getValue(Primarie.class);
+                    if(t1.getEmail().equals(primarie.getEmail())){
+                        System.out.println(t1.getEmail());
+                        System.out.println(primarie.getEmail());
+                        startActivity(ii);
+                    }
+                       //startActivity(ii);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+         });
+         //startActivity(ii);
     }
     private boolean authenticate(){
         return userLocalStorage.getUserLoggedIn();

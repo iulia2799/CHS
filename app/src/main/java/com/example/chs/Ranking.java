@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.example.chs.data.Categorie;
 import com.example.chs.data.Post;
 import com.example.chs.data.PostAdapter;
+import com.example.chs.data.login.Primarie;
+import com.example.chs.data.login.PrimarieLocalStorage;
 import com.example.chs.data.login.User;
 import com.example.chs.data.model.NotificationAdapter;
 import com.example.chs.data.model.UserAdapter;
@@ -44,6 +46,8 @@ public class Ranking extends AppCompatActivity {
     private MaterialButton button;
     private RecyclerView recyclerView;
     private Spinner spinner;
+    private PrimarieLocalStorage primarieLocalStorage;
+    private Primarie log;
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
     private Categorie[] categories = {
             new Categorie("animale"),
@@ -67,10 +71,20 @@ public class Ranking extends AppCompatActivity {
         spinner.setVisibility(View.GONE);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         recyclerView = (RecyclerView) findViewById(R.id.rankview);
+
         findAll();
 
 
 
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        primarieLocalStorage = new PrimarieLocalStorage(this);
+        if(primarieLocalStorage.getUserLoggedIn()){
+            log = primarieLocalStorage.getLoggedInUser();
+        }
     }
 
     public void findAll(){
@@ -83,9 +97,23 @@ public class Ranking extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot postsnap : snapshot.getChildren()){
                         if(!postsnap.exists()) Log.e(TAG, "onDataChange: No data");
+                        if(log!=null){
+                            Post post= postsnap.getValue(Post.class);
+                            assert post != null;
+                            String location = post.getLocation();
+                            if(location!=null){
+                                if(!location.contains(log.getLocation())) continue;
+                            }
+                        }
                         if(postsnap.child("voturi").exists()) {
-                            Post mPost = postsnap.getValue(Post.class);
-                            postList.add(mPost);
+                            if(postsnap.child("status").exists()){
+                                if(!postsnap.child("status").getValue(String.class).contains("SOLVED") && !postsnap.child("status").getValue(String.class).contains("Rezolvat")){
+                                    Post mPost = postsnap.getValue(Post.class);
+                                    mPost.setCat(cat);
+                                    postList.add(mPost);
+                                }
+                            }
+
                         }
                     }
                     Collections.sort(postList, new Comparator<Post>() {
@@ -98,7 +126,23 @@ public class Ranking extends AppCompatActivity {
                     PostAdapter postAdapter = new PostAdapter(postList, new PostAdapter.OnItemListener() {
                         @Override
                         public void onItemClick(int position) {
-
+                            Post post = postList.get(position);
+                            //System.out.println(post.getImages());
+                            //Toast.makeText(getApplicationContext(),post.getImages().toString(),Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(),ReviewPost.class);
+                            intent.putExtra("namep",post.getName());
+                            intent.putExtra("trackingnumber",post.getTrackingnumber());
+                            intent.putExtra("locationp",post.getLocation());
+                            intent.putExtra("descp",post.getDescription());
+                            intent.putExtra("post_image",post.getImages());
+                            System.out.println(post.getImages());
+                            intent.putExtra("post_op",post.getOp().getUsername());
+                            //String categ = newpost.getCategorie();
+                            intent.putExtra("status",post.getStatus());
+                            intent.putExtra("voturi",post.getVoturi());
+                            intent.putExtra("categorie",post.getCategorie());
+                            //System.out.println(categ);
+                            startActivity(intent);
                         }
                     });
                     recyclerView.setHasFixedSize(true);
@@ -181,9 +225,22 @@ public class Ranking extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot postsnap : snapshot.getChildren()){
                     if(!postsnap.exists()) Log.e(TAG, "onDataChange: No data");
+                    if(log!=null){
+                        Post post= postsnap.getValue(Post.class);
+                        assert post != null;
+                        String location = post.getLocation();
+                        if(location!=null){
+                            if(!location.contains(log.getLocation())) continue;
+                        }
+                    }
                     if(postsnap.child("voturi").exists()) {
-                        Post mPost = postsnap.getValue(Post.class);
-                        postList.add(mPost);
+                        if(postsnap.child("status").exists()){
+                            if(!postsnap.child("status").getValue(String.class).contains("SOLVED") && !postsnap.child("status").getValue(String.class).contains("Rezolvat")){
+                                Post mPost = postsnap.getValue(Post.class);
+                                postList.add(mPost);
+                            }
+                        }
+
                     }
 
                 }
@@ -197,7 +254,23 @@ public class Ranking extends AppCompatActivity {
                 PostAdapter postAdapter = new PostAdapter(postList, new PostAdapter.OnItemListener() {
                     @Override
                     public void onItemClick(int position) {
-
+                        Post post = postList.get(position);
+                        //System.out.println(post.getImages());
+                        //Toast.makeText(getApplicationContext(),post.getImages().toString(),Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(),ReviewPost.class);
+                        intent.putExtra("namep",post.getName());
+                        intent.putExtra("trackingnumber",post.getTrackingnumber());
+                        intent.putExtra("locationp",post.getLocation());
+                        intent.putExtra("descp",post.getDescription());
+                        intent.putExtra("post_image",post.getImages());
+                        System.out.println(post.getImages());
+                        intent.putExtra("post_op",post.getOp().getUsername());
+                        //String categ = newpost.getCategorie();
+                        intent.putExtra("status",post.getStatus());
+                        intent.putExtra("voturi",post.getVoturi());
+                        intent.putExtra("categorie",cat.getNume());
+                        //System.out.println(categ);
+                        startActivity(intent);
                     }
                 });
                 recyclerView.setHasFixedSize(true);

@@ -11,9 +11,9 @@
         android:layout_width="91dp"
         android:layout_height="87dp"
         android:background="@drawable/btn2"
-        app:backgroundTint="@null"
         android:clickable="true"
-        android:onClick="Clickoptions"
+        android:onClick="onOptions"
+        app:backgroundTint="@null"
         app:backgroundTintMode="multiply"
         app:icon="@drawable/op2"
         app:iconGravity="textTop"
@@ -66,7 +66,7 @@
         android:layout_width="362dp"
         android:layout_height="234dp"
         android:background="@drawable/popup"
-        android:fontFamily="@font/muli"
+        android:fontFamily="@font/mulibold"
         android:inputType="textMultiLine"
         android:padding="10dp"
         android:shadowColor="@color/black"
@@ -89,7 +89,7 @@
         android:layout_width="362dp"
         android:layout_height="234dp"
         android:background="@drawable/popup"
-        android:fontFamily="@font/muli"
+        android:fontFamily="@font/mulibold"
         android:inputType="textMultiLine"
         android:padding="10dp"
         android:shadowColor="@color/black"
@@ -113,8 +113,8 @@
         android:layout_height="39dp"
         android:background="#00FF0000"
         android:clickable="true"
-        android:onClick="editUserInfo"
         android:fontFamily="@font/mulisemibolditalic"
+        android:onClick="EditInfo"
         android:text="Editare"
         android:textColor="@color/black"
         android:textSize="12sp"
@@ -126,5 +126,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.161" />
+
+    <ScrollView
+        android:layout_width="359dp"
+        android:layout_height="339dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.519"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.915">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/userpost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/acte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EDIT ACTE"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.57"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.051" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

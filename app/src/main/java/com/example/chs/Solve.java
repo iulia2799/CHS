@@ -112,7 +112,7 @@ public class Solve extends AppCompatActivity {
     public void putNotification(Post post){
         FirebaseDatabase database2 = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
         User user= post.getOp();
-        Alert alert = new Alert("dsfds","fdsfdsf");
+        Alert alert = new Alert(String.valueOf(System.currentTimeMillis()),"fdsfdsf");
         DatabaseReference ref2 = database2.getReference("User");
         ref2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -123,7 +123,7 @@ public class Solve extends AppCompatActivity {
                     if(user.getEmail().equals(mUser.getEmail())){
                         //mUser.setNotifications("the post "+ i.getStringExtra("names") + " was updated");
                         //dataSnapshot.getRef().child("notifications").child("notification" + i.getStringExtra("names") + Calendar.getInstance().getTime().toString()).setValue("the post "+ i.getStringExtra("names") + " was updated");
-                        dataSnapshot.getRef().child("alerts").setValue(alert);
+                        dataSnapshot.getRef().child("alertList").child(alert.getDate()).setValue(alert);
                     }
                 }
             }

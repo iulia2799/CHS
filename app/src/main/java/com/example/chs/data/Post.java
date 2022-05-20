@@ -17,7 +17,7 @@ public class Post {
     private String status;
     private User op;
     private Categorie cat;
-    private static Integer trackingId =100;
+    private String trackingnumber;
     private Date timerDate;
     private long datet;
     private Primarie assignee;
@@ -31,7 +31,7 @@ public class Post {
         this.description = description;
         this.status = "posted";
         this.cat = new Categorie("test");
-        trackingId++;
+
         this.assignee = null;
 
     }
@@ -41,7 +41,7 @@ public class Post {
         this.description = description;
         this.status = "posted";
         this.cat = categorie;
-        trackingId++;
+
         this.assignee = null;
 
 
@@ -54,7 +54,7 @@ public class Post {
         this.op.SetPassword("********");
         this.status = "posted";
         this.cat = cat;
-        trackingId++;
+
         this.assignee = null;
 
 
@@ -68,7 +68,7 @@ public class Post {
         this.status = "posted";
         this.cat = cat;
         this.image = received;
-        trackingId++;
+
         this.assignee = null;
 
 
@@ -84,7 +84,7 @@ public class Post {
         this.status = "posted";
         this.cat = cat;
         this.image = received;
-        trackingId++;
+
         this.assignee = null;
 
 
@@ -97,12 +97,11 @@ public class Post {
         this.cat= categorie;
         this.datet = date;
         this.timerDate = timerDate;
-        this.op.SetPassword("********");
+        //this.op.SetPassword("********");
         this.status = "posted";
         this.cat = cat;
         this.assignee = null;
 
-        trackingId++;
     }
 
     public Post(String name, String strAdd, String description, User user, Categorie cat, long time) {
@@ -116,7 +115,19 @@ public class Post {
         this.cat = cat;
         this.assignee = null;
 
-        trackingId++;
+
+    }
+
+    public Post(String toString, String toString1, String toString2, Categorie categorie, String imageurl, long currentTimeMillis) {
+        this.name = toString;
+        this.location = toString1;
+        this.description = toString2;
+        this.datet = currentTimeMillis;
+        this.image = imageurl;
+        //this.op.SetPassword("********");
+        this.status = "posted";
+        this.cat = categorie;
+        this.assignee = null;
     }
 
     public String getName(){
@@ -161,12 +172,6 @@ public class Post {
     public String getStatus(){
         return this.status;
     }
-
-    public static Integer getTrackingId() {
-        return trackingId;
-    }
-    public static void setTrackingId(Integer trackingid1){
-        trackingId = trackingid1;}
     public String getCategorie(){
         return cat.getNume();
     }
@@ -223,5 +228,13 @@ public class Post {
 
     public void setDatet(long datet) {
         this.datet = datet;
+    }
+
+    public String getTrackingnumber() {
+        return trackingnumber;
+    }
+
+    public void setTrackingnumber(String trackingnumber) {
+        this.trackingnumber = trackingnumber;
     }
 }

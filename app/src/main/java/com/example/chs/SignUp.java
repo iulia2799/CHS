@@ -96,10 +96,10 @@ public class SignUp extends AppCompatActivity {
         if(swps.isChecked()){
             //Toast.makeText(this,"primariile vor veni in curand",Toast.LENGTH_SHORT).show();
             DAOPrimarie daoPrimarie = new DAOPrimarie();
-            Primarie primarie = new Primarie(email.getText().toString(),pass.getText().toString(),username.getText().toString());
+            Primarie primarie = new Primarie(email.getText().toString(),username.getText().toString(),pass.getText().toString());
             daoPrimarie.add(primarie).addOnSuccessListener(suc -> {
                 Toast.makeText(getApplicationContext(), "Succesfully added primarie", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), PrimarieDashboard.class);
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                 startActivity(intent);
 
             }).addOnFailureListener(fail -> {
