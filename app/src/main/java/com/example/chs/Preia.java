@@ -13,14 +13,17 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.FileUtils;
 import android.os.TestLooperManager;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.chs.data.login.DAONotification;
 import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.PrimarieLocalStorage;
 import com.example.chs.data.login.User;
+import com.example.chs.data.model.Alert;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +33,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Preia extends AppCompatActivity {
     private String trackingnumber;
@@ -81,14 +90,37 @@ public class Preia extends AppCompatActivity {
 
     public void findPost(){
         DatabaseReference ref = database.getReference(categorie);
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.child(trackingnumber).exists()){
                     Primarie primarie = primarieLocalStorage.getLoggedInUser();
                     primarie.setPassword("********");
                     snapshot.child(trackingnumber).child("assignee").getRef().setValue(primarie);
-                    snapshot.child(trackingnumber).child("status").getRef().setValue("In curs");
+                    if(!numefisier.getText().toString().equals("Nimic adaugat")){
+                        GivePoints();
+                    }
+                    snapshot.child(trackingnumber).child("datet").getRef().setValue(System.currentTimeMillis());
+                    snapshot.child(trackingnumber).child("status").getRef().setValue("In curs:"+description.getText().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void GivePoints(){
+        DatabaseReference ref = database.getReference("Primarie");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Primarie x = dataSnapshot.getValue(Primarie.class);
+                    if(x.getEmail().equals(primarie.getEmail())){
+                        dataSnapshot.child("points").getRef().setValue(x.getPoints()+20);
+                    }
                 }
             }
 
@@ -128,27 +160,52 @@ public class Preia extends AppCompatActivity {
     }
 
     public void findUser(){
-        DatabaseReference ref = database.getReference("User");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot usersnap : snapshot.getChildren()){
-                    User user = usersnap.getValue(User.class);
-
+        if(username.length()>0 && !username.contains("anonim")){
+            DatabaseReference ref = database.getReference("User");
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot usersnap : snapshot.getChildren()){
+                        User user = usersnap.getValue(User.class);
                         assert user != null;
+                        List<Alert> list = new ArrayList<>();
                         System.out.println(user.getUsername()+username);
                         if(user.getUsername().equals(username)){
-                            sendEmail(user.getEmail(),path);
+                            //if(usersnap.child("alertList").exists()){
+                                Alert mAlert = new Alert(String.valueOf(System.currentTimeMillis()), "Cazul #"+trackingnumber+" a fost preluat de "+primarie.getPrimarie());
+                                DataSnapshot ref = usersnap.child("alertList");
+                                for(DataSnapshot reference : ref.getChildren()){
+                                    list.add(reference.getValue(Alert.class));
+                                }
+                                list.add(mAlert);
+
+                                DatabaseReference rootref = usersnap.getRef();
+                                DatabaseReference arr = rootref.child("alertList");
+                                Map<String,Object> map = new HashMap<>();
+                                System.out.println(arr.getKey());
+                                arr.setValue(list);
+
+                            //}
+                            if(!numefisier.getText().toString().equals("Nimic adaugat")) {
+                                sendEmail(user.getEmail(),path);
+                            }
+                            else {
+                                findPost();
+                            }
                         }
 
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+        } else {
+            findPost();
+        }
+
     }
 
     public void sendEmail(String email,String path){
@@ -168,7 +225,7 @@ public class Preia extends AppCompatActivity {
             ////    send.putExtra(Intent.EXTRA_STREAM, uri);
             //}
             send.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            send.putExtra(Intent.EXTRA_TEXT, "Cazul #" + trackingnumber + " a fost preluat de " + primarieLocalStorage.getLoggedInUser().getEmail() + ".");
+            send.putExtra(Intent.EXTRA_TEXT, "Cazul #" + trackingnumber + " a fost preluat de " + primarieLocalStorage.getLoggedInUser().getEmail() + " . "+description.getText().toString());
             startActivity(send);
             System.out.println("fdsfdsfsdsdf");
             findPost();
@@ -182,5 +239,6 @@ public class Preia extends AppCompatActivity {
 
     public void clickConfirma(View view){
         findUser();
+        //findPost();
     }
 }

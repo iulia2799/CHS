@@ -157,6 +157,8 @@ public class ReviewPost extends AppCompatActivity {
             curs.setVisibility(View.VISIBLE);
             if(authenticatep()){
                 preia.setVisibility(View.GONE);
+                like.setVisibility(View.GONE);
+                dislike.setVisibility(View.GONE);
                 return;
             }
 
@@ -185,11 +187,22 @@ public class ReviewPost extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot usersnapshot : snapshot.getChildren()){
                     Post mPost= usersnapshot.getValue(Post.class);
-                    User mUser = usersnapshot.child("op").getValue(User.class);
+                    assert mPost !=null;
+                    /*User mUser = usersnapshot.child("op").getValue(User.class);
                     assert mPost != null;
-                    if(mPost.getName().contentEquals(post.getText().toString()) && mUser.getUsername().equals(user.getText().toString())){
+                    if(mPost.getName().contentEquals(post.getText().toString())) {
+                        assert mUser != null;
+                        System.out.println(mUser.getUsername());
+                        System.out.println(user.getText().toString());
+                        if (mUser.getUsername().equals(user.getText().toString())) {
+                            usersnapshot.child("voturi").getRef().setValue(mPost.getVoturi() + i);
+                            break;
+                        }
+                    }
+
+                     */
+                    if(usersnapshot.getKey().equals(trackingnumber)){
                         usersnapshot.child("voturi").getRef().setValue(mPost.getVoturi()+i);
-                        break;
                     }
                 }
             }
@@ -199,6 +212,7 @@ public class ReviewPost extends AppCompatActivity {
 
             }
         });
+        Toast.makeText(this,"Votul tau a fost inregistrat cu succes",Toast.LENGTH_SHORT).show();
     }
     public void findResolution(){
         DatabaseReference ref = database.getReference(categorie);
