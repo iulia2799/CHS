@@ -5,6 +5,7 @@ import com.example.chs.data.model.Alert;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class User implements Login {
     private String username;
@@ -22,6 +23,12 @@ public class User implements Login {
         this.password = password;
         this.informatii = "Scrie datele de contact aici";
         this.points=0;
+    }
+    public User(Map<String,String> user){
+        this.username = user.get("username");
+        this.password = user.get("password");
+        this.email = user.get("email");
+
     }
     public User(String email,String password,List<Alert> alerts){
         //if user does not exist in json then do this
