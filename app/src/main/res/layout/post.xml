@@ -11,22 +11,22 @@
         android:id="@+id/user_rank"
         android:layout_width="206dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/muli"
+        android:fontFamily="@font/mulisemibold"
         android:gravity="center"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.541"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.012" />
+        app:layout_constraintVertical_bias="0.017" />
 
     <TextView
         android:id="@+id/user_name"
         android:layout_width="347dp"
         android:layout_height="22dp"
-        android:fontFamily="@font/muli"
+        android:fontFamily="@font/mulisimple"
         android:gravity="center"
         android:inputType="textCapSentences|textNoSuggestions|textMultiLine"
         android:maxLines="6"
@@ -35,16 +35,15 @@
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.312" />
+        app:layout_constraintVertical_bias="0.431" />
 
     <TextView
         android:id="@+id/user_points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/muli"
+        android:fontFamily="@font/mulisimple"
         android:text="Voturi:"
         android:textColor="@color/black"
         android:textSize="16sp"

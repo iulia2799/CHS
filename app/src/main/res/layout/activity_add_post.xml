@@ -4,12 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#CDF6E0"
     tools:context=".AddPost">
+
+    <ImageView
+        android:id="@+id/anons"
+        android:layout_width="84dp"
+        android:layout_height="51dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.948"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.024"
+        app:srcCompat="@drawable/sw" />
 
     <TextView
         android:id="@+id/reviewp"
         android:layout_width="149dp"
         android:layout_height="40dp"
+        android:fontFamily="@font/mulibold"
         android:text="Adaugare"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,11 +37,13 @@
         android:id="@+id/postname"
         android:layout_width="381dp"
         android:layout_height="76dp"
+        android:background="@drawable/dropview"
         android:ems="10"
+        android:fontFamily="@font/mulisimple"
         android:inputType="textPersonName"
-        android:text="Nume"
-        android:background="@drawable/spinnerd"
 
+        android:padding="10dp"
+        android:text="Nume"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.433"
@@ -37,15 +53,17 @@
 
     <EditText
         android:id="@+id/desc"
-        android:layout_width="382dp"
-        android:layout_height="198dp"
+        android:layout_width="388dp"
+        android:layout_height="244dp"
+        android:background="@drawable/descview"
         android:ems="10"
+        android:fontFamily="@font/mulisimple"
         android:gravity="top"
         android:hint="Description"
-        android:background="@drawable/spinnerd"
         android:inputType="textCapSentences|textNoSuggestions|textMultiLine"
         android:maxLines="6"
         android:minLines="3"
+        android:padding="16dp"
         android:text="Descriere"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,12 +77,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
+        android:fontFamily="@font/mulisemibold"
         android:onClick="clickAddPost"
         android:text="Posteaza"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.976" />
@@ -73,10 +91,12 @@
         android:id="@+id/location_gps"
         android:layout_width="380dp"
         android:layout_height="57dp"
+        android:background="@drawable/dropview"
         android:ems="10"
+        android:fontFamily="@font/mulisimple"
         android:inputType="textPersonName"
+        android:padding="10dp"
         android:text="Locatie"
-        android:background="@drawable/spinnerd"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.387"
@@ -103,14 +123,15 @@
         android:id="@+id/loadimage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/mulisemibold"
         android:text="Galerie"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.104"
+        app:layout_constraintHorizontal_bias="0.109"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.78" />
+        app:layout_constraintVertical_bias="0.802" />
 
     <ImageView
         android:id="@+id/imagep"
@@ -120,10 +141,10 @@
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.801"
+        app:layout_constraintHorizontal_bias="0.947"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.861"
+        app:layout_constraintVertical_bias="0.892"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
@@ -131,28 +152,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
+        android:fontFamily="@font/mulisemibold"
         android:onClick="ClickCamera"
         android:text="Camera"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.101"
+        app:layout_constraintHorizontal_bias="0.109"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.878" />
+        app:layout_constraintVertical_bias="0.89" />
 
     <Spinner
         android:id="@+id/mapspinner"
-        android:background="@drawable/trackd"
-        android:popupBackground="@drawable/spinnerd"
         android:layout_width="324dp"
         android:layout_height="42dp"
+        android:background="@drawable/dropview"
+        android:padding="10dp"
+        android:popupBackground="@drawable/listview"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.149"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.11" />
+        app:layout_constraintVertical_bias="0.12" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

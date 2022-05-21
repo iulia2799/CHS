@@ -100,6 +100,7 @@ public class Ranking extends AppCompatActivity {
                         if(log!=null){
                             Post post= postsnap.getValue(Post.class);
                             assert post != null;
+                            post.setTrackingnumber(postsnap.getKey());
                             String location = post.getLocation();
                             if(location!=null){
                                 if(!location.contains(log.getLocation())) continue;
@@ -109,6 +110,7 @@ public class Ranking extends AppCompatActivity {
                             if(postsnap.child("status").exists()){
                                 if(!postsnap.child("status").getValue(String.class).contains("SOLVED") && !postsnap.child("status").getValue(String.class).contains("Rezolvat")){
                                     Post mPost = postsnap.getValue(Post.class);
+                                    mPost.setTrackingnumber(postsnap.getKey());
                                     mPost.setCat(cat);
                                     postList.add(mPost);
                                 }
@@ -228,6 +230,7 @@ public class Ranking extends AppCompatActivity {
                     if(log!=null){
                         Post post= postsnap.getValue(Post.class);
                         assert post != null;
+                        post.setTrackingnumber(postsnap.getKey());
                         String location = post.getLocation();
                         if(location!=null){
                             if(!location.contains(log.getLocation())) continue;
@@ -237,6 +240,8 @@ public class Ranking extends AppCompatActivity {
                         if(postsnap.child("status").exists()){
                             if(!postsnap.child("status").getValue(String.class).contains("SOLVED") && !postsnap.child("status").getValue(String.class).contains("Rezolvat")){
                                 Post mPost = postsnap.getValue(Post.class);
+                                assert mPost != null;
+                                mPost.setTrackingnumber(postsnap.getKey());
                                 postList.add(mPost);
                             }
                         }

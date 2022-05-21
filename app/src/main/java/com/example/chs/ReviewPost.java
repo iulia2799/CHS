@@ -2,10 +2,13 @@ package com.example.chs;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Objects;
@@ -131,9 +135,11 @@ public class ReviewPost extends AppCompatActivity {
     public void getStatus(){
         if(status.startsWith("SOLVED") || status.startsWith("Rezolvat")){
             raporteaza.setVisibility(View.GONE);
+            preia.setVisibility(View.GONE);
+            button.setVisibility(View.GONE);
             like.setVisibility(View.GONE);
             dislike.setVisibility(View.GONE);
-            voturi.setVisibility(View.GONE);
+            //voturi.setVisibility(View.GONE);
             if(authenticate()){
                 findResolution();
                 resolution.setVisibility(View.VISIBLE);
@@ -156,6 +162,7 @@ public class ReviewPost extends AppCompatActivity {
             incurs.setVisibility(View.VISIBLE);
             curs.setVisibility(View.VISIBLE);
             if(authenticatep()){
+                raporteaza.setVisibility(View.GONE);
                 preia.setVisibility(View.GONE);
                 like.setVisibility(View.GONE);
                 dislike.setVisibility(View.GONE);
@@ -254,7 +261,7 @@ public class ReviewPost extends AppCompatActivity {
     }
     public void clickReport(View view){
         penalizeUser();
-        findPost();
+        spamPost();
     }
 
     public void penalizeUser(){
@@ -279,7 +286,7 @@ public class ReviewPost extends AppCompatActivity {
     }
     public void findPost(){
         DatabaseReference ref = database.getReference(categorie);
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.child(trackingnumber).exists()){
@@ -296,13 +303,59 @@ public class ReviewPost extends AppCompatActivity {
             }
         });
     }
-    public void clickSolve(View view){
-         Intent ii = new Intent(this,Solve.class);
-         DatabaseReference ref = database.getReference(categorie);
-         ref.addValueEventListener(new ValueEventListener() {
+    public void spamPost(){
+        DatabaseReference ref = database.getReference(categorie);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.child(trackingnumber).exists()){
+                    Post post = snapshot.getValue(Post.class);
+                    assert post != null;
+                    Integer spam = snapshot.child(trackingnumber).child("spam").getValue(Integer.class);
+                    snapshot.child(trackingnumber).child("spam").getRef().setValue(spam+1);
+                    if(spam+1>=10){
+                        sendSpamEmail();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void sendSpamEmail(){
+        try {
+            Intent send = new Intent(Intent.ACTION_SEND);
+            send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            send.setType("plain/text");
+
+            send.putExtra(Intent.EXTRA_EMAIL, new String[]{"iuliasarah27@gmail.com"});
+            send.putExtra(Intent.EXTRA_SUBJECT, "Cazul #" + trackingnumber+" este Spam!");
+            //if (uri != null) {
+            ////    send.putExtra(Intent.EXTRA_STREAM, uri);
+            //}
+            send.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            send.putExtra(Intent.EXTRA_TEXT, "Cazul #" + trackingnumber + " a fost marcat ca Spam/abuziv de 10 de utilizatori. Poti scrie aici motivul");
+            startActivity(send);
+            System.out.println("fdsfdsfsdsdf");
+            findPost();
+        }catch (Throwable t){
+            System.out.println(t.toString());
+            Toast.makeText(this,"Sending email has failed, email may be invalid "+t.toString(),Toast.LENGTH_LONG).show();
+        }
+
+    }
+    public void clickSolve(View view){
+         Intent ii = new Intent(this,Solve.class);
+         ii.putExtra("username",user.getText().toString());
+         DatabaseReference ref = database.getReference(categorie);
+         ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(trackingnumber).exists()){
+                    ii.putExtra("names",snapshot.child(trackingnumber).child("name").getValue(String.class));
                     Primarie primarie = primarieLocalStorage.getLoggedInUser();
                     Primarie t1 = snapshot.child(trackingnumber).child("assignee").getValue(Primarie.class);
                     if(t1.getEmail().equals(primarie.getEmail())){

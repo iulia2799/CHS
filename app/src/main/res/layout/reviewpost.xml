@@ -4,54 +4,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#198479"
     tools:context=".ReviewPost">
 
     <Button
         android:id="@+id/postr4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="118dp"
+        android:layout_height="71dp"
+        android:background="@drawable/greenbtn"
         android:clickable="true"
+        android:fontFamily="@font/mulibold"
         android:onClick="clickLike"
+        android:paddingBottom="12dp"
         android:text="LIKE"
+        app:backgroundTint="@null"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.099"
+        app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9" />
+        app:layout_constraintVertical_bias="0.896" />
 
     <TextView
         android:id="@+id/locationp"
         android:layout_width="326dp"
         android:layout_height="40dp"
+        android:fontFamily="@font/mulisimple"
         android:text="TextView"
+        android:textColor="@color/white"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintHorizontal_bias="0.258"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.114" />
+        app:layout_constraintVertical_bias="0.163" />
 
     <TextView
         android:id="@+id/descp"
-        android:layout_width="333dp"
-        android:layout_height="165dp"
+        android:layout_width="366dp"
+        android:layout_height="111dp"
+        android:fontFamily="@font/mulisimple"
         android:text="TextView"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.038"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.21" />
+        app:layout_constraintVertical_bias="0.246" />
 
     <TextView
         android:id="@+id/userp"
         android:layout_width="246dp"
         android:layout_height="35dp"
+        android:fontFamily="@font/mulisimple"
         android:text="TextView"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,101 +74,123 @@
 
     <Button
         android:id="@+id/postr2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="67dp"
+        android:background="@drawable/kaki"
         android:clickable="true"
+        android:fontFamily="@font/mulibold"
         android:onClick="clickPreia"
+        android:paddingBottom="12dp"
         android:text="Preia"
+        app:backgroundTint="@null"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.099"
+        app:layout_constraintHorizontal_bias="0.003"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+        app:layout_constraintVertical_bias="0.996" />
 
     <Button
         android:id="@+id/postr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="122dp"
+        android:layout_height="69dp"
+        android:background="@drawable/greenbtn"
         android:clickable="true"
+        android:fontFamily="@font/mulibold"
         android:onClick="clickSolve"
+        android:paddingBottom="12dp"
         android:text="Rezolva"
+        app:backgroundTint="@null"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.861"
+        app:layout_constraintHorizontal_bias="0.979"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/postr5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="118dp"
+        android:layout_height="71dp"
+        android:background="@drawable/kaki"
         android:clickable="true"
+        android:fontFamily="@font/mulibold"
         android:onClick="clickDislike"
+        android:paddingBottom="12dp"
         android:text="DISLIKE"
+        app:backgroundTint="@null"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.829"
+        app:layout_constraintHorizontal_bias="0.979"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9" />
+        app:layout_constraintVertical_bias="0.896" />
 
     <Button
         android:id="@+id/postr3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="141dp"
+        android:layout_height="69dp"
+        android:background="@drawable/kaki"
         android:clickable="true"
+        android:fontFamily="@font/mulisimple"
         android:onClick="clickReport"
+        android:paddingBottom="12dp"
         android:text="Raporteaza"
+        android:textSize="12sp"
+        app:backgroundTint="@null"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.969"
+        app:layout_constraintHorizontal_bias="0.977"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.003" />
 
     <ImageView
         android:id="@+id/imagep"
-        android:layout_width="391dp"
-        android:layout_height="200dp"
+        android:layout_width="397dp"
+        android:layout_height="221dp"
         android:adjustViewBounds="false"
+        android:background="@drawable/pose"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.534"
+        app:layout_constraintVertical_bias="0.531"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/namep"
         android:layout_width="335dp"
         android:layout_height="42dp"
+        android:fontFamily="@font/mulisimple"
         android:text="TextView"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.013"
+        app:layout_constraintHorizontal_bias="0.289"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.053" />
+        app:layout_constraintVertical_bias="0.103" />
 
     <TextView
         android:id="@+id/resolution"
-        android:layout_width="387dp"
-        android:layout_height="100dp"
+        android:layout_width="385dp"
+        android:layout_height="78dp"
+        android:fontFamily="@font/mulisimple"
         android:text="TextView"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.269"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.763" />
+        app:layout_constraintVertical_bias="0.753" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -169,13 +202,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.77"
-        app:srcCompat="@drawable/btn2" />
+        app:srcCompat="@drawable/preluat_icon" />
 
     <TextView
         android:id="@+id/curs"
         android:layout_width="104dp"
         android:layout_height="28dp"
+        android:fontFamily="@font/mulisimple"
         android:text="In curs"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.335"
@@ -187,7 +222,9 @@
         android:id="@+id/points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/mulisimple"
         android:text="Voturi"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
