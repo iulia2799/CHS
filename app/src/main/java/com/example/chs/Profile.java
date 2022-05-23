@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
@@ -449,5 +450,10 @@ public class Profile extends AppCompatActivity {
                     Toast.makeText(this,"Permission denied",Toast.LENGTH_SHORT).show();
                 }
         }
+    }
+
+    public void EditareActe(View view){
+        Intent intent = new Intent(this,CreateActe.class);
+        startActivity(intent);
     }
 }
