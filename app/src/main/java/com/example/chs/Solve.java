@@ -66,6 +66,7 @@ public class Solve extends AppCompatActivity {
         desc = findViewById(R.id.response);
         aSwitch = findViewById(R.id.couldnotsolve);
         swin = findViewById(R.id.swin);
+        trackingnumber = getIntent().getStringExtra("tr");
     }
 
     private boolean authenticate(){
@@ -96,22 +97,24 @@ public class Solve extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     posts.clear();
                     System.out.println("HERE");
-                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        mPost= dataSnapshot.getValue(Post.class);
+                    if(snapshot.child(trackingnumber).exists()) {
+                        DataSnapshot dataSnapshot = snapshot.child(trackingnumber);
+                        mPost = dataSnapshot.getValue(Post.class);
                         assert mPost != null;
                         System.out.println("HERE 1");
-                        if(postname.equals(mPost.getName())){
-                            if(!aSwitch.isChecked())
-                            {dataSnapshot.child("status").getRef().setValue("SOLVED BY : "+p + "-> "+desc.getText().toString());
-                            putNotification(mPost);
-                            Toast.makeText(getApplicationContext(),"Succesfully updated!",Toast.LENGTH_SHORT).show();}
-                            else{
-                                dataSnapshot.child("status").getRef().setValue("NOT SOLVED : "+p + "-> "+desc.getText().toString());
+                        if (postname.equals(mPost.getName())) {
+                            if (!aSwitch.isChecked()) {
+                                dataSnapshot.child("status").getRef().setValue("SOLVED BY : " + p + "-> " + desc.getText().toString());
                                 putNotification(mPost);
-                                Toast.makeText(getApplicationContext(),"Succesfully updated!",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Succesfully updated!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                dataSnapshot.child("status").getRef().setValue("NOT SOLVED : " + p + "-> " + desc.getText().toString());
+                                putNotification(mPost);
+                                Toast.makeText(getApplicationContext(), "Succesfully updated!", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
+
                 }
 
                 @Override
@@ -147,7 +150,7 @@ public class Solve extends AppCompatActivity {
                         DatabaseReference rootref = u.getRef();
                         DatabaseReference arr = rootref.child("alertList");
                         Map<String,Object> map = new HashMap<>();
-                        System.out.println(arr.getKey());
+                        //System.out.println(arr.getKey());
                         arr.setValue(list);
                         sendEmail(curr.getEmail());
                     }
@@ -177,7 +180,7 @@ public class Solve extends AppCompatActivity {
             send.putExtra(Intent.EXTRA_TEXT, "Cazul #" + trackingnumber + " a fost rezolvat de " + primarie.getLoggedInUser().getEmail() + " . "+desc.getText().toString());
             startActivity(Intent.createChooser(send,"Sending mail"));
             System.out.println("fdsfdsfsdsdf");
-            //findPost();
+            GivePoints();
         }catch (Throwable t){
             System.out.println(t.toString());
             Toast.makeText(this,"Sending email has failed, email may be invalid "+t.toString(),Toast.LENGTH_LONG).show();
@@ -191,6 +194,7 @@ public class Solve extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Primarie x = dataSnapshot.getValue(Primarie.class);
+                    assert x != null;
                     if(x.getEmail().equals(primarie.getLoggedInUser().getEmail())){
                         dataSnapshot.child("points").getRef().setValue(x.getPoints()+30);
                     }

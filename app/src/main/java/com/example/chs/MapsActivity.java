@@ -191,7 +191,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
        // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
        // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         //add markers
-        Toast.makeText(this,"LOADING...",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Se incarca, va rog sa asteptati...",Toast.LENGTH_LONG).show();
        for(Categorie cat : categories){
            DatabaseReference ref = database.getReference(cat.getNume());
            ref.addValueEventListener(new ValueEventListener() {
@@ -218,7 +218,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                        }
                        if(mPost.getStatus().contains("SOLVED") || mPost.getStatus().contains("Rezolvat")) continue;
                        if(location !=null){
-                       LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
+                           LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
                            MarkerOptions options = new MarkerOptions().position(latLng).title(mPost.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
                            Marker marker = mMap.addMarker(options);
                            posts.add(mPost);
@@ -260,6 +260,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                }
                            });
                        }
+
                    }
                }
 
@@ -455,6 +456,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.clear();
         postList.clear();
         System.out.println("here");
+        Toast.makeText(this,"Se incarca, va rog sa asteptati...",Toast.LENGTH_LONG).show();
         for(Categorie cat : categories){
             DatabaseReference ref = database.getReference(cat.getNume());
             ref.addValueEventListener(new ValueEventListener() {
@@ -529,6 +531,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void SelectItem(Categorie cat){
         mMap.clear();
         posts.clear();
+        Toast.makeText(this,"Se incarca, va rog sa asteptati...",Toast.LENGTH_LONG).show();
         DatabaseReference ref = database.getReference(cat.getNume());
         ref.addValueEventListener(new ValueEventListener() {
             private static final String TAG = "error";
