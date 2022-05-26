@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.chs.data.login.PrimarieLocalStorage;
 import com.example.chs.data.login.UserLocalStorage;
+import com.example.chs.data.model.TermsandConditions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void ClickSettings(View view){
-        Intent intent = new Intent(this, SettingsActivity.class);
+        Intent intent = new Intent(this, TermsandConditions.class);
         startActivity(intent);
     }
 }

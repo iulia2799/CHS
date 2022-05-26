@@ -117,7 +117,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 markerOptions.position(location);
                 markerOptions.title("Current Position");
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-                //mCurrLocationMarker = mMap.addMarker(markerOptions);
+                mCurrLocationMarker = mMap.addMarker(markerOptions);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 11));
                 return false;
             }
@@ -262,6 +262,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                        }
 
                    }
+                   searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                       @Override
+                       public boolean onQueryTextSubmit(String s) {
+                           System.out.println("searching...");
+                           searchPost(s);
+                           return false;
+                       }
+
+                       @Override
+                       public boolean onQueryTextChange(String s) {
+                           return false;
+                       }
+                   });
                }
 
                @Override
@@ -275,8 +288,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void searchPost(){
+    public void searchPost(String s){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            Post found = null;
+            for(Post p : posts){
+                if(p.getTrackingnumber().equals(s)) {
+                    found = p;
+                }
+            }
+            if(found !=null) {
+                LatLng location = getLocationFromAddress(getApplicationContext(),found.getLocation());
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(location);
+                markerOptions.title(found.getTrackingnumber());
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+                mCurrLocationMarker = mMap.addMarker(markerOptions);
+                mCurrLocationMarker.setTag(found);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 11));
+            }
 
+        }
     }
 
     public void ScorePoints() {
@@ -518,6 +549,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             });
                         }
                     }
+                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String s) {
+                            System.out.println("searching...");
+                            searchPost(s);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String s) {
+                            return false;
+                        }
+                    });
 
                 }
 
@@ -595,6 +639,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         });
                     }
                 }
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String s) {
+                        System.out.println("searching...");
+                        searchPost(s);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String s) {
+                        return false;
+                    }
+                });
             }
 
             @Override

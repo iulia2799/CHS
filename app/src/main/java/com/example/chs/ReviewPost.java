@@ -428,6 +428,9 @@ public class ReviewPost extends AppCompatActivity {
                             String[] status = ds.child("status").getValue(String.class).split(":");
                             snapshot.child(trackingnumber).child("datet").getRef().setValue(System.currentTimeMillis());
                             ds.child("status").getRef().setValue("Nerezolvat - cetateanul este nemultumit: " + status[1]);
+                            Primarie primarie = snapshot.child(trackingnumber).child("assignee").getValue(Primarie.class);
+                            RetractPoints(primarie);
+
                         }
                     } else System.out.println("error");
                 }
@@ -438,5 +441,75 @@ public class ReviewPost extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void ViewUserProfile(View view){
+        Intent intent = new Intent(this, Profile.class);
+        intent.putExtra("username",user.getText().toString());
+        intent.putExtra("type","user");
+        startActivity(intent);
+    }
+
+    public void ViewPrimarieProfile(View view) {
+        Intent intent = new Intent(this,Profile.class);
+        DatabaseReference ref =database.getReference(categorie);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(trackingnumber).exists()) {
+                    String username = snapshot.child(trackingnumber).child("assignee").child("primarie").getValue(String.class);
+                    intent.putExtra("username",username);
+                    intent.putExtra("type","primarie");
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void ViewRez(View view) {
+        Intent intent = new Intent(this,Profile.class);
+        DatabaseReference ref =database.getReference(categorie);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(trackingnumber).exists()) {
+                    String username = snapshot.child(trackingnumber).child("assignee").child("primarie").getValue(String.class);
+                    System.out.println(username);
+                    intent.putExtra("username",username);
+                    intent.putExtra("type","primarie");
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void RetractPoints(Primarie primarie){
+        DatabaseReference ref = database.getReference("Primarie");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot usersnapshot : snapshot.getChildren()){
+                    Primarie mUser = usersnapshot.getValue(Primarie.class);
+                    if(mUser.getPrimarie().equals(primarie.getPrimarie())){
+                        usersnapshot.child("points").getRef().setValue(mUser.getPoints()-10);
+                        Toast.makeText(getApplicationContext(),"Cel care a rezolvat va fi penalizat",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
