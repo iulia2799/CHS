@@ -3,6 +3,7 @@ package com.example.chs;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Spinner;
 import com.example.chs.data.Cities;
 import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.PrimarieLocalStorage;
+import com.example.chs.data.login.User;
 import com.example.chs.data.login.UserLocalStorage;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +29,7 @@ public class Setari extends AppCompatActivity {
 
     private PrimarieLocalStorage primarieLocalStorage;
     private UserLocalStorage userLocalStorage;
+    private String user_code;
     private MaterialButton changePassword;
     private Spinner spinner;
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -107,7 +110,60 @@ public class Setari extends AppCompatActivity {
             System.out.println("error");
     }
     public void changePassword(View view){
+        if(primarieLocalStorage.getUserLoggedIn()) {
+            Primarie primarie = primarieLocalStorage.getLoggedInUser();
+            find(primarie);
+        } else if (userLocalStorage.getUserLoggedIn()) {
+            User user =userLocalStorage.getLoggedInUser();
+            find(user);
+        }
+    }
 
+    public void find(Primarie primarie){
+        DatabaseReference ref = database.getReference("Primarie");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dsp : snapshot.getChildren()) {
+                    Primarie mp = dsp.getValue(Primarie.class);
+                    if(mp.getEmail().equals(primarie.getEmail()) && mp.getPrimarie().equals(primarie.getPrimarie())) {
+                        user_code = dsp.getKey();
+                        Intent intent = new Intent(getApplicationContext(),ChangePassword.class);
+                        intent.putExtra("user_code",user_code);
+                        intent.putExtra("intent","p");
+                        startActivity(intent);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void find(User user){
+        DatabaseReference ref = database.getReference("User");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dsp : snapshot.getChildren()) {
+                    User mp = dsp.getValue(User.class);
+                    if(mp.getEmail().equals(user.getEmail()) && mp.getUsername().equals(user.getUsername())) {
+                        user_code = dsp.getKey();
+                        Intent intent = new Intent(getApplicationContext(),ChangePassword.class);
+                        intent.putExtra("user_code",user_code);
+                        intent.putExtra("intent","u");
+                        startActivity(intent);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 
