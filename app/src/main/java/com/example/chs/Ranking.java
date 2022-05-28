@@ -180,7 +180,10 @@ public class Ranking extends AppCompatActivity {
                 UserAdapter adapter = new UserAdapter(userList, new UserAdapter.OnItemListener() {
                     @Override
                     public void onItemClick(int position) {
-
+                        User user = userList.get(position);
+                        Intent intent = new Intent(getApplicationContext(),Profile.class);
+                        intent.putExtra("username",user.getUsername());
+                        intent.putExtra("type","user");
                     }
                 });
                 recyclerView.setHasFixedSize(true);

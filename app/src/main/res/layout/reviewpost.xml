@@ -221,7 +221,7 @@
         android:layout_height="78dp"
         android:clickable="true"
         android:fontFamily="@font/mulisimple"
-        android:onClick="ViewRez"
+        android:onClick="ViewPrimarieProfile"
         android:text="TextView"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"

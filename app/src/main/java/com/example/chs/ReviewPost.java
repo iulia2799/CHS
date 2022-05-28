@@ -145,7 +145,7 @@ public class ReviewPost extends AppCompatActivity {
     public void getStatus(){
         if(status.startsWith("SOLVED") || status.startsWith("Rezolvat")){
             raporteaza.setVisibility(View.GONE);
-            //feedback.setVisibility(View.VISIBLE);
+            feedback.setVisibility(View.VISIBLE);
             preia.setVisibility(View.GONE);
             button.setVisibility(View.GONE);
             like.setVisibility(View.GONE);
@@ -156,7 +156,7 @@ public class ReviewPost extends AppCompatActivity {
                 incurs.setVisibility(View.GONE);
                 curs.setVisibility(View.GONE);
             }else if(authenticatep()){
-                //feedback.setVisibility(View.GONE);
+                feedback.setVisibility(View.GONE);
                 resolution.setVisibility(View.VISIBLE);
                 incurs.setVisibility(View.GONE);
                 curs.setVisibility(View.GONE);
@@ -164,14 +164,15 @@ public class ReviewPost extends AppCompatActivity {
         }else if(status.startsWith("NOT SOLVED") || status.startsWith("Nerezolvat")){
             System.out.println(status);
             resolution.setVisibility(View.VISIBLE);
-            //feedback.setVisibility(View.GONE);
+            preia.setVisibility(View.GONE);
+            feedback.setVisibility(View.GONE);
             incurs.setVisibility(View.GONE);
             curs.setVisibility(View.GONE);
 
 
         }else if(status.startsWith("In curs")){
             resolution.setVisibility(View.GONE);
-            //feedback.setVisibility(View.GONE);
+            feedback.setVisibility(View.GONE);
             incurs.setVisibility(View.VISIBLE);
             curs.setVisibility(View.VISIBLE);
             if(authenticatep()){
@@ -185,7 +186,7 @@ public class ReviewPost extends AppCompatActivity {
         }else{
             curs.setVisibility(View.GONE);
             incurs.setVisibility(View.GONE);
-            //feedback.setVisibility(View.GONE);
+            feedback.setVisibility(View.GONE);
             resolution.setVisibility(View.GONE);
             if(authenticatep()){
                 raporteaza.setVisibility(View.GONE);
@@ -458,6 +459,7 @@ public class ReviewPost extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.child(trackingnumber).exists()) {
                     String username = snapshot.child(trackingnumber).child("assignee").child("primarie").getValue(String.class);
+                    System.out.println("toString"+snapshot.child(trackingnumber).toString().length());
                     intent.putExtra("username",username);
                     intent.putExtra("type","primarie");
                     startActivity(intent);
@@ -499,6 +501,7 @@ public class ReviewPost extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot usersnapshot : snapshot.getChildren()){
                     Primarie mUser = usersnapshot.getValue(Primarie.class);
+                    System.out.println(mUser.getPrimarie() + "," + primarie.getPrimarie());
                     if(mUser.getPrimarie().equals(primarie.getPrimarie())){
                         usersnapshot.child("points").getRef().setValue(mUser.getPoints()-10);
                         Toast.makeText(getApplicationContext(),"Cel care a rezolvat va fi penalizat",Toast.LENGTH_SHORT).show();

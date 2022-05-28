@@ -64,6 +64,7 @@ public class Profile extends AppCompatActivity {
     private RecyclerView recyclerView;
     public User userlog;
     public TextView infotitle;
+    private TextView puncte;
     public PopupWindow window;
     private boolean editmode = false;
     private Intent i;
@@ -94,6 +95,7 @@ public class Profile extends AppCompatActivity {
         username = findViewById(R.id.Username);
         username.setText("username");
         prinfoedit = findViewById(R.id.acte);
+        puncte = findViewById(R.id.puncte);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         window = new PopupWindow(inflater.inflate(R.layout.popup,null,false),100,100,true);
         recyclerView = findViewById(R.id.userpost);
@@ -127,6 +129,8 @@ public class Profile extends AppCompatActivity {
                     if(mUser.getEmail().equals(userlog.getEmail())){
                         informatii.setText(mUser.getInformatii());
                         username.setText(mUser.getUsername());
+                        String placeholder = mUser.getPoints() + " puncte";
+                        puncte.setText(placeholder);
                     }else{
                         Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
                     }
@@ -156,6 +160,8 @@ public class Profile extends AppCompatActivity {
                     if(mUser.getEmail().equals(primarielog.getEmail())){
                         informatii.setText(mUser.getInformatii());
                         username.setText(mUser.getPrimarie());
+                        String placeholder = mUser.getPoints() + " puncte";
+                        puncte.setText(placeholder);
                     }else{
                         System.out.println(primarielog.getEmail()+","+mUser.getEmail());
                         Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
@@ -184,6 +190,8 @@ public class Profile extends AppCompatActivity {
                     if(mUser.getUsername().equals(user_name)){
                         informatii.setText(mUser.getInformatii());
                         username.setText(mUser.getUsername());
+                        String placeholder = mUser.getPoints() + " puncte";
+                        puncte.setText(placeholder);
                     }else{
                         Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
                     }
@@ -213,6 +221,8 @@ public class Profile extends AppCompatActivity {
                     if(mUser.getPrimarie().equals(primarie)){
                         informatii.setText(mUser.getInformatii());
                         username.setText(mUser.getPrimarie());
+                        String placeholder = mUser.getPoints() + " puncte";
+                        puncte.setText(placeholder);
                     }else{
                         System.out.println(primarielog.getEmail()+","+mUser.getEmail());
                         Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
@@ -399,6 +409,7 @@ public class Profile extends AppCompatActivity {
                                 if(!postsnap.child("status").getValue(String.class).contains("SOLVED") && !postsnap.child("status").getValue(String.class).contains("Rezolvat")){
                                     Post mPost = postsnap.getValue(Post.class);
                                     assert mPost != null;
+                                    mPost.setCat(new Categorie(postsnap.child("categorie").getValue(String.class)));
                                     mPost.setTrackingnumber(postsnap.getKey());
                                     postList.add(mPost);
                                 }
@@ -512,6 +523,9 @@ public class Profile extends AppCompatActivity {
                             if(postsnap.child("status").exists() && postsnap.child("op").child("username").exists() && postsnap.child("op").getValue(User.class).getUsername().equals(user_name)){
                                 if(!postsnap.child("status").getValue(String.class).contains("SOLVED") && !postsnap.child("status").getValue(String.class).contains("Rezolvat")){
                                     Post mPost = postsnap.getValue(Post.class);
+                                    assert mPost != null;
+                                    mPost.setCat(new Categorie(postsnap.child("categorie").getValue(String.class)));
+                                    mPost.setTrackingnumber(postsnap.getKey());
                                     postList.add(mPost);
                                 }
                             }
@@ -528,7 +542,24 @@ public class Profile extends AppCompatActivity {
                     PostAdapter postAdapter = new PostAdapter(postList, new PostAdapter.OnItemListener() {
                         @Override
                         public void onItemClick(int position) {
-
+                            Post post = postList.get(position);
+                            Intent intent = new Intent(getApplicationContext(),ReviewPost.class);
+                            intent.putExtra("namep",post.getName());
+                            intent.putExtra("locationp",post.getLocation());
+                            intent.putExtra("trackingnumber",post.getTrackingnumber());
+                            intent.putExtra("descp",post.getDescription());
+                            intent.putExtra("post_image",post.getImages());
+                            if(post.getOp()!=null)
+                                intent.putExtra("post_op",post.getOp().getUsername());
+                            else intent.putExtra("post_op","anonim");
+                            //String categ = newpost.getCategorie();
+                            intent.putExtra("status",post.getStatus());
+                            intent.putExtra("voturi",post.getVoturi());
+                            intent.putExtra("categorie",post.getCategorie());
+//                                intent.putExtra("obj", (Parcelable) post);
+                            //System.out.println(post.getImages());
+                            //System.out.println(categ);
+                            startActivity(intent);
                         }
                     });
                     recyclerView.setHasFixedSize(true);
