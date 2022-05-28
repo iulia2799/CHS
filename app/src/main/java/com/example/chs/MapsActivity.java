@@ -107,6 +107,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         button=  (Button)findViewById(R.id.currentLoc);
         ranking = (Button)findViewById(R.id.button3);
         add = (Button)findViewById(R.id.button4);
+        primarieLocalStorage = new PrimarieLocalStorage(this);
+        if(primarieLocalStorage.getUserLoggedIn()) {
+            add.setVisibility(View.GONE);
+        }
         profile = (Button)findViewById(R.id.button5);
         searchView = (SearchView)findViewById(R.id.search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -216,7 +220,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                        if(locationp !=null && location!=null){
                            if(!location.contains(locationp)) continue;
                        }
-                       if(mPost.getStatus().contains("SOLVED") || mPost.getStatus().contains("Rezolvat")) continue;
+                       if(mPost.getStatus().startsWith("SOLVED") || mPost.getStatus().startsWith("Rezolvat")) continue;
                        if(location !=null){
                            LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
                            MarkerOptions options = new MarkerOptions().position(latLng).title(mPost.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
@@ -512,7 +516,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         if(locationp !=null && location!=null){
                             if(!location.contains(locationp)) continue;
                         }
-                        if(mPost.getStatus().contains("Rezolvat") || mPost.getStatus().contains("SOLVED"))
+                        if(mPost.getStatus().startsWith("Rezolvat") || mPost.getStatus().startsWith("SOLVED"))
                         if(location !=null){
                             LatLng latLng = getLocationFromAddress(getApplicationContext(),location);
                             MarkerOptions options = new MarkerOptions().position(latLng).title(mPost.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
@@ -599,7 +603,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if(locationp !=null && location!=null){
                         if(!location.contains(locationp)) continue;
                     }
-                    if(mPost.getStatus().contains("SOLVED") || mPost.getStatus().contains("Rezolvat")) continue;
+                    if(mPost.getStatus().startsWith("SOLVED") || mPost.getStatus().startsWith("Rezolvat")) continue;
                     //System.out.println(location);
                     if(location !=null){
                         LatLng latLng = getLocationFromAddress(getApplicationContext(),location);

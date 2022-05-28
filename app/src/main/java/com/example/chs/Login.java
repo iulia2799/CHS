@@ -2,10 +2,18 @@ package com.example.chs;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.service.autofill.RegexValidator;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,7 +52,7 @@ public class Login extends AppCompatActivity {
     private ImageView bubble;
     private ImageView bubble2;
     private ImageView track;
-
+    private boolean active=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,9 +102,17 @@ public class Login extends AppCompatActivity {
                     User mUser = usersnapshot.getValue(User.class);
                     User xUser = new User(mUser.getEmail(),mUser.getUsername(),mUser.getPassword());
                     if(mUser.getEmail().equals(email) && mUser.getPassword().equals(pass)){
+                        active=true;
                         userLocalStorage.storeUserData(xUser);
                         userLocalStorage.setUserLoggedIn(true);
-                        Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
+                        Intent intent;
+                        if(usersnapshot.child("alertList").exists()){
+                            int reqCode = 1;
+                            intent = new Intent(getApplicationContext(), MapsActivity.class);
+                            showNotification(getApplicationContext(), "Notificari", "Ai notificari noi!", intent, reqCode);
+                        } else {
+                            intent = new Intent(getApplicationContext(), MapsActivity.class);
+                        }
                         startActivity(intent);
                     }else{
 
@@ -123,9 +139,17 @@ public class Login extends AppCompatActivity {
                     Primarie mUser = usersnapshot.getValue(Primarie.class);
                     Primarie xUser = new Primarie(mUser.getEmail(),mUser.getPrimarie(),mUser.getLocation(),mUser.getPassword());
                     if(mUser.getEmail().equals(email) && mUser.getPassword().equals(pass)){
+                        active=true;
                         primarieLocalStorage.storeUserData(xUser);
                         primarieLocalStorage.setUserLoggedIn(true);
-                        Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
+                        Intent intent;
+                        if(usersnapshot.child("alertList").exists()){
+                            int reqCode = 1;
+                            intent = new Intent(getApplicationContext(), MapsActivity.class);
+                            showNotification(getApplicationContext(), "Notificari", "Ai notificari noi!", intent, reqCode);
+                        } else {
+                            intent = new Intent(getApplicationContext(), MapsActivity.class);
+                        }
                         intent.putExtra("emailp",email);
                         intent.putExtra("numep","nume primarie aici");
                         if(!usersnapshot.child("links").exists())
@@ -158,7 +182,9 @@ public class Login extends AppCompatActivity {
             userLocalStorage = new UserLocalStorage(this);
             User user = new User(storedEmail, storedpass);
             checkUser(user.getEmail(),user.getPassword());
-
+            if(!active){
+                Toast.makeText(getApplicationContext(),"Email sau parola incorecta",Toast.LENGTH_SHORT).show();
+            }
 
 
         }
@@ -166,11 +192,35 @@ public class Login extends AppCompatActivity {
             primarieLocalStorage = new PrimarieLocalStorage(this);
             Primarie primarie = new Primarie(storedEmail,storedpass);
             checkPrimarie(primarie.getEmail(), primarie.getPassword());
-
+            if(!active){
+                Toast.makeText(getApplicationContext(),"Email sau parola incorecta",Toast.LENGTH_SHORT).show();
+            }
 
 
         }else{
             Toast.makeText(this,"unknowm error occured",Toast.LENGTH_SHORT).show();
         }
+    }
+    public void showNotification(Context context, String title, String message, Intent intent, int reqCode) {
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, reqCode, intent, PendingIntent.FLAG_ONE_SHOT);
+        String CHANNEL_ID = "CHS";
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.bell)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setAutoCancel(true)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setContentIntent(pendingIntent);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Chs Notifications";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+        notificationManager.notify(reqCode, notificationBuilder.build());
+
+        Log.d("showNotification", "showNotification: " + reqCode);
     }
 }

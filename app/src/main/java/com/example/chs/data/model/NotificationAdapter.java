@@ -1,5 +1,6 @@
 package com.example.chs.data.model;
 
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,11 @@ import com.example.chs.data.Post;
 import com.example.chs.data.PostAdapter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> {
     private HashMap<String,String> postList;
@@ -38,9 +41,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-       holder.name.setText(alertList.get(position).getDate());
-       holder.description.setText(alertList.get(position).getDescription());
-       System.out.println("2////////////");
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        long time = Long.parseLong(alertList.get(position).getDate());
+        cal.setTimeInMillis(time);
+        String date = DateFormat.format("dd-MM-yyyy", cal).toString();
+        holder.name.setText(date);
+        holder.description.setText(alertList.get(position).getDescription());
+        System.out.println("2////////////");
     }
 
     @Override

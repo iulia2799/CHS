@@ -22,6 +22,7 @@ import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.PrimarieLocalStorage;
 import com.example.chs.data.login.User;
 import com.example.chs.data.login.UserLocalStorage;
+import com.example.chs.data.model.Alert;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -495,6 +496,7 @@ public class ReviewPost extends AppCompatActivity {
     }
 
     public void RetractPoints(Primarie primarie){
+        List<Alert> list = new ArrayList<>();
         DatabaseReference ref = database.getReference("Primarie");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -504,6 +506,17 @@ public class ReviewPost extends AppCompatActivity {
                     System.out.println(mUser.getPrimarie() + "," + primarie.getPrimarie());
                     if(mUser.getPrimarie().equals(primarie.getPrimarie())){
                         usersnapshot.child("points").getRef().setValue(mUser.getPoints()-10);
+                        Alert mAlert = new Alert(String.valueOf(System.currentTimeMillis()), "Cazul #"+trackingnumber+"a fost marcat ca nerezolvat : cetatean nemultumit!");
+                        DataSnapshot ref = usersnapshot.child("alertList");
+                        for(DataSnapshot reference : ref.getChildren()){
+                            list.add(reference.getValue(Alert.class));
+                        }
+                        list.add(mAlert);
+
+                        DatabaseReference rootref = usersnapshot.getRef();
+                        DatabaseReference arr = rootref.child("alertList");
+                        System.out.println(arr.getKey());
+                        arr.setValue(list);
                         Toast.makeText(getApplicationContext(),"Cel care a rezolvat va fi penalizat",Toast.LENGTH_SHORT).show();
                     }
                 }

@@ -1,6 +1,7 @@
 package com.example.chs.data.login;
 
 import com.example.chs.data.model.Act;
+import com.example.chs.data.model.Alert;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +12,7 @@ public class Primarie implements Login{
     private String password;
     private String location;
     private String email;
-    private HashMap<String,String> notifications = new HashMap<>();
+    private List<Alert> alertList = new ArrayList<>();
     private String informatii;
     private List<Act> links = new ArrayList<>();
     private int points;
@@ -60,6 +61,16 @@ public class Primarie implements Login{
         this.points=0;
         this.links.addAll(links);
     }
+    public Primarie (String email, String primarie, String password, String location, String informatii,List<Act> links,List<Alert> alist){
+        this.email = email;
+        this.primarie = primarie;
+        this.password = password;
+        this.location = location;
+        this.informatii = informatii;
+        this.points=0;
+        this.links.addAll(links);
+        this.alertList.addAll(alist);
+    }
 
     @Override
     public void SetPassword(String new_password) {
@@ -91,12 +102,14 @@ public class Primarie implements Login{
         return primarie;
     }
 
-    public HashMap<String, String> getNotifications() {
-        return notifications;
+    public List<Alert> getAlertList() {
+        return alertList;
     }
 
-    public void setNotifications(HashMap<String, String> notifications) {
-        this.notifications = notifications;
+    public void setAlertList(List<Alert> alertList) {
+        for(Alert a : alertList) {
+            this.alertList.add(a);
+        }
     }
 
     public void setPrimarie(String primarie) {
