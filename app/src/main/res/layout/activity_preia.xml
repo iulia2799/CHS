@@ -8,55 +8,69 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/conf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
+        android:layout_width="138dp"
+        android:layout_height="55dp"
+        android:background="@drawable/darkgreenbtn"
         android:clickable="true"
         android:onClick="clickConfirma"
+        android:paddingBottom="12dp"
+        android:text="Confirma"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.742" />
+        app:layout_constraintVertical_bias="0.933" />
 
     <EditText
         android:id="@+id/preia_desc"
-        android:layout_width="409dp"
-        android:layout_height="115dp"
+        android:layout_width="413dp"
+        android:layout_height="209dp"
         android:background="@drawable/window"
         android:ems="10"
+        android:fontFamily="@font/mulisimple"
         android:inputType="textCapSentences|textNoSuggestions|textMultiLine"
         android:maxLines="6"
         android:minLines="3"
         android:padding="10dp"
         android:text="Descriere"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.061" />
+        app:layout_constraintVertical_bias="0.053" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/adauga"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
+        android:layout_width="262dp"
+        android:layout_height="71dp"
+        android:background="@drawable/darkgreenbtn"
         android:clickable="true"
         android:onClick="onClick"
+        android:paddingBottom="12dp"
+        android:text="Adauga atasament"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.448" />
+
+    <TextView
+        android:id="@+id/numef"
+        android:layout_width="357dp"
+        android:layout_height="153dp"
+        android:fontFamily="@font/mulibolditalic"
+        android:maxLines="6"
+        android:minLines="3"
+        android:text="TextView"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.352" />
-
-    <TextView
-        android:id="@+id/numef"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintVertical_bias="0.761" />
 </androidx.constraintlayout.widget.ConstraintLayout>

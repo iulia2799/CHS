@@ -5,7 +5,7 @@ public enum Cities {
     TIMISOARA("Timișoara"),
     RESITA("Reșița"),
     CARANSEBES("Caransebeș"),
-    MONIOM("Monion");
+    MONIOM("Moniom");
 
     private String name;
     private Cities(String name){

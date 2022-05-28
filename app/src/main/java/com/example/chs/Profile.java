@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
@@ -96,6 +97,11 @@ public class Profile extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         window = new PopupWindow(inflater.inflate(R.layout.popup,null,false),100,100,true);
         recyclerView = findViewById(R.id.userpost);
+        if(i.hasExtra("username")){
+            editareinfo.setVisibility(View.GONE);
+            button.setVisibility(View.GONE);
+            username.setText(i.getStringExtra("username"));
+        }
     }
     private boolean auth(){
         return this.userLocalStorage.getUserLoggedIn();
@@ -165,6 +171,64 @@ public class Profile extends AppCompatActivity {
             }
         });
     }
+
+    protected void getUserInfo(String user_name){
+        userlog = this.userLocalStorage.getLoggedInUser();
+        DatabaseReference reference =  FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/").getReference("User");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userList.clear();
+                for(DataSnapshot usersnapshot : snapshot.getChildren()){
+                    User mUser = usersnapshot.getValue(User.class);
+                    if(mUser.getUsername().equals(user_name)){
+                        informatii.setText(mUser.getInformatii());
+                        username.setText(mUser.getUsername());
+                    }else{
+                        Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
+                    }
+                    userList.add(mUser);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("The read failed: "+error.getCode());
+            }
+        });
+
+    }
+
+    protected void getIns(String primarie){
+        primarielog = this.primarieLocalStorage.getLoggedInUser();
+        DatabaseReference reference =  FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Primarie");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                primarieList.clear();
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Primarie mUser = dataSnapshot.getValue(Primarie.class);
+                    assert mUser != null;
+                    if(mUser.getPrimarie().equals(primarie)){
+                        informatii.setText(mUser.getInformatii());
+                        username.setText(mUser.getPrimarie());
+                    }else{
+                        System.out.println(primarielog.getEmail()+","+mUser.getEmail());
+                        Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
+                    }
+                    primarieList.add(mUser);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("The read failed: "+error.getCode());
+            }
+        });
+    }
+
     public void EditInfo(View view){
         if(authp()){
             editPinfo(view);
@@ -287,12 +351,36 @@ public class Profile extends AppCompatActivity {
         if(auth()){
             prinfoedit.setVisibility(View.GONE);
             displayUser();
-            getUserInfo();
-            findPosts();
+            if(!getIntent().hasExtra("username")) {
+                getUserInfo();
+                findPosts();
+            } else {
+                if(getIntent().getStringExtra("type").equals("user")) {
+                    getUserInfo(getIntent().getStringExtra("username"));
+                    findPosts(getIntent().getStringExtra("username"));
+                } else {
+                    getIns(getIntent().getStringExtra("username"));
+                    findLinks(getIntent().getStringExtra("username"));
+                }
+
+            }
+
         }else if(authp()){
             display();
-            getIns();
-            findLinks();
+            if(!getIntent().hasExtra("primarie")) {
+                getIns();
+                findLinks();
+            } else {
+                if (getIntent().getStringExtra("type").equals("user")) {
+                    getUserInfo(getIntent().getStringExtra("username"));
+                    findPosts(getIntent().getStringExtra("username"));
+                } else {
+                    getIns(getIntent().getStringExtra("username"));
+                    findLinks(getIntent().getStringExtra("username"));
+                }
+
+            }
+
         }
     }
 
@@ -310,6 +398,8 @@ public class Profile extends AppCompatActivity {
                             if(postsnap.child("status").exists() && postsnap.child("op").getValue(User.class).getEmail().equals(userLocalStorage.getLoggedInUser().getEmail())){
                                 if(!postsnap.child("status").getValue(String.class).contains("SOLVED") && !postsnap.child("status").getValue(String.class).contains("Rezolvat")){
                                     Post mPost = postsnap.getValue(Post.class);
+                                    assert mPost != null;
+                                    mPost.setTrackingnumber(postsnap.getKey());
                                     postList.add(mPost);
                                 }
                             }
@@ -326,7 +416,23 @@ public class Profile extends AppCompatActivity {
                     PostAdapter postAdapter = new PostAdapter(postList, new PostAdapter.OnItemListener() {
                         @Override
                         public void onItemClick(int position) {
-
+                            Post post = postList.get(position);
+                            Intent intent = new Intent(getApplicationContext(),ReviewPost.class);
+                            intent.putExtra("namep",post.getName());
+                            intent.putExtra("trackingnumber",post.getTrackingnumber());
+                            intent.putExtra("locationp",post.getLocation());
+                            intent.putExtra("descp",post.getDescription());
+                            intent.putExtra("post_image",post.getImages());
+                            System.out.println(post.getImages());
+                            if(post.getOp()!=null)
+                                intent.putExtra("post_op",post.getOp().getUsername());
+                            else intent.putExtra("post_op","anonim");
+                            //String categ = newpost.getCategorie();
+                            intent.putExtra("status",post.getStatus());
+                            intent.putExtra("voturi",post.getVoturi());
+                            intent.putExtra("categorie",post.getCategorie());
+                            //System.out.println(categ);
+                            startActivity(intent);
                         }
                     });
                     recyclerView.setHasFixedSize(true);
@@ -391,6 +497,103 @@ public class Profile extends AppCompatActivity {
             }
         });
     }
+
+    public void findPosts(String user_name){
+        for(Categorie cat : categories){
+            postList.clear();
+            DatabaseReference ref = database.getReference(cat.getNume());
+            ref.addValueEventListener(new ValueEventListener() {
+                private static final String TAG = "error";
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot postsnap : snapshot.getChildren()){
+                        if(!postsnap.exists()) Log.e(TAG, "onDataChange: No data");
+                        if(postsnap.child("voturi").exists() && postsnap.child("op").exists()) {
+                            if(postsnap.child("status").exists() && postsnap.child("op").child("username").exists() && postsnap.child("op").getValue(User.class).getUsername().equals(user_name)){
+                                if(!postsnap.child("status").getValue(String.class).contains("SOLVED") && !postsnap.child("status").getValue(String.class).contains("Rezolvat")){
+                                    Post mPost = postsnap.getValue(Post.class);
+                                    postList.add(mPost);
+                                }
+                            }
+
+                        }
+                    }
+                    Collections.sort(postList, new Comparator<Post>() {
+                        @Override
+                        public int compare(Post post, Post t1) {
+                            return t1.getVoturi()-post.getVoturi();
+                        }
+                    });
+
+                    PostAdapter postAdapter = new PostAdapter(postList, new PostAdapter.OnItemListener() {
+                        @Override
+                        public void onItemClick(int position) {
+
+                        }
+                    });
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    recyclerView.setAdapter(postAdapter);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    throw error.toException();
+                }
+            });
+
+        }
+    }
+
+    public void findLinks(String user_name){
+        plinks.clear();
+        primarielog = this.primarieLocalStorage.getLoggedInUser();
+        DatabaseReference reference =  FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Primarie");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                primarieList.clear();
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Primarie mUser = dataSnapshot.getValue(Primarie.class);
+                    assert mUser != null;
+                    if(mUser.getPrimarie().equals(user_name)){
+                        if(dataSnapshot.child("links").exists()){
+                            for(DataSnapshot link : dataSnapshot.child("links").getChildren()){
+                                System.out.println(link.getKey());
+
+                                Act act  = link.getValue(Act.class);
+                                plinks.add(act);
+                            }
+                        }
+                    }else{
+                        //System.out.println(primarielog.getEmail()+","+mUser.getEmail());
+                        Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
+                    }
+                    primarieList.add(mUser);
+                }
+                ActAdapter adapter = new ActAdapter(plinks, new ActAdapter.OnItemListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        String l=  plinks.get(position).getLink();
+                        String name = plinks.get(position).getNume();
+                        System.out.println(l);
+                        downloadFile(l,name);
+                    }
+                });
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                recyclerView.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("The read failed: "+error.getCode());
+            }
+        });
+    }
+
     private String down_name="";
     private String down_link="";
     public void downloadFile(String link,String filename){
@@ -449,5 +652,10 @@ public class Profile extends AppCompatActivity {
                     Toast.makeText(this,"Permission denied",Toast.LENGTH_SHORT).show();
                 }
         }
+    }
+
+    public void EditareActe(View view){
+        Intent intent = new Intent(this,CreateActe.class);
+        startActivity(intent);
     }
 }

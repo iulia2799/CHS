@@ -58,6 +58,7 @@ public class AddPost extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Button cameraButton;
     private ImageView imageView;
+    private ImageView switchd;
     private UserLocalStorage userLocalStorage;
     private String strAdd;
     private Spinner dropdowncat;
@@ -79,6 +80,7 @@ public class AddPost extends AppCompatActivity {
         searchlocation = (TextView) findViewById(R.id.location_gps);
         anonymous = (Switch) findViewById(R.id.anon);
         button = (Button) findViewById(R.id.loadimage);
+        switchd = findViewById(R.id.anons);
         cameraButton = (Button) findViewById(R.id.camerabtn);
         imageView = (ImageView) findViewById(R.id.imagep);
         dropdowncat = (Spinner) findViewById(R.id.mapspinner);

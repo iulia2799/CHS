@@ -6,10 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".Solve">
 
+    <ImageView
+        android:id="@+id/swin"
+        android:layout_width="79dp"
+        android:layout_height="52dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.297"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.825"
+        app:srcCompat="@drawable/sw" />
+
     <TextView
         android:id="@+id/solve"
         android:layout_width="173dp"
         android:layout_height="37dp"
+        android:fontFamily="@font/mulibold"
         android:text="REZOLVA"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,12 +34,14 @@
 
     <EditText
         android:id="@+id/response"
-        android:layout_width="375dp"
-        android:layout_height="534dp"
+        android:layout_width="352dp"
+        android:layout_height="464dp"
+        android:background="@drawable/resolution"
         android:ems="10"
         android:inputType="textCapSentences|textNoSuggestions|textMultiLine"
         android:maxLines="6"
         android:minLines="3"
+        android:padding="12dp"
         android:text="Descriere"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,11 +69,15 @@
         android:id="@+id/couldnotsolve"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nerezolvat"
+        android:fontFamily="@font/mulisimple"
+        android:text="Nerezolvat      "
+        android:thumb="@drawable/switchd"
+        android:track="@drawable/trackd"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.053"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.807" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

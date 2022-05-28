@@ -23,7 +23,7 @@ public class Post {
     private Primarie assignee;
     private int spam=0;
     private int voturi=0;
-    private List<String> report= new ArrayList<>();
+    private List<String> reporters= new ArrayList<>();
     public Post(){}
     public Post(String name, String location, String description) {
         this.name = name;
@@ -96,11 +96,21 @@ public class Post {
         this.description = description;
         this.cat= categorie;
         this.datet = date;
-        this.timerDate = timerDate;
-        //this.op.SetPassword("********");
         this.status = "posted";
-        this.cat = cat;
         this.assignee = null;
+
+    }
+    public Post(String name, String strAdd, String description, Categorie categorie, long date,List<String> reporters) {
+        this.name = name;
+        this.location = strAdd;
+        this.description = description;
+        this.cat= categorie;
+        this.datet = date;
+        this.status = "posted";
+        this.assignee = null;
+        for(String r : reporters){
+            this.reporters.add(r);
+        }
 
     }
 
@@ -117,6 +127,21 @@ public class Post {
 
 
     }
+    public Post(String name, String strAdd, String description, User user, Categorie cat, long time,List<String> reporters) {
+        this.name = name;
+        this.location = strAdd;
+        this.description = description;
+        this.op = user;
+        this.datet = time;
+        this.op.SetPassword("********");
+        this.status = "posted";
+        this.cat = cat;
+        this.assignee = null;
+        for(String r : reporters){
+            this.reporters.add(r);
+        }
+
+    }
 
     public Post(String toString, String toString1, String toString2, Categorie categorie, String imageurl, long currentTimeMillis) {
         this.name = toString;
@@ -124,10 +149,22 @@ public class Post {
         this.description = toString2;
         this.datet = currentTimeMillis;
         this.image = imageurl;
-        //this.op.SetPassword("********");
         this.status = "posted";
         this.cat = categorie;
         this.assignee = null;
+    }
+    public Post(String toString, String toString1, String toString2, Categorie categorie, String imageurl, long currentTimeMillis, List<String> reporters) {
+        this.name = toString;
+        this.location = toString1;
+        this.description = toString2;
+        this.datet = currentTimeMillis;
+        this.image = imageurl;
+        this.status = "posted";
+        this.cat = categorie;
+        this.assignee = null;
+        for(String r : reporters){
+            this.reporters.add(r);
+        }
     }
 
     public String getName(){
@@ -206,12 +243,12 @@ public class Post {
         this.spam = spam;
     }
 
-    public List<String> getReport() {
-        return report;
+    public List<String> getReporters() {
+        return reporters;
     }
 
-    public void setReport(List<String> report) {
-        this.report = report;
+    public void setReporters(List<String> report) {
+        this.reporters = report;
     }
 
     public int getVoturi() {

@@ -145,14 +145,19 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/acte"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="EDIT ACTE"
+        android:layout_width="138dp"
+        android:layout_height="76dp"
+        android:background="@drawable/kaki"
+        android:clickable="true"
+        android:onClick="EditareActe"
+        android:paddingBottom="12dp"
+        android:text="EDITARE ACTE"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.57"
+        app:layout_constraintHorizontal_bias="0.578"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.051" />
+        app:layout_constraintVertical_bias="0.024" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
