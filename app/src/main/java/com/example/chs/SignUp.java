@@ -94,27 +94,26 @@ public class SignUp extends AppCompatActivity {
             return;
         }
         if(swps.isChecked()){
-            //Toast.makeText(this,"primariile vor veni in curand",Toast.LENGTH_SHORT).show();
             DAOPrimarie daoPrimarie = new DAOPrimarie();
             Primarie primarie = new Primarie(email.getText().toString(),username.getText().toString(),pass.getText().toString());
             daoPrimarie.add(primarie).addOnSuccessListener(suc -> {
-                Toast.makeText(getApplicationContext(), "Succesfully added primarie", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Adaugat cu succes", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                 startActivity(intent);
 
             }).addOnFailureListener(fail -> {
-                Toast.makeText(getApplicationContext(), "Failed to add user " + fail.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Esuat " + fail.getMessage(), Toast.LENGTH_SHORT).show();
             });
             return;
 
         }
         daoUser.add(user).addOnSuccessListener(suc -> {
-            Toast.makeText(getApplicationContext(), "Succesfully added user", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Adaugat cu succes", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
             startActivity(intent);
 
         }).addOnFailureListener(fail -> {
-            Toast.makeText(getApplicationContext(), "Failed to add user " + fail.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Esuat " + fail.getMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 }

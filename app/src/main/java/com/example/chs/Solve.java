@@ -76,26 +76,18 @@ public class Solve extends AppCompatActivity {
     }
 
     public void OnClickSolve(View view){
-        //update to firebase
-        //intent.putExtra("names",newpost.getName());
-        //intent.putExtra("locations",newpost.getLocation());
-       // intent.putExtra("descs",newpost.getDescription());
         i = getIntent();
         i.getExtras();
         if(authenticate()){
             p = primarie.getLoggedInUser().getEmail();
         }
-       // intent.putExtra("post_op",newpost.getOp().getEmail());
-        List<Post> posts = new ArrayList<>();
         String postname= i.getStringExtra("names");
-        DAOPost daoPost = new DAOPost();
         FirebaseDatabase database =  FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
         for(Categorie cat : categories){
             DatabaseReference ref = database.getReference(cat.getNume());
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    posts.clear();
                     System.out.println("HERE");
                     if(snapshot.child(trackingnumber).exists()) {
                         DataSnapshot dataSnapshot = snapshot.child(trackingnumber);
@@ -104,13 +96,13 @@ public class Solve extends AppCompatActivity {
                         System.out.println("HERE 1");
                         if (postname.equals(mPost.getName())) {
                             if (!aSwitch.isChecked()) {
-                                dataSnapshot.child("status").getRef().setValue("SOLVED BY : " + p + "-> " + desc.getText().toString());
+                                dataSnapshot.child("status").getRef().setValue("Rezolvat de  : " + p + "-> " + desc.getText().toString());
                                 putNotification(mPost);
-                                Toast.makeText(getApplicationContext(), "Succesfully updated!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Actualizat cu succes!", Toast.LENGTH_SHORT).show();
                             } else {
-                                dataSnapshot.child("status").getRef().setValue("NOT SOLVED : " + p + "-> " + desc.getText().toString());
+                                dataSnapshot.child("status").getRef().setValue("Rezolvat de : " + p + "-> " + desc.getText().toString());
                                 putNotification(mPost);
-                                Toast.makeText(getApplicationContext(), "Succesfully updated!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Actualizat cu succes!", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -123,7 +115,6 @@ public class Solve extends AppCompatActivity {
                 }
             });
         }
-        //see login to retrieve info
     }
     public void putNotification(Post post){
         Intent intent = getIntent();

@@ -78,7 +78,9 @@ public class Profile extends AppCompatActivity {
             new Categorie("cladiri"),
             new Categorie("drumuri publice"),
             new Categorie("parcuri"),
-            new Categorie("test")
+            new Categorie("test"),
+            new Categorie("curatenie"),
+            new Categorie("altele")
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {

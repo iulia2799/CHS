@@ -54,9 +54,11 @@ public class Ranking extends AppCompatActivity {
             new Categorie("cladiri"),
             new Categorie("drumuri publice"),
             new Categorie("parcuri"),
-            new Categorie("test")
+            new Categorie("test"),
+            new Categorie("curatenie"),
+            new Categorie("altele")
     };
-    private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","test","users"};
+    private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","test","curatenie","altele","cetateni"};
     private ArrayAdapter<String> adapter;
     private List<Post> postList = new ArrayList<>();
     private List<User> userList = new ArrayList<>();
@@ -207,7 +209,7 @@ public class Ranking extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(spinner.getSelectedItem().toString().equals("users")){
+                if(spinner.getSelectedItem().toString().equals("cetateni")){
                     findUsers();
                 }else
                 SelectItem(new Categorie(spinner.getSelectedItem().toString()));

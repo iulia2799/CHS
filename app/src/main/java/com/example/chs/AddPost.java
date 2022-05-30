@@ -62,7 +62,7 @@ public class AddPost extends AppCompatActivity {
     private UserLocalStorage userLocalStorage;
     private String strAdd;
     private Spinner dropdowncat;
-    private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","test"};
+    private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","test","rezolvate","curatenie","altele"};
     private Bitmap capture;
     private User user;
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();

@@ -79,9 +79,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             new Categorie("cladiri"),
             new Categorie("drumuri publice"),
             new Categorie("parcuri"),
-            new Categorie("test")
+            new Categorie("test"),
+            new Categorie("curatenie"),
+            new Categorie("altele")
     };
-    private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","test","rezolvate"};
+    private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","test","rezolvate","curatenie","altele"};
 
     private Button ranking;
     private Button add;
@@ -229,7 +231,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                            //System.out.println(mPost.getImages());
                            int days = (int) ((System.currentTimeMillis()- mPost.getDatet())/ (1000*60*60*24));
                            if(days>30 && !mPost.getStatus().contains("posted") && !mPost.getStatus().contains("SOLVED")&& !mPost.getStatus().contains("Rezolvat")){
-                               ScorePoints();
+                               if(mPost.getAssignee().getEmail().equals(primarieLocalStorage.getLoggedInUser().getEmail())) {
+                                   ScorePoints();
+                               }
                            }
 
                            //if(days>30 && !mPost.getStatus().contains("posted") && !mPost.getStatus().contains("SOLVED")&& !mPost.getStatus().contains("Rezolvat")){

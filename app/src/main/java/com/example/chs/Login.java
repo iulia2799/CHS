@@ -119,6 +119,9 @@ public class Login extends AppCompatActivity {
                     }
                     userList.add(mUser);
                 }
+                if(!active){
+                    Toast.makeText(getApplicationContext(),"Email sau parola incorecta",Toast.LENGTH_SHORT).show();
+                }
 
             }
 
@@ -152,13 +155,14 @@ public class Login extends AppCompatActivity {
                         }
                         intent.putExtra("emailp",email);
                         intent.putExtra("numep","nume primarie aici");
-                        if(!usersnapshot.child("links").exists())
-                         usersnapshot.child("links").child("0").getRef().setValue(new Act("fdsfdsfds","https://firebasestorage.googleapis.com/v0/b/proiect-chs.appspot.com/o/acte%2FRezultate-EPSC-2-mai-2022.pdf?alt=media&token=450d511c-edc5-45dc-9ba0-7c0bdfa0ad3c"));
                         startActivity(intent);
                     }else{
 
                     }
                     primarieList.add(mUser);
+                }
+                if(!active){
+                    Toast.makeText(getApplicationContext(),"Email sau parola incorecta",Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -182,9 +186,7 @@ public class Login extends AppCompatActivity {
             userLocalStorage = new UserLocalStorage(this);
             User user = new User(storedEmail, storedpass);
             checkUser(user.getEmail(),user.getPassword());
-            if(!active){
-                Toast.makeText(getApplicationContext(),"Email sau parola incorecta",Toast.LENGTH_SHORT).show();
-            }
+
 
 
         }
@@ -192,9 +194,7 @@ public class Login extends AppCompatActivity {
             primarieLocalStorage = new PrimarieLocalStorage(this);
             Primarie primarie = new Primarie(storedEmail,storedpass);
             checkPrimarie(primarie.getEmail(), primarie.getPassword());
-            if(!active){
-                Toast.makeText(getApplicationContext(),"Email sau parola incorecta",Toast.LENGTH_SHORT).show();
-            }
+
 
 
         }else{
