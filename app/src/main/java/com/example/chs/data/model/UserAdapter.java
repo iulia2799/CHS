@@ -40,7 +40,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull UserAdapter.ViewHolder holder, int position) {
         final User xUser = userList.get(position);
-        holder.rank.setText(String.valueOf(position));
+        holder.rank.setText(String.valueOf(position+1));
         holder.username.setText(xUser.getUsername());
         holder.points.setText(String.valueOf(xUser.getPoints()));
     }
