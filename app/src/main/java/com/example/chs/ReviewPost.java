@@ -138,6 +138,8 @@ public class ReviewPost extends AppCompatActivity {
                 preia.setEnabled(true);
                 //button.setVisibility(View.VISIBLE);
                // preia.setVisibility(View.VISIBLE);
+                like.setVisibility(View.GONE);
+                dislike.setVisibility(View.GONE);
             }
         }
 

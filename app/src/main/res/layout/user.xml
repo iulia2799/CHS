@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/userlayout"
     android:layout_width="match_parent"
-    android:layout_height="75dp"
+    android:layout_height="100dp"
     android:background="@drawable/post">
 
     <TextView
         android:id="@+id/user_rank"
-        android:layout_width="179dp"
-        android:layout_height="22dp"
+        android:layout_width="187dp"
+        android:layout_height="27dp"
         android:fontFamily="@font/mulisimple"
         android:gravity="center"
         android:textColor="@color/black"

@@ -78,7 +78,6 @@ public class Profile extends AppCompatActivity {
             new Categorie("cladiri"),
             new Categorie("drumuri publice"),
             new Categorie("parcuri"),
-            new Categorie("test"),
             new Categorie("curatenie"),
             new Categorie("altele")
     };
@@ -101,11 +100,7 @@ public class Profile extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         window = new PopupWindow(inflater.inflate(R.layout.popup,null,false),100,100,true);
         recyclerView = findViewById(R.id.userpost);
-        if(i.hasExtra("username")){
-            editareinfo.setVisibility(View.GONE);
-            button.setVisibility(View.GONE);
-            username.setText(i.getStringExtra("username"));
-        }
+
     }
     private boolean auth(){
         return this.userLocalStorage.getUserLoggedIn();
@@ -134,7 +129,7 @@ public class Profile extends AppCompatActivity {
                         String placeholder = mUser.getPoints() + " puncte";
                         puncte.setText(placeholder);
                     }else{
-                        Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
                     }
                     userList.add(mUser);
                 }
@@ -166,7 +161,7 @@ public class Profile extends AppCompatActivity {
                         puncte.setText(placeholder);
                     }else{
                         System.out.println(primarielog.getEmail()+","+mUser.getEmail());
-                        Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
                     }
                     primarieList.add(mUser);
                 }
@@ -195,7 +190,7 @@ public class Profile extends AppCompatActivity {
                         String placeholder = mUser.getPoints() + " puncte";
                         puncte.setText(placeholder);
                     }else{
-                        Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
                     }
                     userList.add(mUser);
                 }
@@ -227,7 +222,7 @@ public class Profile extends AppCompatActivity {
                         puncte.setText(placeholder);
                     }else{
                         System.out.println(primarielog.getEmail()+","+mUser.getEmail());
-                        Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
                     }
                     primarieList.add(mUser);
                 }
@@ -269,7 +264,7 @@ public class Profile extends AppCompatActivity {
                         if(mUser.getEmail().equals(userlog.getEmail())){
                             usersnapshot.child("informatii").getRef().setValue(userlog.getInformatii());
                         }else{
-                            Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
                         }
                         userList.add(mUser);
                     }
@@ -307,7 +302,7 @@ public class Profile extends AppCompatActivity {
                             usersnapshot.child("informatii").getRef().setValue(primarielog.getInformatii());
                         }else{
                             System.out.println(mUser.getEmail());
-                            Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
                         }
                         primarieList.add(mUser);
                     }
@@ -362,11 +357,13 @@ public class Profile extends AppCompatActivity {
         primarieLocalStorage = new PrimarieLocalStorage(this);
         if(auth()){
             prinfoedit.setVisibility(View.GONE);
-            displayUser();
             if(!getIntent().hasExtra("username")) {
+                displayUser();
                 getUserInfo();
                 findPosts();
             } else {
+                editareinfo.setVisibility(View.GONE);
+                button.setVisibility(View.GONE);
                 if(getIntent().getStringExtra("type").equals("user")) {
                     getUserInfo(getIntent().getStringExtra("username"));
                     findPosts(getIntent().getStringExtra("username"));
@@ -378,11 +375,14 @@ public class Profile extends AppCompatActivity {
             }
 
         }else if(authp()){
-            display();
-            if(!getIntent().hasExtra("primarie")) {
+            if(!getIntent().hasExtra("username")) {
+                display();
                 getIns();
                 findLinks();
             } else {
+                editareinfo.setVisibility(View.GONE);
+                prinfoedit.setVisibility(View.GONE);
+                button.setVisibility(View.GONE);
                 if (getIntent().getStringExtra("type").equals("user")) {
                     getUserInfo(getIntent().getStringExtra("username"));
                     findPosts(getIntent().getStringExtra("username"));
@@ -485,7 +485,7 @@ public class Profile extends AppCompatActivity {
                         }
                     }else{
                         //System.out.println(primarielog.getEmail()+","+mUser.getEmail());
-                        Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
                     }
                     primarieList.add(mUser);
                 }
@@ -601,7 +601,7 @@ public class Profile extends AppCompatActivity {
                         }
                     }else{
                         //System.out.println(primarielog.getEmail()+","+mUser.getEmail());
-                        Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
                     }
                     primarieList.add(mUser);
                 }

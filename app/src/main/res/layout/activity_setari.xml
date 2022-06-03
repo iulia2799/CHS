@@ -28,6 +28,7 @@
         android:clickable="true"
         android:onClick="changePassword"
         android:text="Schimba parola"
+        android:textColor="@color/black"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

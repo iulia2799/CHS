@@ -54,13 +54,14 @@
         tools:layout_editor_absoluteY="16dp" />
 
     <ScrollView
-        android:layout_width="369dp"
-        android:layout_height="493dp"
+        android:layout_width="372dp"
+        android:layout_height="601dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55">
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rankview"

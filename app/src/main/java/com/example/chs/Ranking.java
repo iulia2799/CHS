@@ -54,11 +54,10 @@ public class Ranking extends AppCompatActivity {
             new Categorie("cladiri"),
             new Categorie("drumuri publice"),
             new Categorie("parcuri"),
-            new Categorie("test"),
             new Categorie("curatenie"),
             new Categorie("altele")
     };
-    private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","test","curatenie","altele","cetateni"};
+    private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","curatenie","altele","cetateni"};
     private ArrayAdapter<String> adapter;
     private List<Post> postList = new ArrayList<>();
     private List<User> userList = new ArrayList<>();
