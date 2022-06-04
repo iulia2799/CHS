@@ -107,7 +107,7 @@ public class Profile extends AppCompatActivity {
     }
     protected void displayUser(){
         User user = this.userLocalStorage.getLoggedInUser();
-        Toast.makeText(this, user.getEmail(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, user.getEmail(), Toast.LENGTH_LONG).show();
     }
     private boolean authp(){return this.primarieLocalStorage.getUserLoggedIn();}
     protected void display(){

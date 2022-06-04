@@ -204,7 +204,7 @@ public class Login extends AppCompatActivity {
     public void showNotification(Context context, String title, String message, Intent intent, int reqCode) {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, reqCode, intent, PendingIntent.FLAG_ONE_SHOT);
-        String CHANNEL_ID = "CHS";
+        String CHANNEL_ID = "Detect-IT";
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.bell)
                 .setContentTitle(title)
@@ -214,7 +214,7 @@ public class Login extends AppCompatActivity {
                 .setContentIntent(pendingIntent);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Chs Notifications";
+            CharSequence name = "Notificare Detect IT";
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
             notificationManager.createNotificationChannel(mChannel);
