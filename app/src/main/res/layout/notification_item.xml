@@ -5,7 +5,8 @@
     android:id="@+id/notlay"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/post">
+    android:background="@drawable/post"
+    android:paddingBottom="20dp">
 
     <TextView
         android:id="@+id/numenot"

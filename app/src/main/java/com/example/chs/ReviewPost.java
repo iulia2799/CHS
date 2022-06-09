@@ -1,9 +1,11 @@
 package com.example.chs;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -11,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +27,8 @@ import com.example.chs.data.login.User;
 import com.example.chs.data.login.UserLocalStorage;
 import com.example.chs.data.model.Alert;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -433,7 +438,8 @@ public class ReviewPost extends AppCompatActivity {
                             snapshot.child(trackingnumber).child("datet").getRef().setValue(System.currentTimeMillis());
                             ds.child("status").getRef().setValue("Nerezolvat - cetateanul este nemultumit: " + status[1]);
                             Primarie primarie = snapshot.child(trackingnumber).child("assignee").getValue(Primarie.class);
-                            RetractPoints(primarie);
+                            showDialog(primarie);
+                            //RetractPoints(primarie);
 
                         }
                     } else System.out.println("error");
@@ -445,6 +451,30 @@ public class ReviewPost extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void showDialog(Primarie primarie){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage("Spuneti va rog motivul");
+        final EditText edittext = new EditText(this);
+        builder1.setCancelable(true);
+        builder1.setView(edittext);
+
+        builder1.setPositiveButton(
+                "Trimite",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if(edittext.getText().toString().length() >0){
+                            RetractPoints(primarie,edittext.getText().toString());
+                        } else {
+                            Toast.makeText(getApplicationContext(),"Va rog sa specificati motivul",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 
     public void ViewUserProfile(View view){
@@ -497,7 +527,7 @@ public class ReviewPost extends AppCompatActivity {
         });
     }
 
-    public void RetractPoints(Primarie primarie){
+    public void RetractPoints(Primarie primarie,String message){
         List<Alert> list = new ArrayList<>();
         DatabaseReference ref = database.getReference("Primarie");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -508,7 +538,7 @@ public class ReviewPost extends AppCompatActivity {
                     System.out.println(mUser.getPrimarie() + "," + primarie.getPrimarie());
                     if(mUser.getPrimarie().equals(primarie.getPrimarie())){
                         usersnapshot.child("points").getRef().setValue(mUser.getPoints()-10);
-                        Alert mAlert = new Alert(String.valueOf(System.currentTimeMillis()), "Cazul #"+trackingnumber+"a fost marcat ca nerezolvat : cetatean nemultumit!");
+                        Alert mAlert = new Alert(String.valueOf(System.currentTimeMillis()), "Cazul #"+trackingnumber+"a fost marcat ca nerezolvat : cetatean nemultumit!"+message);
                         DataSnapshot ref = usersnapshot.child("alertList");
                         for(DataSnapshot reference : ref.getChildren()){
                             list.add(reference.getValue(Alert.class));
