@@ -2,6 +2,7 @@ package com.example.chs;
 
 import static android.widget.Toast.*;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -34,7 +35,12 @@ import com.example.chs.data.login.User;
 import com.example.chs.data.login.UserLocalStorage;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -139,6 +145,34 @@ public class AddPost extends AppCompatActivity {
                 });
     }
 
+    protected void RewardUser(){
+        User userlog = this.userLocalStorage.getLoggedInUser();
+        DatabaseReference reference =  FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/").getReference("User");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for(DataSnapshot usersnapshot : snapshot.getChildren()){
+                    User mUser = usersnapshot.getValue(User.class);
+                    if(mUser.getUsername().equals(userlog.getUsername())){
+                        int points = usersnapshot.child("points").getValue(Integer.class);
+                        usersnapshot.child("points").getRef().setValue(points+10);
+                    }else{
+                        //Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("The read failed: "+error.getCode());
+            }
+        });
+
+    }
+
     public void clickAddPost(View view){
         System.out.println(post_location);
         StorageReference imagesref= storageReference.child("posts/"+date.toString());
@@ -190,9 +224,12 @@ public class AddPost extends AppCompatActivity {
                 post = new Post(name.getText().toString(), searchlocation.getText().toString(), desc.getText().toString(), user, new Categorie(dropdowncat.getSelectedItem().toString()), System.currentTimeMillis());
             DAOPost daopost = new DAOPost(post.getCategorie());
             daopost.add(post).addOnSuccessListener(suc -> {
-                makeText(getApplicationContext(), "Succesfully added post", LENGTH_SHORT).show();
+                makeText(getApplicationContext(), "Postat cu succes", LENGTH_SHORT).show();
                 //Intent intent = new Intent(getApplicationContext(), PrimarieDashboard.class);
                 //startActivity(intent);
+                if(!anonymous.isChecked()) {
+                    RewardUser();
+                }
 
             }).addOnFailureListener(fail -> makeText(getApplicationContext(), "Failed to add post " + fail.getMessage(), LENGTH_SHORT).show());
         }
@@ -209,6 +246,9 @@ public class AddPost extends AppCompatActivity {
             makeText(getApplicationContext(), "Succesfully added post", LENGTH_SHORT).show();
             //Intent intent = new Intent(getApplicationContext(), PrimarieDashboard.class);
             //startActivity(intent);
+            if(!anonymous.isChecked()) {
+                RewardUser();
+            }
 
         }).addOnFailureListener(fail -> makeText(getApplicationContext(), "Failed to add post " + fail.getMessage(), LENGTH_SHORT).show());
 
