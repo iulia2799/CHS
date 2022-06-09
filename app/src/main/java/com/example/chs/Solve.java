@@ -100,7 +100,7 @@ public class Solve extends AppCompatActivity {
                                 putNotification(mPost);
                                 Toast.makeText(getApplicationContext(), "Actualizat cu succes!", Toast.LENGTH_SHORT).show();
                             } else {
-                                dataSnapshot.child("status").getRef().setValue("Rezolvat de : " + p + "-> " + desc.getText().toString());
+                                dataSnapshot.child("status").getRef().setValue("Nerezolvat de : " + p + "-> " + desc.getText().toString());
                                 putNotification(mPost);
                                 Toast.makeText(getApplicationContext(), "Actualizat cu succes!", Toast.LENGTH_SHORT).show();
                             }
