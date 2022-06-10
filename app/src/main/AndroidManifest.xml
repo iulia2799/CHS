@@ -84,7 +84,8 @@
             android:exported="false" />
         <activity
             android:name=".ReviewPost"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode = "singleTop"/>
         <activity
             android:name=".PrimarieDashboard"
             android:exported="false" />

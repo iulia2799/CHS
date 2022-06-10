@@ -52,7 +52,8 @@ public class Solve extends AppCompatActivity {
             new Categorie("cladiri"),
             new Categorie("drumuri publice"),
             new Categorie("parcuri"),
-            new Categorie("test")
+            new Categorie("curatenie"),
+            new Categorie("altele")
     };
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://proiect-chs-default-rtdb.europe-west1.firebasedatabase.app/");
     private String trackingnumber = "mo";
@@ -67,6 +68,7 @@ public class Solve extends AppCompatActivity {
         aSwitch = findViewById(R.id.couldnotsolve);
         swin = findViewById(R.id.swin);
         trackingnumber = getIntent().getStringExtra("tr");
+        System.out.println(trackingnumber);
     }
 
     private boolean authenticate(){
@@ -105,6 +107,8 @@ public class Solve extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Actualizat cu succes!", Toast.LENGTH_SHORT).show();
                             }
                         }
+                    } else {
+                        System.out.println("err");
                     }
 
                 }
@@ -141,7 +145,7 @@ public class Solve extends AppCompatActivity {
                         DatabaseReference rootref = u.getRef();
                         DatabaseReference arr = rootref.child("alertList");
                         Map<String,Object> map = new HashMap<>();
-                        //System.out.println(arr.getKey());
+                        System.out.println(arr.getKey());
                         arr.setValue(list);
                         sendEmail(curr.getEmail());
                     }

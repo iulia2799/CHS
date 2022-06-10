@@ -102,6 +102,7 @@ public class Preia extends AppCompatActivity {
                     }
                     snapshot.child(trackingnumber).child("datet").getRef().setValue(System.currentTimeMillis());
                     snapshot.child(trackingnumber).child("status").getRef().setValue("In curs:"+description.getText().toString());
+                    Toast.makeText(getApplicationContext(),"Preluat cu succes",Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -120,6 +121,7 @@ public class Preia extends AppCompatActivity {
                     Primarie x = dataSnapshot.getValue(Primarie.class);
                     if(x.getEmail().equals(primarie.getEmail())){
                         dataSnapshot.child("points").getRef().setValue(x.getPoints()+20);
+                        Toast.makeText(getApplicationContext(),"Preluat cu succes",Toast.LENGTH_SHORT).show();
                     }
                 }
             }

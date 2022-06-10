@@ -3,6 +3,8 @@ package com.example.chs;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.FileProvider;
 
 import android.content.DialogInterface;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,6 +80,10 @@ public class ReviewPost extends AppCompatActivity {
             new Categorie("test")
     };
 
+    private boolean isImageFullScreen=false;
+    private ConstraintLayout.LayoutParams params;
+
+
 
 
     @Override
@@ -121,6 +128,7 @@ public class ReviewPost extends AppCompatActivity {
         resolution.setText(status);
         System.out.println(trackingnumber);
         LoadImageFromWebOperations(image);
+        params = (ConstraintLayout.LayoutParams) imageView.getLayoutParams();
         getStatus();
         if(status.startsWith("In curs")){
             preia.setVisibility(View.GONE);
@@ -206,8 +214,29 @@ public class ReviewPost extends AppCompatActivity {
         }
 
     }
+
+    public void makeImageFullScreen(View view) {
+
+        if (isImageFullScreen) {
+            isImageFullScreen=false;
+            imageView.getLayoutParams();
+            imageView.setLayoutParams(params);
+            imageView.setBackgroundResource(R.drawable.pose);
+            imageView.setAdjustViewBounds(true);
+        } else {
+            isImageFullScreen=true;
+            imageView.setBackgroundResource(R.color.black);
+            imageView.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT));
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            imageView.bringToFront();
+        }
+    }
+
     public void clickLike(View view){
         votePost(1);
+        voturi_i++;
+        String result = "Voturi: "+String.valueOf(voturi_i);
+        voturi.setText(result);
     }
 
     private void votePost(int i) {
@@ -262,6 +291,9 @@ public class ReviewPost extends AppCompatActivity {
     }
     public void clickDislike(View view){
         votePost(-1);
+        voturi_i--;
+        String result = "Voturi: "+String.valueOf(voturi_i);
+        voturi.setText(result);
     }
     public void clickReport(View view){
         spamPost();
