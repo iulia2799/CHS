@@ -108,7 +108,7 @@ public class Notification extends AppCompatActivity implements NotificationAdapt
                                     DownloadManager manager;
                                     manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
                                     Uri uri = Uri.parse(alerts.get(position).getLink());
-                                    System.out.println("downloading...");
+                                    //System.out.println("downloading...");
                                     DownloadManager.Request request = new DownloadManager.Request(uri);
                                     request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
                                     request.setTitle("Download");
@@ -117,6 +117,17 @@ public class Notification extends AppCompatActivity implements NotificationAdapt
                                     request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                                     request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"down_name");
                                     manager.enqueue(request);
+                                    String tr = desc.substring(desc.indexOf("#"));
+                                    System.out.println(tr);
+                                    tr = tr.substring(tr.indexOf("#"),tr.indexOf(" "));
+                                    System.out.println(tr);
+                                    tr = tr.substring(1);
+                                    System.out.println(tr);
+                                    //ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                                    //ClipData clip = ClipData.newPlainText("label", tr);
+                                    //clipboard.setPrimaryClip(clip);
+                                    find(tr);
+                                } else {
                                     String tr = desc.substring(desc.indexOf("#"));
                                     System.out.println(tr);
                                     tr = tr.substring(tr.indexOf("#"),tr.indexOf(" "));

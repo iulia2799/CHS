@@ -181,11 +181,12 @@ public class Preia extends AppCompatActivity {
                         System.out.println(user.getUsername()+username);
                         if(user.getUsername().equals(username)){
                             if(!filer.equals("")){
+                                GivePoints();
                                 //String link = sendToFirebase();
-                                Toast.makeText(getApplicationContext(),filer,Toast.LENGTH_SHORT).show();
-                                mAlert = new Alert(String.valueOf(System.currentTimeMillis()), "Cazul #"+trackingnumber+" a fost preluat de "+primarie.getPrimarie(),filer);
+                                //Toast.makeText(getApplicationContext(),filer,Toast.LENGTH_SHORT).show();
+                                mAlert = new Alert(String.valueOf(System.currentTimeMillis()), "Cazul #"+trackingnumber+" a fost preluat de "+primarie.getPrimarie() + ". " + description.getText().toString(),filer);
                             }else
-                                mAlert = new Alert(String.valueOf(System.currentTimeMillis()), "Cazul #"+trackingnumber+" a fost preluat de "+primarie.getPrimarie());
+                                mAlert = new Alert(String.valueOf(System.currentTimeMillis()), "Cazul #"+trackingnumber+" a fost preluat de "+primarie.getPrimarie()+". " + description.getText().toString());
                                 DataSnapshot ref = usersnap.child("alertList");
                                 for(DataSnapshot reference : ref.getChildren()){
                                     list.add(reference.getValue(Alert.class));

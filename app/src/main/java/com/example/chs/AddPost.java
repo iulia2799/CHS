@@ -243,7 +243,7 @@ public class AddPost extends AppCompatActivity {
         else post = new Post(name.getText().toString(),searchlocation.getText().toString(),desc.getText().toString(),user,new Categorie(dropdowncat.getSelectedItem().toString()),imageurl,System.currentTimeMillis());
         DAOPost daopost = new DAOPost(post.getCategorie());
         daopost.add(post).addOnSuccessListener(suc -> {
-            makeText(getApplicationContext(), "Succesfully added post", LENGTH_SHORT).show();
+            makeText(getApplicationContext(), "Postat cu succes", LENGTH_SHORT).show();
             //Intent intent = new Intent(getApplicationContext(), PrimarieDashboard.class);
             //startActivity(intent);
             if(!anonymous.isChecked()) {

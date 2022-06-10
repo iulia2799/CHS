@@ -87,7 +87,7 @@ public class CreateActe extends AppCompatActivity {
                             }
                         }
                     }else{
-                        Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -212,7 +212,7 @@ public class CreateActe extends AppCompatActivity {
                             arr.setValue(acte);
                         }
                     }else{
-                        Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"oops...",Toast.LENGTH_SHORT).show();
                     }
 
                 }
