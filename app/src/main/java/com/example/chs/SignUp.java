@@ -126,6 +126,7 @@ public class SignUp extends AppCompatActivity {
                     "Nu am primit",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            Toast.makeText(getApplicationContext(),"Verifica datele introduse si incearca din nou.", Toast.LENGTH_LONG).show();
                             dialog.cancel();
                         }
                     });
