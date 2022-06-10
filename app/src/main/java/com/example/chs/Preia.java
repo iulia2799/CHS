@@ -23,15 +23,22 @@ import com.example.chs.data.login.DAONotification;
 import com.example.chs.data.login.Primarie;
 import com.example.chs.data.login.PrimarieLocalStorage;
 import com.example.chs.data.login.User;
+import com.example.chs.data.model.Act;
 import com.example.chs.data.model.Alert;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +54,8 @@ public class Preia extends AppCompatActivity {
     private MaterialButton adauga;
     private MaterialButton confirma;
     private TextView numefisier;
-
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageReference = storage.getReferenceFromUrl("gs://proiect-chs.appspot.com");
     private String path;
     private String username = "";
     private PrimarieLocalStorage primarieLocalStorage;
@@ -97,9 +105,7 @@ public class Preia extends AppCompatActivity {
                     Primarie primarie = primarieLocalStorage.getLoggedInUser();
                     primarie.setPassword("********");
                     snapshot.child(trackingnumber).child("assignee").getRef().setValue(primarie);
-                    if(!numefisier.getText().toString().equals("Nimic adaugat")){
-                        GivePoints();
-                    }
+
                     snapshot.child(trackingnumber).child("datet").getRef().setValue(System.currentTimeMillis());
                     snapshot.child(trackingnumber).child("status").getRef().setValue("In curs:"+description.getText().toString());
                     Toast.makeText(getApplicationContext(),"Preluat cu succes",Toast.LENGTH_SHORT).show();
@@ -161,7 +167,7 @@ public class Preia extends AppCompatActivity {
         }
     }
 
-    public void findUser(){
+    public void findUser(String filer){
         if(username.length()>0 && !username.contains("anonim")){
             DatabaseReference ref = database.getReference("User");
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -171,10 +177,15 @@ public class Preia extends AppCompatActivity {
                         User user = usersnap.getValue(User.class);
                         assert user != null;
                         List<Alert> list = new ArrayList<>();
+                        Alert mAlert;
                         System.out.println(user.getUsername()+username);
                         if(user.getUsername().equals(username)){
-                            //if(usersnap.child("alertList").exists()){
-                                Alert mAlert = new Alert(String.valueOf(System.currentTimeMillis()), "Cazul #"+trackingnumber+" a fost preluat de "+primarie.getPrimarie());
+                            if(!filer.equals("")){
+                                //String link = sendToFirebase();
+                                Toast.makeText(getApplicationContext(),filer,Toast.LENGTH_SHORT).show();
+                                mAlert = new Alert(String.valueOf(System.currentTimeMillis()), "Cazul #"+trackingnumber+" a fost preluat de "+primarie.getPrimarie(),filer);
+                            }else
+                                mAlert = new Alert(String.valueOf(System.currentTimeMillis()), "Cazul #"+trackingnumber+" a fost preluat de "+primarie.getPrimarie());
                                 DataSnapshot ref = usersnap.child("alertList");
                                 for(DataSnapshot reference : ref.getChildren()){
                                     list.add(reference.getValue(Alert.class));
@@ -228,7 +239,6 @@ public class Preia extends AppCompatActivity {
             //}
             send.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             send.putExtra(Intent.EXTRA_TEXT, "Cazul #" + trackingnumber + " a fost preluat de " + primarieLocalStorage.getLoggedInUser().getEmail() + " . "+description.getText().toString());
-            startActivity(send);
             System.out.println("fdsfdsfsdsdf");
             findPost();
         }catch (Throwable t){
@@ -239,8 +249,46 @@ public class Preia extends AppCompatActivity {
 
     }
 
+    public String sendToFirebase(){
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),path);
+        InputStream stream = null;
+        String[] files = {""};
+        try {
+            stream = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if(stream !=null){
+            StorageReference ref = storageReference.child("preiafiles/"+String.valueOf(System.currentTimeMillis()));
+            UploadTask uploadTask = ref.putStream(stream);
+            uploadTask.addOnFailureListener(fail ->{
+                System.out.println(fail.getMessage());
+                Toast.makeText(this,"Upload failed",Toast.LENGTH_SHORT).show();
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    ref.getDownloadUrl().addOnSuccessListener( uri1 -> {
+                        files[0] = uri1.toString();
+                        findUser(files[0]);
+                    }).addOnFailureListener(fail -> {
+                        System.out.println(fail.getMessage());
+                    });
+                }
+            });
+        }
+        if(files.length >0) {
+            return files[0];
+        }
+
+        return null;
+    }
+
+
     public void clickConfirma(View view){
-        findUser();
+        if(!numefisier.getText().toString().equals("Nimic adaugat")) {
+            sendToFirebase();
+        }else
+        findUser("");
         //findPost();
     }
 }

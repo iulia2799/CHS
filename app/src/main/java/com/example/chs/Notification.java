@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DownloadManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.SearchView;
@@ -100,17 +103,33 @@ public class Notification extends AppCompatActivity implements NotificationAdapt
                             @Override
                             public void onItemClick(int position) {
                                 String desc = alerts.get(position).getDescription();
+                                if(alerts.get(position).getLink().length() >0) {
+                                    System.out.println(alerts.get(position).getLink());
+                                    DownloadManager manager;
+                                    manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+                                    Uri uri = Uri.parse(alerts.get(position).getLink());
+                                    System.out.println("downloading...");
+                                    DownloadManager.Request request = new DownloadManager.Request(uri);
+                                    request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
+                                    request.setTitle("Download");
+                                    request.setDescription("Downloading file...");
+                                    request.allowScanningByMediaScanner();
+                                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"down_name");
+                                    manager.enqueue(request);
+                                    String tr = desc.substring(desc.indexOf("#"));
+                                    System.out.println(tr);
+                                    tr = tr.substring(tr.indexOf("#"),tr.indexOf(" "));
+                                    System.out.println(tr);
+                                    tr = tr.substring(1);
+                                    System.out.println(tr);
+                                    //ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                                    //ClipData clip = ClipData.newPlainText("label", tr);
+                                    //clipboard.setPrimaryClip(clip);
+                                    find(tr);
+                                }
                                 //System.out.println(desc.indexOf("#"));
-                                String tr = desc.substring(desc.indexOf("#"));
-                                System.out.println(tr);
-                                tr = tr.substring(tr.indexOf("#"),tr.indexOf(" "));
-                                System.out.println(tr);
-                                tr = tr.substring(1);
-                                System.out.println(tr);
-                                //ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                                //ClipData clip = ClipData.newPlainText("label", tr);
-                                //clipboard.setPrimaryClip(clip);
-                                find(tr);
+
                             }
                         });
                         recyclerView.setHasFixedSize(true);
@@ -156,6 +175,7 @@ public class Notification extends AppCompatActivity implements NotificationAdapt
                             @Override
                             public void onItemClick(int position) {
                                 String desc = alerts.get(position).getDescription();
+
                                 //System.out.println(desc.indexOf("#"));
                                 String tr = desc.substring(desc.indexOf("#"));
                                 System.out.println(tr);
@@ -326,7 +346,7 @@ public class Notification extends AppCompatActivity implements NotificationAdapt
 
                         }
                     }
-                    alerts.add(new Alert(String.valueOf(System.currentTimeMillis()),"Notifications cleared"));
+                    //alerts.add(new Alert(String.valueOf(System.currentTimeMillis()),"Notifications cleared"));
                     NotificationAdapter postAdapter = new NotificationAdapter(alerts, new NotificationAdapter.OnItemListener() {
                         @Override
                         public void onItemClick(int position) {

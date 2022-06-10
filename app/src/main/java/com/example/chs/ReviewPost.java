@@ -570,7 +570,7 @@ public class ReviewPost extends AppCompatActivity {
                     System.out.println(mUser.getPrimarie() + "," + primarie.getPrimarie());
                     if(mUser.getPrimarie().equals(primarie.getPrimarie())){
                         usersnapshot.child("points").getRef().setValue(mUser.getPoints()-10);
-                        Alert mAlert = new Alert(String.valueOf(System.currentTimeMillis()), "Cazul #"+trackingnumber+"a fost marcat ca nerezolvat : cetatean nemultumit!"+message);
+                        Alert mAlert = new Alert(String.valueOf(System.currentTimeMillis()), "Cazul #"+trackingnumber+" a fost marcat ca nerezolvat : cetatean nemultumit!"+message);
                         DataSnapshot ref = usersnapshot.child("alertList");
                         for(DataSnapshot reference : ref.getChildren()){
                             list.add(reference.getValue(Alert.class));
