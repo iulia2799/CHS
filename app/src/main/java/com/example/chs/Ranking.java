@@ -167,7 +167,6 @@ public class Ranking extends AppCompatActivity {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userList.clear();
                 for(DataSnapshot usersnapshot : snapshot.getChildren()){
                     User mUser = usersnapshot.getValue(User.class);
                     userList.add(mUser);
@@ -178,18 +177,19 @@ public class Ranking extends AppCompatActivity {
                         return t1.getPoints()-user.getPoints();
                     }
                 });
-                UserAdapter adapter = new UserAdapter(userList, new UserAdapter.OnItemListener() {
+                UserAdapter userAdapter = new UserAdapter(userList, new UserAdapter.OnItemListener() {
                     @Override
                     public void onItemClick(int position) {
                         User user = userList.get(position);
                         Intent intent = new Intent(getApplicationContext(),Profile.class);
                         intent.putExtra("username",user.getUsername());
                         intent.putExtra("type","user");
+                        startActivity(intent);
                     }
                 });
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                recyclerView.setAdapter(adapter);
+                recyclerView.setAdapter(userAdapter);
 
 
             }
@@ -273,7 +273,8 @@ public class Ranking extends AppCompatActivity {
                         intent.putExtra("descp",post.getDescription());
                         intent.putExtra("post_image",post.getImages());
                         System.out.println(post.getImages());
-                        intent.putExtra("post_op",post.getOp().getUsername());
+                        if(post.getOp()!=null)
+                           intent.putExtra("post_op",post.getOp().getUsername());
                         //String categ = newpost.getCategorie();
                         intent.putExtra("status",post.getStatus());
                         intent.putExtra("voturi",post.getVoturi());

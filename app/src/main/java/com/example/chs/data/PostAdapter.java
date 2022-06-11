@@ -14,13 +14,9 @@ import com.example.chs.R;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
-    private Post[] localDataSet;
-    private List<Post> postList;
-    private OnItemListener itemListener;
-    public PostAdapter(Post[] data,OnItemListener listener){
-        this.itemListener = listener;
-        this.localDataSet=data;
-    }
+    private final List<Post> postList;
+    private final OnItemListener itemListener;
+
     public PostAdapter(List<Post> data,OnItemListener listener){
         this.itemListener = listener;
         this.postList=data;
@@ -29,8 +25,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View listItem = layoutInflater.inflate(R.layout.post,parent,false);
-        ViewHolder viewHolder = new ViewHolder(listItem,itemListener);
-        return viewHolder;
+        return new ViewHolder(listItem,itemListener);
     }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position){
