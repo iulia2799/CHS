@@ -82,7 +82,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             new Categorie("curatenie"),
             new Categorie("altele")
     };
-    private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","rezolvate","curatenie","altele","rezolvate"};
+    private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","curatenie","altele","rezolvate"};
 
     private Button ranking;
     private Button add;

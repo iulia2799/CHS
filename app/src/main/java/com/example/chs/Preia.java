@@ -109,6 +109,9 @@ public class Preia extends AppCompatActivity {
                     snapshot.child(trackingnumber).child("datet").getRef().setValue(System.currentTimeMillis());
                     snapshot.child(trackingnumber).child("status").getRef().setValue("In curs:"+description.getText().toString());
                     Toast.makeText(getApplicationContext(),"Preluat cu succes",Toast.LENGTH_SHORT).show();
+                    if(!numefisier.getText().toString().equals("Nimic adaugat")) {
+                        GivePoints();
+                    }
                 }
             }
 
@@ -127,7 +130,7 @@ public class Preia extends AppCompatActivity {
                     Primarie x = dataSnapshot.getValue(Primarie.class);
                     if(x.getEmail().equals(primarie.getEmail())){
                         dataSnapshot.child("points").getRef().setValue(x.getPoints()+20);
-                        Toast.makeText(getApplicationContext(),"Preluat cu succes",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"Preluat cu succes",Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -181,31 +184,34 @@ public class Preia extends AppCompatActivity {
                         System.out.println(user.getUsername()+username);
                         if(user.getUsername().equals(username)){
                             if(!filer.equals("")){
-                                GivePoints();
+
                                 //String link = sendToFirebase();
                                 //Toast.makeText(getApplicationContext(),filer,Toast.LENGTH_SHORT).show();
                                 mAlert = new Alert(String.valueOf(System.currentTimeMillis()), "Cazul #"+trackingnumber+" a fost preluat de "+primarie.getPrimarie() + ". " + description.getText().toString(),filer);
-                            }else
+                            }else{
                                 mAlert = new Alert(String.valueOf(System.currentTimeMillis()), "Cazul #"+trackingnumber+" a fost preluat de "+primarie.getPrimarie()+". " + description.getText().toString());
-                                DataSnapshot ref = usersnap.child("alertList");
-                                for(DataSnapshot reference : ref.getChildren()){
-                                    list.add(reference.getValue(Alert.class));
-                                }
-                                list.add(mAlert);
+                            }
 
-                                DatabaseReference rootref = usersnap.getRef();
-                                DatabaseReference arr = rootref.child("alertList");
-                                Map<String,Object> map = new HashMap<>();
-                                System.out.println(arr.getKey());
-                                arr.setValue(list);
+                            DataSnapshot ref = usersnap.child("alertList");
+                            for(DataSnapshot reference : ref.getChildren()){
+                                list.add(reference.getValue(Alert.class));
+                            }
+                            list.add(mAlert);
 
-                            //}
+                            DatabaseReference rootref = usersnap.getRef();
+                            DatabaseReference arr = rootref.child("alertList");
+                            Map<String,Object> map = new HashMap<>();
+                            System.out.println(arr.getKey());
+                            arr.setValue(list);
                             if(!numefisier.getText().toString().equals("Nimic adaugat")) {
+                                System.out.println("pe mata");
                                 sendEmail(user.getEmail(),path);
                             }
                             else {
+                                System.out.println("rklesv43wpu43wt5wob y5ubiwby5woyt57wvoy54");
                                 findPost();
                             }
+                            //}
                         }
 
                     }
@@ -241,6 +247,7 @@ public class Preia extends AppCompatActivity {
             send.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             send.putExtra(Intent.EXTRA_TEXT, "Cazul #" + trackingnumber + " a fost preluat de " + primarieLocalStorage.getLoggedInUser().getEmail() + " . "+description.getText().toString());
             System.out.println("fdsfdsfsdsdf");
+            startActivity(send);
             findPost();
         }catch (Throwable t){
             System.out.println(t.toString());
