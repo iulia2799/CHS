@@ -171,6 +171,7 @@ public class ReviewPost extends AppCompatActivity {
                 resolution.setVisibility(View.VISIBLE);
                 incurs.setVisibility(View.GONE);
                 curs.setVisibility(View.GONE);
+
             }else if(authenticatep()){
                 feedback.setVisibility(View.GONE);
                 resolution.setVisibility(View.VISIBLE);
@@ -184,6 +185,12 @@ public class ReviewPost extends AppCompatActivity {
             feedback.setVisibility(View.GONE);
             incurs.setVisibility(View.GONE);
             curs.setVisibility(View.GONE);
+            if(user.getText().toString().equals(userLocalStorage.getLoggedInUser().getUsername())){
+                System.out.println("goof");
+                raporteaza.setVisibility(View.GONE);
+                like.setVisibility(View.GONE);
+                dislike.setVisibility(View.GONE);
+            }
 
 
         }else if(status.startsWith("In curs")){
@@ -191,6 +198,12 @@ public class ReviewPost extends AppCompatActivity {
             feedback.setVisibility(View.GONE);
             incurs.setVisibility(View.VISIBLE);
             curs.setVisibility(View.VISIBLE);
+            if(user.getText().toString().equals(userLocalStorage.getLoggedInUser().getUsername())){
+                System.out.println("goof");
+                raporteaza.setVisibility(View.GONE);
+                like.setVisibility(View.GONE);
+                dislike.setVisibility(View.GONE);
+            }
             if(authenticatep()){
                 raporteaza.setVisibility(View.GONE);
                 preia.setVisibility(View.GONE);
@@ -204,6 +217,13 @@ public class ReviewPost extends AppCompatActivity {
             incurs.setVisibility(View.GONE);
             feedback.setVisibility(View.GONE);
             resolution.setVisibility(View.GONE);
+            if(authenticate()) {
+                if(user.getText().toString().equals(userLocalStorage.getLoggedInUser().getUsername())){
+                    raporteaza.setVisibility(View.GONE);
+                    like.setVisibility(View.GONE);
+                    dislike.setVisibility(View.GONE);
+                }
+            }
             if(authenticatep()){
                 raporteaza.setVisibility(View.GONE);
                 like.setVisibility(View.GONE);
