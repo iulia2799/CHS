@@ -90,7 +90,6 @@ public class Ranking extends AppCompatActivity {
 
     public void findAll(){
         for(Categorie cat : categories){
-            postList.clear();
             DatabaseReference ref = database.getReference(cat.getNume());
             ref.addValueEventListener(new ValueEventListener() {
                 private static final String TAG = "error";
@@ -229,6 +228,7 @@ public class Ranking extends AppCompatActivity {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                postList.clear();
                 for(DataSnapshot postsnap : snapshot.getChildren()){
                     if(!postsnap.exists()) Log.e(TAG, "onDataChange: No data");
                     if(log!=null){

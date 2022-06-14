@@ -397,8 +397,8 @@ public class Profile extends AppCompatActivity {
     }
 
     public void findPosts(){
+        postList.clear();
         for(Categorie cat : categories){
-            postList.clear();
             DatabaseReference ref = database.getReference(cat.getNume());
             ref.addValueEventListener(new ValueEventListener() {
                 private static final String TAG = "error";
