@@ -138,7 +138,8 @@ public class Ranking extends AppCompatActivity {
                             intent.putExtra("descp",post.getDescription());
                             intent.putExtra("post_image",post.getImages());
                             System.out.println(post.getImages());
-                            intent.putExtra("post_op",post.getOp().getUsername());
+                            if(post.getOp()!=null)
+                             intent.putExtra("post_op",post.getOp().getUsername());
                             //String categ = newpost.getCategorie();
                             intent.putExtra("status",post.getStatus());
                             intent.putExtra("voturi",post.getVoturi());

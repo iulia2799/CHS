@@ -74,21 +74,12 @@
             android:name=".Solve"
             android:exported="false" />
         <activity
-            android:name=".ViewPrimarie"
-            android:exported="false" />
-        <activity
-            android:name=".AccountInfo"
-            android:exported="false" />
-        <activity
             android:name=".Notification"
             android:exported="false" />
         <activity
             android:name=".ReviewPost"
             android:exported="false"
             android:launchMode = "singleTop"/>
-        <activity
-            android:name=".PrimarieDashboard"
-            android:exported="false" />
         <activity
             android:name=".SignUp"
             android:exported="false" />
@@ -110,13 +101,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".DashboardActivity" />
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" />
-        <activity
-            android:name=".ui.login.LoginActivity"
-            android:label="@string/title_activity_login" />
 
         <meta-data
             android:name="preloaded_fonts"

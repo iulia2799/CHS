@@ -191,6 +191,9 @@ public class ReviewPost extends AppCompatActivity {
                 like.setVisibility(View.GONE);
                 dislike.setVisibility(View.GONE);
             }
+            if(authenticatep()) {
+                raporteaza.setVisibility(View.GONE);
+            }
 
 
         }else if(status.startsWith("In curs")){
