@@ -1,6 +1,7 @@
 package com.example.chs.data;
 
 public enum Cities {
+    SELECT("Selecteaza o locatie"),
     ARAD("Arad"),
     TIMISOARA("Timișoara"),
     RESITA("Reșița"),

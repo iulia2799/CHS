@@ -82,7 +82,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             new Categorie("curatenie"),
             new Categorie("altele")
     };
-    private String items[] = new String[]{"drumuri publice","parcuri","animale","cladiri","curatenie","altele","rezolvate"};
+    private String items[] = new String[]{"Selecteaza o categorie","drumuri publice","parcuri","animale","cladiri","curatenie","altele","rezolvate"};
 
     private Button ranking;
     private Button add;
@@ -479,7 +479,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(dropdowncat.getSelectedItem().toString().equals("rezolvate"))
                     findRez();
-                else SelectItem(new Categorie(dropdowncat.getSelectedItem().toString()));
+                else if(!dropdowncat.getSelectedItem().toString().equals("Selecteaza o categorie")){
+                    SelectItem(new Categorie(dropdowncat.getSelectedItem().toString()));
+                }
 
             }
 

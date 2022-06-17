@@ -49,7 +49,8 @@ public class Setari extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                chooseLocation(spinner.getSelectedItem().toString());
+                if(!spinner.getSelectedItem().toString().equals("Selecteaza o locatie"))
+                     chooseLocation(spinner.getSelectedItem().toString());
             }
 
             @Override
