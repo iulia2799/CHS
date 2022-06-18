@@ -174,7 +174,11 @@ public class AddPost extends AppCompatActivity {
     }
 
     public void clickAddPost(View view){
-        System.out.println(post_location);
+        System.out.println("HEeEEEEE : " +searchlocation.getText().toString());
+        if(name.getText().toString().length() == 0 || desc.getText().toString().length() == 0 || searchlocation.getText().toString().length() < 10) {
+            Toast.makeText(this,"Aveti campuri goale sau nevalide", LENGTH_SHORT).show();
+            return;
+        }
         StorageReference imagesref= storageReference.child("posts/"+date.toString());
         final String[] imageurl = {""};
         if(capture != null || imageView.getDrawable() !=null){
